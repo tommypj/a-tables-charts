@@ -162,16 +162,16 @@ class DatabaseUpdater {
     }
     
     /**
-     * Handle database update request
-     */
+    * Handle database update request
+    */
     public static function handle_update_request() {
-        if (!isset($_GET['action']) || $_GET['action'] !== 'update-db') {
-            return;
-        }
-        
-        if (!isset($_GET['page']) || $_GET['page'] !== 'a-tables-charts') {
-            return;
-        }
+    if (!isset($_GET['action']) || sanitize_key($_GET['action']) !== 'update-db') {
+    return;
+    }
+    
+    if (!isset($_GET['page']) || sanitize_key($_GET['page']) !== 'a-tables-charts') {
+    return;
+    }
         
         if (!current_user_can('manage_options')) {
             wp_die('Access denied.');
@@ -194,23 +194,23 @@ class DatabaseUpdater {
     }
     
     /**
-     * Display success/error messages
-     */
+    * Display success/error messages
+    */
     public static function display_messages() {
-        if (isset($_GET['db-updated'])) {
-            ?>
-            <div class="notice notice-success is-dismissible">
-                <p><strong>Success!</strong> Database updated successfully. You can now create charts.</p>
-            </div>
-            <?php
-        }
-        
-        if (isset($_GET['db-update-failed'])) {
-            ?>
-            <div class="notice notice-error is-dismissible">
-                <p><strong>Error:</strong> Failed to update database. Please try the manual fix script or contact support.</p>
-            </div>
-            <?php
-        }
+    if (isset($_GET['db-updated']) && sanitize_key($_GET['db-updated']) === '1') {
+    ?>
+    <div class="notice notice-success is-dismissible">
+    <p><strong>Success!</strong> Database updated successfully. You can now create charts.</p>
+    </div>
+    <?php
+    }
+    
+    if (isset($_GET['db-update-failed']) && sanitize_key($_GET['db-update-failed']) === '1') {
+    ?>
+    <div class="notice notice-error is-dismissible">
+    <p><strong>Error:</strong> Failed to update database. Please try the manual fix script or contact support.</p>
+    </div>
+    <?php
+    }
     }
 }
