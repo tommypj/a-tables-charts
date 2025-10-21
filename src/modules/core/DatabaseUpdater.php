@@ -26,14 +26,14 @@ class DatabaseUpdater {
         $table_name = $wpdb->prefix . 'atables_charts';
         
         // Check if charts table exists
-        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        $table_exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) === $table_name;
         
         if (!$table_exists) {
             return false;
         }
         
         // Get existing columns
-        $columns = $wpdb->get_results("DESCRIBE $table_name");
+        $columns = $wpdb->get_results($wpdb->prepare("DESCRIBE %s", $table_name));
         $existing_columns = array_map(function($col) { return $col->Field; }, $columns);
         
         // Check for any missing required columns
@@ -55,7 +55,7 @@ class DatabaseUpdater {
         $charset_collate = $wpdb->get_charset_collate();
         
         // Check if table exists
-        $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        $table_exists = $wpdb->get_var($wpdb->prepare("SHOW TABLES LIKE %s", $table_name)) === $table_name;
         
         if (!$table_exists) {
             // Create complete table
@@ -87,7 +87,7 @@ class DatabaseUpdater {
         }
         
         // Table exists - check for missing columns
-        $columns = $wpdb->get_results("DESCRIBE $table_name");
+        $columns = $wpdb->get_results($wpdb->prepare("DESCRIBE %s", $table_name));
         $existing_columns = array_map(function($col) { return $col->Field; }, $columns);
         
         $updates_made = array();
