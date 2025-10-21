@@ -77,7 +77,7 @@ $total_charts = $result['total'];
 jQuery(document).ready(function($) {
 	// Render all charts
 	<?php foreach ( $charts as $chart ) : ?>
-	renderChart(<?php echo $chart->id; ?>);
+	renderChart(<?php echo absint($chart->id); ?>);
 	<?php endforeach; ?>
 	
 	function renderChart(chartId) {

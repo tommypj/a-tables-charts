@@ -59,7 +59,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 	<p class="description"><?php esc_html_e( 'Choose a Bootstrap theme for your table.', 'a-tables-charts' ); ?></p>
 	
 	<div class="atables-theme-selector">
-		<label class="atables-theme-option <?php echo $current_theme === 'default' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'default' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="default" <?php checked( $current_theme, 'default' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Default', 'a-tables-charts' ); ?></div>
@@ -67,7 +67,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-theme-option <?php echo $current_theme === 'striped' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'striped' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="striped" <?php checked( $current_theme, 'striped' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Striped', 'a-tables-charts' ); ?></div>
@@ -75,7 +75,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-theme-option <?php echo $current_theme === 'bordered' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'bordered' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="bordered" <?php checked( $current_theme, 'bordered' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Bordered', 'a-tables-charts' ); ?></div>
@@ -83,7 +83,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-theme-option <?php echo $current_theme === 'hover' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'hover' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="hover" <?php checked( $current_theme, 'hover' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Hover', 'a-tables-charts' ); ?></div>
@@ -91,7 +91,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-theme-option <?php echo $current_theme === 'dark' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'dark' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="dark" <?php checked( $current_theme, 'dark' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Dark', 'a-tables-charts' ); ?></div>
@@ -99,7 +99,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-theme-option <?php echo $current_theme === 'minimal' ? 'selected' : ''; ?>">
+		<label class="atables-theme-option <?php echo esc_attr($current_theme === 'minimal' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_theme" value="minimal" <?php checked( $current_theme, 'minimal' ); ?>>
 			<div class="atables-theme-preview">
 				<div class="atables-theme-name"><?php esc_html_e( 'Minimal', 'a-tables-charts' ); ?></div>
@@ -120,7 +120,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 	<p class="description"><?php esc_html_e( 'Choose how your table adapts to mobile devices.', 'a-tables-charts' ); ?></p>
 	
 	<div class="atables-responsive-selector">
-		<label class="atables-responsive-option <?php echo $current_responsive === 'scroll' ? 'selected' : ''; ?>">
+		<label class="atables-responsive-option <?php echo esc_attr($current_responsive === 'scroll' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_responsive" value="scroll" <?php checked( $current_responsive, 'scroll' ); ?>>
 			<div class="atables-responsive-preview">
 				<div class="atables-responsive-icon">📱➡️</div>
@@ -129,7 +129,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-responsive-option <?php echo $current_responsive === 'stack' ? 'selected' : ''; ?>">
+		<label class="atables-responsive-option <?php echo esc_attr($current_responsive === 'stack' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_responsive" value="stack" <?php checked( $current_responsive, 'stack' ); ?>>
 			<div class="atables-responsive-preview">
 				<div class="atables-responsive-icon">📚</div>
@@ -138,7 +138,7 @@ $enable_pagination = isset( $display_settings['enable_pagination'] ) ? $display_
 			</div>
 		</label>
 
-		<label class="atables-responsive-option <?php echo $current_responsive === 'cards' ? 'selected' : ''; ?>">
+		<label class="atables-responsive-option <?php echo esc_attr($current_responsive === 'cards' ? 'selected' : ''); ?>">
 			<input type="radio" name="display_responsive" value="cards" <?php checked( $current_responsive, 'cards' ); ?>>
 			<div class="atables-responsive-preview">
 				<div class="atables-responsive-icon">🃏</div>
