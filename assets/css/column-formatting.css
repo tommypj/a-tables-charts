@@ -1,0 +1,274 @@
+/**
+ * A-Tables & Charts - Column Formatting Styles
+ * 
+ * Custom styles for column formatting
+ * 
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Column Alignment Classes
+   ========================================================================== */
+
+.atables-align-left {
+	text-align: left !important;
+}
+
+.atables-align-center {
+	text-align: center !important;
+}
+
+.atables-align-right {
+	text-align: right !important;
+}
+
+.atables-align-justify {
+	text-align: justify !important;
+}
+
+/* ==========================================================================
+   Column Text Styling
+   ========================================================================== */
+
+.atables-bold {
+	font-weight: 700 !important;
+}
+
+.atables-italic {
+	font-style: italic !important;
+}
+
+.atables-uppercase {
+	text-transform: uppercase !important;
+}
+
+.atables-lowercase {
+	text-transform: lowercase !important;
+}
+
+.atables-capitalize {
+	text-transform: capitalize !important;
+}
+
+.atables-nowrap {
+	white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   Column Highlighting
+   ========================================================================== */
+
+.atables-highlight {
+	background-color: #fff3cd !important;
+	font-weight: 600 !important;
+}
+
+.atables-highlight-success {
+	background-color: #d1e7dd !important;
+	color: #0f5132 !important;
+}
+
+.atables-highlight-danger {
+	background-color: #f8d7da !important;
+	color: #842029 !important;
+}
+
+.atables-highlight-warning {
+	background-color: #fff3cd !important;
+	color: #664d03 !important;
+}
+
+.atables-highlight-info {
+	background-color: #cfe2ff !important;
+	color: #084298 !important;
+}
+
+/* ==========================================================================
+   Column Width Utilities
+   ========================================================================== */
+
+.atables-col-narrow {
+	width: 80px !important;
+	max-width: 80px !important;
+}
+
+.atables-col-small {
+	width: 120px !important;
+	max-width: 120px !important;
+}
+
+.atables-col-medium {
+	width: 200px !important;
+	max-width: 200px !important;
+}
+
+.atables-col-large {
+	width: 300px !important;
+	max-width: 300px !important;
+}
+
+.atables-col-auto {
+	width: auto !important;
+}
+
+/* ==========================================================================
+   Vertical Alignment
+   ========================================================================== */
+
+.atables-valign-top {
+	vertical-align: top !important;
+}
+
+.atables-valign-middle {
+	vertical-align: middle !important;
+}
+
+.atables-valign-bottom {
+	vertical-align: bottom !important;
+}
+
+/* ==========================================================================
+   Number/Currency Formatting
+   ========================================================================== */
+
+.atables-number {
+	text-align: right !important;
+	font-family: 'Courier New', Courier, monospace;
+	font-variant-numeric: tabular-nums;
+}
+
+.atables-currency {
+	text-align: right !important;
+	font-family: 'Courier New', Courier, monospace;
+	font-variant-numeric: tabular-nums;
+}
+
+.atables-currency:before {
+	content: '$';
+	margin-right: 2px;
+}
+
+.atables-percentage {
+	text-align: right !important;
+}
+
+.atables-percentage:after {
+	content: '%';
+	margin-left: 2px;
+}
+
+/* ==========================================================================
+   Badge/Pill Styling
+   ========================================================================== */
+
+.atables-badge {
+	display: inline-block;
+	padding: 4px 10px;
+	font-size: 12px;
+	font-weight: 600;
+	line-height: 1;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: 4px;
+	background-color: #6c757d;
+	color: #fff;
+}
+
+.atables-badge-primary {
+	background-color: #0d6efd;
+	color: #fff;
+}
+
+.atables-badge-success {
+	background-color: #198754;
+	color: #fff;
+}
+
+.atables-badge-danger {
+	background-color: #dc3545;
+	color: #fff;
+}
+
+.atables-badge-warning {
+	background-color: #ffc107;
+	color: #000;
+}
+
+.atables-badge-info {
+	background-color: #0dcaf0;
+	color: #000;
+}
+
+/* ==========================================================================
+   Column Priority (for hiding on mobile)
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+	.atables-priority-1 { display: none !important; }
+}
+
+@media screen and (max-width: 992px) {
+	.atables-priority-2 { display: none !important; }
+}
+
+@media screen and (max-width: 1200px) {
+	.atables-priority-3 { display: none !important; }
+}
+
+/* ==========================================================================
+   Advanced Column Type Styling
+   ========================================================================== */
+
+/* Currency Values */
+.atables-currency-value {
+	text-align: right;
+	font-family: 'Courier New', Courier, monospace;
+	font-variant-numeric: tabular-nums;
+	color: #198754;
+	font-weight: 600;
+}
+
+/* Date Values */
+.atables-date-value {
+	white-space: nowrap;
+	color: #495057;
+}
+
+/* Number Values */
+.atables-number-value {
+	text-align: right;
+	font-family: 'Courier New', Courier, monospace;
+	font-variant-numeric: tabular-nums;
+}
+
+/* Percentage Values */
+.atables-percentage-value {
+	text-align: right;
+	font-family: 'Courier New', Courier, monospace;
+	font-variant-numeric: tabular-nums;
+	color: #0d6efd;
+	font-weight: 600;
+}
+
+/* Phone Values */
+.atables-phone-value {
+	color: #0d6efd;
+	text-decoration: none;
+	white-space: nowrap;
+	transition: color 0.15s ease-in-out;
+}
+
+.atables-phone-value:hover {
+	color: #0a58ca;
+	text-decoration: underline;
+}
+
+/* Ensure column alignment for formatted values */
+td .atables-currency-value,
+td .atables-number-value,
+td .atables-percentage-value {
+	display: block;
+	width: 100%;
+}

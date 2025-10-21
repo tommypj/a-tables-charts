@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<employees>
+    <employee>
+        <EmployeeID>101</EmployeeID>
+        <FirstName>John</FirstName>
+        <LastName>Doe</LastName>
+        <Department>Engineering</Department>
+        <Position>Senior Developer</Position>
+        <Salary>95000</Salary>
+        <HireDate>2020-01-15</HireDate>
+        <Email>john.doe@company.com</Email>
+    </employee>
+    <employee>
+        <EmployeeID>102</EmployeeID>
+        <FirstName>Jane</FirstName>
+        <LastName>Smith</LastName>
+        <Department>Marketing</Department>
+        <Position>Marketing Manager</Position>
+        <Salary>85000</Salary>
+        <HireDate>2019-06-20</HireDate>
+        <Email>jane.smith@company.com</Email>
+    </employee>
+    <employee>
+        <EmployeeID>103</EmployeeID>
+        <FirstName>Mike</FirstName>
+        <LastName>Johnson</LastName>
+        <Department>Sales</Department>
+        <Position>Sales Representative</Position>
+        <Salary>65000</Salary>
+        <HireDate>2021-03-10</HireDate>
+        <Email>mike.johnson@company.com</Email>
+    </employee>
+    <employee>
+        <EmployeeID>104</EmployeeID>
+        <FirstName>Sarah</FirstName>
+        <LastName>Williams</LastName>
+        <Department>HR</Department>
+        <Position>HR Specialist</Position>
+        <Salary>70000</Salary>
+        <HireDate>2018-11-05</HireDate>
+        <Email>sarah.williams@company.com</Email>
+    </employee>
+    <employee>
+        <EmployeeID>105</EmployeeID>
+        <FirstName>David</FirstName>
+        <LastName>Brown</LastName>
+        <Department>Engineering</Department>
+        <Position>DevOps Engineer</Position>
+        <Salary>90000</Salary>
+        <HireDate>2020-08-22</HireDate>
+        <Email>david.brown@company.com</Email>
+    </employee>
+</employees>

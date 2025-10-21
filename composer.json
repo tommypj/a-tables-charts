@@ -1,0 +1,30 @@
+{
+  "name": "a-tables-charts/plugin",
+  "description": "WordPress plugin for creating and managing tables and charts",
+  "type": "wordpress-plugin",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.4",
+    "phpoffice/phpspreadsheet": "^1.29",
+    "tecnickcom/tcpdf": "^6.10"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9.5",
+    "yoast/phpunit-polyfills": "^1.0",
+    "mockery/mockery": "^1.5"
+  },
+  "autoload": {
+    "psr-4": {
+      "ATablesCharts\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "ATablesCharts\\Tests\\": "tests/"
+    }
+  },
+  "scripts": {
+    "test": "phpunit",
+    "test-coverage": "phpunit --coverage-html coverage"
+  }
+}

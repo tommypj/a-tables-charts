@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+    bootstrap="tests/bootstrap/bootstrap.php"
+    colors="true"
+    verbose="true"
+    stopOnFailure="false"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+>
+    <testsuites>
+        <testsuite name="Unit Tests">
+            <directory>tests/unit</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>src/modules/core/views</directory>
+            <file>src/modules/core/Activator.php</file>
+            <file>src/modules/core/Deactivator.php</file>
+        </exclude>
+    </coverage>
+
+    <php>
+        <const name="WP_TESTS_PHPUNIT_POLYFILLS_PATH" value="vendor/yoast/phpunit-polyfills" />
+        <!-- WordPress test library paths - optional, only used if available -->
+        <!-- <env name="WP_TESTS_DIR" value="/tmp/wordpress-tests-lib" /> -->
+        <!-- <env name="WP_CORE_DIR" value="/tmp/wordpress/" /> -->
+    </php>
+</phpunit>

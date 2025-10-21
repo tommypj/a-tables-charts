@@ -1,0 +1,771 @@
+/**
+ * A-Tables & Charts - Table View Styles
+ * Loaded only on table view page
+ *
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   View Table Page
+   ========================================================================== */
+
+.atables-view-page {
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+.atables-info-card {
+	background: #fff;
+	padding: 24px 32px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	margin-bottom: 24px;
+}
+
+.atables-table-description {
+	font-size: 16px;
+	color: #646970;
+	line-height: 1.6;
+	margin: 0 0 20px 0;
+	padding-bottom: 20px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.atables-info-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+	gap: 24px;
+}
+
+.atables-info-stat {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+}
+
+.atables-info-label {
+	font-size: 12px;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	color: #646970;
+	font-weight: 600;
+}
+
+.atables-info-value {
+	font-size: 20px;
+	font-weight: 600;
+	color: #1d2327;
+}
+
+/* ==========================================================================
+   Search and Filter Bar
+   ========================================================================== */
+
+.atables-filter-bar {
+	background: #fff;
+	padding: 20px 32px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	margin-bottom: 24px;
+}
+
+.atables-search-form {
+	margin: 0;
+}
+
+.atables-search-box {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	max-width: 800px;
+}
+
+.atables-search-box .dashicons {
+	color: #646970;
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+}
+
+.atables-search-input {
+	flex: 1;
+	padding: 10px 16px;
+	border: 2px solid #dcdcdc;
+	border-radius: 6px;
+	font-size: 14px;
+	transition: all 0.2s ease;
+}
+
+.atables-search-input:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.atables-search-box .button {
+	padding: 10px 24px;
+	height: auto;
+	line-height: 1.4;
+}
+
+/* ==========================================================================
+   Data Table Card
+   ========================================================================== */
+
+.atables-data-card {
+	background: #fff;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	overflow: hidden;
+	margin-bottom: 24px;
+}
+
+.atables-data-header {
+	padding: 24px 32px;
+	border-bottom: 2px solid #f0f0f1;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.atables-data-title {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	flex-wrap: wrap;
+}
+
+.atables-data-title h2 {
+	font-size: 20px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0;
+}
+
+.atables-filter-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 6px 12px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	border-radius: 12px;
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.atables-filter-badge .dashicons {
+	font-size: 14px;
+	width: 14px;
+	height: 14px;
+}
+
+.atables-data-wrapper {
+	overflow-x: auto;
+}
+
+/* ==========================================================================
+   Sortable Table
+   ========================================================================== */
+
+.atables-sortable-table thead th.atables-sortable {
+	cursor: pointer;
+	user-select: none;
+	position: relative;
+}
+
+.atables-sort-link {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
+	color: inherit;
+	text-decoration: none;
+	width: 100%;
+	transition: color 0.2s ease;
+}
+
+.atables-sort-link:hover {
+	color: #2271b1;
+}
+
+.atables-sort-link:focus {
+	outline: none;
+	box-shadow: 0 0 0 2px #2271b1 inset;
+}
+
+.atables-sort-icon {
+	display: inline-flex;
+	align-items: center;
+	opacity: 0.4;
+	transition: opacity 0.2s ease;
+}
+
+.atables-sortable:hover .atables-sort-icon {
+	opacity: 0.7;
+}
+
+.atables-sortable.sorted .atables-sort-icon {
+	opacity: 1;
+}
+
+.atables-sortable.sorted-asc .atables-sort-link,
+.atables-sortable.sorted-desc .atables-sort-link {
+	color: #2271b1;
+	font-weight: 700;
+}
+
+.atables-sort-icon .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* ==========================================================================
+   Modern Table
+   ========================================================================== */
+
+.atables-modern-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+.atables-modern-table thead th {
+	background: #f6f7f7;
+	padding: 16px;
+	text-align: left;
+	font-weight: 600;
+	color: #1d2327;
+	border-bottom: 2px solid #e5e5e5;
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 0.5px;
+	white-space: nowrap;
+}
+
+.atables-modern-table tbody td {
+	padding: 16px;
+	border-bottom: 1px solid #f0f0f1;
+	color: #646970;
+	max-width: 300px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.atables-modern-table tbody tr {
+	transition: background 0.2s ease;
+}
+
+.atables-modern-table tbody tr:hover {
+	background: #f6f7f7;
+}
+
+.atables-no-data {
+	text-align: center !important;
+	padding: 60px 20px !important;
+	color: #646970 !important;
+}
+
+.atables-no-data .dashicons {
+	font-size: 48px;
+	width: 48px;
+	height: 48px;
+	opacity: 0.3;
+	display: block;
+	margin: 0 auto 12px;
+}
+
+/* ==========================================================================
+   Pagination Styles
+   ========================================================================== */
+
+.atables-data-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.atables-per-page-selector {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	color: #646970;
+}
+
+.atables-per-page-select {
+	padding: 6px 12px;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	font-size: 14px;
+	background: #fff;
+	cursor: pointer;
+	transition: border-color 0.2s ease;
+}
+
+.atables-per-page-select:hover {
+	border-color: #2271b1;
+}
+
+.atables-per-page-select:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.atables-data-footer {
+	padding: 20px 32px;
+	background: #f6f7f7;
+	border-top: 1px solid #e5e5e5;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.atables-pagination-info {
+	flex: 1;
+}
+
+.atables-data-count {
+	margin: 0;
+	font-size: 14px;
+	color: #646970;
+}
+
+.atables-pagination-controls {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.atables-page-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: 1px solid #dcdcdc;
+	background: #fff;
+	border-radius: 4px;
+	color: #646970;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.atables-page-btn:hover {
+	border-color: #2271b1;
+	color: #2271b1;
+	background: #f0f6fc;
+}
+
+.atables-page-btn.disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.atables-page-btn .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.atables-page-numbers {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0 8px;
+}
+
+.atables-page-num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 12px;
+	border: 1px solid #dcdcdc;
+	background: #fff;
+	border-radius: 4px;
+	color: #646970;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.atables-page-num:hover {
+	border-color: #2271b1;
+	color: #2271b1;
+	background: #f0f6fc;
+}
+
+.atables-page-num.active {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-color: transparent;
+	color: #fff;
+	font-weight: 600;
+	cursor: default;
+	pointer-events: none;
+}
+
+.atables-page-ellipsis {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	color: #646970;
+	font-size: 14px;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+	.atables-info-stats {
+		grid-template-columns: 1fr;
+	}
+	
+	.atables-search-box {
+		flex-wrap: wrap;
+	}
+	
+	.atables-search-input {
+		min-width: 100%;
+	}
+	
+	.atables-data-header {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.atables-data-footer {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.atables-pagination-controls {
+		width: 100%;
+		justify-content: center;
+	}
+	
+	.atables-page-numbers {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.atables-per-page-selector {
+		width: 100%;
+		justify-content: center;
+	}
+}
+
+/* ==========================================================================
+   Shortcode Helper Section
+   ========================================================================== */
+
+.atables-shortcode-card {
+	background: #fff;
+	padding: 24px 32px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	margin-bottom: 24px;
+}
+
+.atables-shortcode-card h3 {
+	font-size: 18px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 8px 0;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.atables-shortcode-card h3 .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #2271b1;
+}
+
+.atables-shortcode-card > .atables-help-text {
+	font-size: 14px;
+	color: #646970;
+	margin: 0 0 24px 0;
+	line-height: 1.6;
+}
+
+.atables-shortcode-section {
+	margin-bottom: 24px;
+	padding-bottom: 24px;
+	border-bottom: 1px solid #f0f0f1;
+}
+
+.atables-shortcode-section:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.atables-shortcode-section h4 {
+	font-size: 15px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 12px 0;
+}
+
+.atables-help-text-small {
+	font-size: 13px;
+	color: #646970;
+	margin: 0 0 16px 0;
+	line-height: 1.6;
+}
+
+.atables-shortcode-box {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	background: #f6f7f7;
+	padding: 12px 16px;
+	border-radius: 6px;
+	border: 1px solid #dcdcdc;
+	margin: 8px 0;
+}
+
+.atables-shortcode-code {
+	flex: 1;
+	font-family: 'Courier New', Courier, monospace;
+	font-size: 13px;
+	color: #d63638;
+	background: transparent;
+	padding: 0;
+	border: none;
+	word-break: break-all;
+	line-height: 1.6;
+}
+
+.atables-copy-shortcode {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 16px;
+	height: auto;
+	white-space: nowrap;
+	flex-shrink: 0;
+}
+
+.atables-copy-shortcode .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.atables-cell-shortcode-builder {
+	background: #f6f7f7;
+	padding: 20px;
+	border-radius: 8px;
+	border: 1px solid #dcdcdc;
+	margin-top: 12px;
+}
+
+.atables-cell-shortcode-builder .atables-form-row {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	margin-bottom: 16px;
+}
+
+.atables-cell-shortcode-builder .atables-form-row:last-of-type {
+	margin-bottom: 20px;
+}
+
+.atables-cell-shortcode-builder label {
+	font-size: 13px;
+	font-weight: 600;
+	color: #1d2327;
+	min-width: 100px;
+	margin: 0;
+}
+
+.atables-cell-shortcode-builder .atables-select {
+	padding: 6px 12px;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	font-size: 14px;
+	background: #fff;
+	min-width: 200px;
+}
+
+.atables-cell-shortcode-builder .small-text {
+	width: 80px;
+}
+
+.atables-cell-shortcode-builder .atables-help-text-small {
+	margin: 16px 0 0 0;
+	padding-top: 16px;
+	border-top: 1px solid #dcdcdc;
+}
+
+.atables-cell-shortcode-builder .atables-help-text-small code {
+	background: #fff;
+	padding: 2px 6px;
+	border-radius: 3px;
+	font-size: 12px;
+	color: #d63638;
+	border: 1px solid #dcdcdc;
+}
+
+/* ==========================================================================
+   Loading Spinner
+   ========================================================================== */
+
+.atables-loading-spinner {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 10;
+	background: rgba(255, 255, 255, 0.95);
+	padding: 20px 30px;
+	border-radius: 8px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 14px;
+	color: #1d2327;
+	font-weight: 500;
+}
+
+.atables-loading-spinner .dashicons {
+	font-size: 20px;
+	width: 20px;
+	height: 20px;
+	color: #2271b1;
+	animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+/* Loading state for table */
+.atables-modern-table.atables-loading tbody {
+	position: relative;
+}
+
+/* Clear button */
+.atables-clear-search {
+	margin-left: 8px !important;
+}
+
+/* ==========================================================================
+   Column Header Filters
+   ========================================================================== */
+
+.atables-filter-row th {
+	padding: 8px 12px !important;
+	background: #fff !important;
+	border-bottom: 2px solid #e5e5e5 !important;
+}
+
+.atables-column-filter {
+	width: 100%;
+	padding: 6px 10px;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	font-size: 13px;
+	box-sizing: border-box;
+	transition: all 0.2s ease;
+}
+
+.atables-column-filter:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.atables-column-filter::placeholder {
+	color: #9ca3af;
+	font-size: 12px;
+}
+
+/* Filter stats badge */
+.atables-filter-stats {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 16px;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	border-radius: 20px;
+	font-size: 13px;
+	font-weight: 500;
+	margin-left: 12px;
+}
+
+.atables-filter-stats .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+.atables-filter-stats .button {
+	margin-left: 8px;
+	padding: 4px 12px;
+	height: auto;
+	line-height: 1.4;
+	background: rgba(255, 255, 255, 0.2);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.3);
+	font-size: 12px;
+}
+
+.atables-filter-stats .button:hover {
+	background: rgba(255, 255, 255, 0.3);
+	color: #fff;
+	border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Loading overlay for initial load */
+.atables-loading-overlay {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 100;
+	background: rgba(255, 255, 255, 0.95);
+	padding: 24px 40px;
+	border-radius: 8px;
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	font-size: 15px;
+	color: #1d2327;
+	font-weight: 500;
+}
+
+.atables-loading-overlay .dashicons {
+	font-size: 24px;
+	width: 24px;
+	height: 24px;
+	color: #2271b1;
+}

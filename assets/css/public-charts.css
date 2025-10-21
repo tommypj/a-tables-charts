@@ -1,0 +1,46 @@
+/**
+ * A-Tables & Charts - Frontend Chart Styles
+ * Styles for charts displayed on the frontend via shortcode
+ *
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Chart Wrapper
+   ========================================================================== */
+
+.acharts-frontend-wrapper {
+	margin: 24px 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+	max-width: 100%;
+}
+
+.acharts-frontend-chart-wrapper {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.acharts-frontend-chart-wrapper canvas {
+	max-width: 100%;
+	height: auto !important;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+	.acharts-frontend-chart-wrapper {
+		padding: 16px;
+	}
+}
+
+@media (max-width: 480px) {
+	.acharts-frontend-chart-wrapper {
+		padding: 12px;
+	}
+}

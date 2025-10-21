@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<books>
+    <book>
+        <ISBN>978-0-123456-78-9</ISBN>
+        <Title>The Great Adventure</Title>
+        <Author>James Smith</Author>
+        <Publisher>Adventure Books Inc.</Publisher>
+        <Year>2023</Year>
+        <Pages>350</Pages>
+        <Price>24.99</Price>
+        <Genre>Adventure</Genre>
+    </book>
+    <book>
+        <ISBN>978-0-234567-89-0</ISBN>
+        <Title>Learning Python</Title>
+        <Author>Sarah Johnson</Author>
+        <Publisher>Tech Press</Publisher>
+        <Year>2024</Year>
+        <Pages>500</Pages>
+        <Price>39.99</Price>
+        <Genre>Technology</Genre>
+    </book>
+    <book>
+        <ISBN>978-0-345678-90-1</ISBN>
+        <Title>Mystery at Midnight</Title>
+        <Author>Robert Brown</Author>
+        <Publisher>Mystery House</Publisher>
+        <Year>2022</Year>
+        <Pages>280</Pages>
+        <Price>19.99</Price>
+        <Genre>Mystery</Genre>
+    </book>
+    <book>
+        <ISBN>978-0-456789-01-2</ISBN>
+        <Title>Cooking Mastery</Title>
+        <Author>Emily Davis</Author>
+        <Publisher>Culinary Books</Publisher>
+        <Year>2023</Year>
+        <Pages>420</Pages>
+        <Price>34.99</Price>
+        <Genre>Cooking</Genre>
+    </book>
+    <book>
+        <ISBN>978-0-567890-12-3</ISBN>
+        <Title>Space Exploration</Title>
+        <Author>Michael Wilson</Author>
+        <Publisher>Science Today</Publisher>
+        <Year>2024</Year>
+        <Pages>380</Pages>
+        <Price>29.99</Price>
+        <Genre>Science</Genre>
+    </book>
+</books>

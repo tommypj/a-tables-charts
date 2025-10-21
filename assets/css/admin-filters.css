@@ -1,0 +1,804 @@
+/**
+ * Admin Filters CSS
+ * 
+ * Styles for the advanced filtering system UI
+ * 
+ * @package ATablesCharts
+ * @since 1.0.5
+ */
+
+/* ============================================
+   FILTER PANEL CONTAINER
+   ============================================ */
+
+.atables-filter-panel {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.atables-filter-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.atables-filter-panel-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #23282d;
+    margin: 0;
+}
+
+.atables-filter-panel-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.atables-filter-toggle {
+    cursor: pointer;
+    color: #0073aa;
+    text-decoration: none;
+    font-size: 13px;
+}
+
+.atables-filter-toggle:hover {
+    color: #005177;
+}
+
+/* ============================================
+   FILTER BUILDER
+   ============================================ */
+
+.atables-filter-builder {
+    margin-bottom: 20px;
+}
+
+.atables-filter-rules {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.atables-filter-rule {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 15px;
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    position: relative;
+}
+
+.atables-filter-rule:hover {
+    background: #f5f5f5;
+    border-color: #ccc;
+}
+
+.atables-filter-rule-fields {
+    display: flex;
+    gap: 10px;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+
+.atables-filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.atables-filter-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.atables-filter-field select,
+.atables-filter-field input[type="text"],
+.atables-filter-field input[type="number"],
+.atables-filter-field input[type="date"] {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+    min-width: 150px;
+    background: #fff;
+}
+
+.atables-filter-field select:focus,
+.atables-filter-field input:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 1px #0073aa;
+}
+
+.atables-filter-field-column {
+    min-width: 180px;
+}
+
+.atables-filter-field-operator {
+    min-width: 150px;
+}
+
+.atables-filter-field-value {
+    min-width: 200px;
+    flex: 1;
+}
+
+/* Multiple values (for IN operator) */
+.atables-filter-values-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.atables-filter-value-item {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.atables-filter-value-item input {
+    flex: 1;
+}
+
+.atables-filter-value-remove {
+    padding: 6px 10px;
+    background: #dc3232;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.atables-filter-value-remove:hover {
+    background: #a00;
+}
+
+.atables-filter-add-value {
+    padding: 6px 12px;
+    background: #f0f0f1;
+    color: #2271b1;
+    border: 1px solid #2271b1;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.atables-filter-add-value:hover {
+    background: #2271b1;
+    color: #fff;
+}
+
+/* Between operator (two value fields) */
+.atables-filter-between-values {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.atables-filter-between-separator {
+    font-weight: 600;
+    color: #666;
+}
+
+/* ============================================
+   FILTER RULE ACTIONS
+   ============================================ */
+
+.atables-filter-rule-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.atables-filter-remove-rule {
+    padding: 8px 12px;
+    background: #dc3232;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.atables-filter-remove-rule:hover {
+    background: #a00;
+}
+
+.atables-filter-rule-info {
+    font-size: 11px;
+    color: #666;
+    padding: 4px 8px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    text-align: center;
+}
+
+/* ============================================
+   ADD FILTER BUTTON
+   ============================================ */
+
+.atables-filter-add-rule {
+    padding: 10px 16px;
+    background: #2271b1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.atables-filter-add-rule:hover {
+    background: #135e96;
+}
+
+.atables-filter-add-rule .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* ============================================
+   FILTER ACTIONS
+   ============================================ */
+
+.atables-filter-actions {
+    display: flex;
+    gap: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    margin-top: 20px;
+}
+
+.atables-filter-apply {
+    padding: 10px 20px;
+    background: #00a32a;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.atables-filter-apply:hover {
+    background: #008a20;
+}
+
+.atables-filter-apply:disabled {
+    background: #ddd;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.atables-filter-clear {
+    padding: 10px 20px;
+    background: #f0f0f1;
+    color: #2c3338;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.atables-filter-clear:hover {
+    background: #ddd;
+}
+
+.atables-filter-save {
+    padding: 10px 20px;
+    background: #2271b1;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.atables-filter-save:hover {
+    background: #135e96;
+}
+
+/* ============================================
+   PRESET MANAGEMENT
+   ============================================ */
+
+.atables-preset-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 15px;
+    background: #f0f7ff;
+    border: 1px solid #c3dafe;
+    border-radius: 4px;
+}
+
+.atables-preset-selector label {
+    font-weight: 600;
+    color: #23282d;
+    white-space: nowrap;
+}
+
+.atables-preset-select {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    background: #fff;
+    font-size: 14px;
+}
+
+.atables-preset-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.atables-preset-load,
+.atables-preset-delete,
+.atables-preset-duplicate {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    white-space: nowrap;
+}
+
+.atables-preset-load {
+    background: #2271b1;
+    color: #fff;
+}
+
+.atables-preset-load:hover {
+    background: #135e96;
+}
+
+.atables-preset-delete {
+    background: #dc3232;
+    color: #fff;
+}
+
+.atables-preset-delete:hover {
+    background: #a00;
+}
+
+.atables-preset-duplicate {
+    background: #f0f0f1;
+    color: #2c3338;
+    border: 1px solid #ddd;
+}
+
+.atables-preset-duplicate:hover {
+    background: #ddd;
+}
+
+.atables-preset-default-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #00a32a;
+    color: #fff;
+    border-radius: 3px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 8px;
+}
+
+/* ============================================
+   ACTIVE FILTERS INDICATOR
+   ============================================ */
+
+.atables-active-filters {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    padding: 12px 15px;
+    background: #fffbcc;
+    border: 1px solid #e6db55;
+    border-radius: 4px;
+    margin-bottom: 15px;
+}
+
+.atables-active-filters-text {
+    font-weight: 600;
+    color: #23282d;
+}
+
+.atables-active-filters-count {
+    display: inline-block;
+    padding: 4px 10px;
+    background: #2271b1;
+    color: #fff;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.atables-active-filters-clear {
+    margin-left: auto;
+    padding: 6px 14px;
+    background: #dc3232;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.atables-active-filters-clear:hover {
+    background: #a00;
+}
+
+/* ============================================
+   MODAL / SAVE PRESET DIALOG
+   ============================================ */
+
+.atables-preset-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 100000;
+    align-items: center;
+    justify-content: center;
+}
+
+.atables-preset-modal.active {
+    display: flex;
+}
+
+.atables-preset-modal-content {
+    background: #fff;
+    border-radius: 4px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+}
+
+.atables-preset-modal-header {
+    margin-bottom: 20px;
+}
+
+.atables-preset-modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #23282d;
+    margin: 0;
+}
+
+.atables-preset-modal-body {
+    margin-bottom: 25px;
+}
+
+.atables-preset-form-field {
+    margin-bottom: 20px;
+}
+
+.atables-preset-form-field label {
+    display: block;
+    font-weight: 600;
+    color: #23282d;
+    margin-bottom: 8px;
+}
+
+.atables-preset-form-field input[type="text"],
+.atables-preset-form-field textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+.atables-preset-form-field textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+.atables-preset-form-field input:focus,
+.atables-preset-form-field textarea:focus {
+    border-color: #2271b1;
+    outline: none;
+    box-shadow: 0 0 0 1px #2271b1;
+}
+
+.atables-preset-checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.atables-preset-checkbox-field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+
+.atables-preset-checkbox-field label {
+    margin: 0;
+    cursor: pointer;
+}
+
+.atables-preset-modal-footer {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+.atables-preset-modal-save,
+.atables-preset-modal-cancel {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.atables-preset-modal-save {
+    background: #2271b1;
+    color: #fff;
+}
+
+.atables-preset-modal-save:hover {
+    background: #135e96;
+}
+
+.atables-preset-modal-cancel {
+    background: #f0f0f1;
+    color: #2c3338;
+}
+
+.atables-preset-modal-cancel:hover {
+    background: #ddd;
+}
+
+/* ============================================
+   LOADING STATE
+   ============================================ */
+
+.atables-filter-loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: #f0f7ff;
+    border: 1px solid #c3dafe;
+    border-radius: 4px;
+    color: #2271b1;
+    font-weight: 600;
+}
+
+.atables-filter-loading .spinner {
+    float: none;
+    margin: 0;
+}
+
+/* ============================================
+   EMPTY STATE
+   ============================================ */
+
+.atables-filter-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: #666;
+}
+
+.atables-filter-empty-icon {
+    font-size: 48px;
+    color: #ddd;
+    margin-bottom: 15px;
+}
+
+.atables-filter-empty-text {
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.atables-filter-empty-hint {
+    font-size: 13px;
+    color: #999;
+}
+
+/* ============================================
+   ERROR STATE
+   ============================================ */
+
+.atables-filter-error {
+    padding: 15px;
+    background: #fef2f2;
+    border: 1px solid #fca5a5;
+    border-radius: 4px;
+    color: #dc2626;
+    margin-bottom: 15px;
+}
+
+.atables-filter-error strong {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+
+@media (max-width: 782px) {
+    .atables-filter-panel-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .atables-filter-rule {
+        flex-direction: column;
+    }
+
+    .atables-filter-rule-fields {
+        width: 100%;
+    }
+
+    .atables-filter-field {
+        width: 100%;
+    }
+
+    .atables-filter-field select,
+    .atables-filter-field input {
+        width: 100%;
+    }
+
+    .atables-filter-actions {
+        flex-direction: column;
+    }
+
+    .atables-filter-actions button {
+        width: 100%;
+    }
+
+    .atables-preset-selector {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .atables-preset-select {
+        width: 100%;
+    }
+
+    .atables-preset-actions {
+        width: 100%;
+        flex-direction: column;
+    }
+
+    .atables-preset-actions button {
+        width: 100%;
+    }
+}
+
+/* ============================================
+   NOTICES / ALERTS
+   ============================================ */
+
+.atables-notice {
+    position: relative;
+    padding: 15px 40px 15px 15px;
+    margin: 15px 0 20px;
+    border-left: 4px solid;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.atables-notice p {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.atables-notice .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.atables-notice.notice-success {
+    border-left-color: #00a32a;
+}
+
+.atables-notice.notice-success .dashicons {
+    color: #00a32a;
+}
+
+.atables-notice.notice-error {
+    border-left-color: #dc3232;
+}
+
+.atables-notice.notice-error .dashicons {
+    color: #dc3232;
+}
+
+.atables-notice.notice-warning {
+    border-left-color: #f0b849;
+}
+
+.atables-notice.notice-warning .dashicons {
+    color: #f0b849;
+}
+
+.atables-notice.notice-info {
+    border-left-color: #2271b1;
+}
+
+.atables-notice.notice-info .dashicons {
+    color: #2271b1;
+}
+
+.atables-notice .notice-dismiss {
+    position: absolute;
+    top: 0;
+    right: 1px;
+    padding: 9px;
+    border: none;
+    background: none;
+    color: #787c82;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.atables-notice .notice-dismiss:hover {
+    color: #d63638;
+}
+
+.atables-notice .notice-dismiss::before {
+    content: "\f153";
+    font-family: dashicons;
+    font-size: 16px;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    line-height: 1;
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+
+.atables-hidden {
+    display: none !important;
+}
+
+.atables-disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.atables-mr-10 {
+    margin-right: 10px;
+}
+
+.atables-mb-15 {
+    margin-bottom: 15px;
+}

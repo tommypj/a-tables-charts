@@ -1,0 +1,399 @@
+/**
+ * A-Tables & Charts - Dashboard Styles
+ * Loaded only on dashboard page
+ *
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Dashboard Layout
+   ========================================================================== */
+
+.atables-dashboard {
+	max-width: 1400px;
+	margin: 0 auto;
+}
+
+.atables-dashboard h1 {
+	font-size: 32px;
+	font-weight: 600;
+	color: #1d2327;
+	margin-bottom: 24px;
+}
+
+.atables-dashboard .page-title-action {
+	margin-left: 12px;
+	padding: 10px 24px;
+	font-size: 14px;
+	font-weight: 600;
+	text-decoration: none;
+	color: #fff !important;
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border: none;
+	border-radius: 6px;
+	box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+	transition: all 0.3s ease;
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	position: relative;
+	overflow: hidden;
+}
+
+.atables-dashboard .page-title-action::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: -100%;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+	transition: left 0.5s ease;
+}
+
+.atables-dashboard .page-title-action:hover {
+	color: #fff !important;
+	background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+	transform: translateY(-2px);
+	box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+}
+
+.atables-dashboard .page-title-action:hover::before {
+	left: 100%;
+}
+
+.atables-dashboard .page-title-action:active {
+	transform: translateY(0);
+	box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+}
+
+/* Second button - different gradient */
+.atables-dashboard .page-title-action:nth-of-type(2) {
+	background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+	box-shadow: 0 4px 12px rgba(240, 147, 251, 0.4);
+}
+
+.atables-dashboard .page-title-action:nth-of-type(2):hover {
+	background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+	box-shadow: 0 6px 20px rgba(240, 147, 251, 0.5);
+}
+
+/* Add icons using ::after pseudo-element */
+.atables-dashboard .page-title-action:first-of-type::after {
+	content: '\f473';
+	font-family: 'dashicons';
+	font-size: 16px;
+	line-height: 1;
+}
+
+.atables-dashboard .page-title-action:nth-of-type(2)::after {
+	content: '\f239';
+	font-family: 'dashicons';
+	font-size: 16px;
+	line-height: 1;
+}
+
+/* ==========================================================================
+   Stats Grid
+   ========================================================================== */
+
+.atables-stats-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+	gap: 20px;
+	margin: 32px 0;
+}
+
+.atables-stat-card {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	color: #fff;
+	padding: 32px;
+	border-radius: 12px;
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.atables-stat-card::before {
+	content: '';
+	position: absolute;
+	top: -50%;
+	right: -50%;
+	width: 200%;
+	height: 200%;
+	background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+	transition: all 0.3s ease;
+}
+
+.atables-stat-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.atables-stat-card:hover::before {
+	transform: scale(1.2);
+}
+
+.atables-stat-card:nth-child(2) {
+	background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.atables-stat-card:nth-child(3) {
+	background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.atables-stat-card h2 {
+	font-size: 48px;
+	font-weight: 700;
+	margin: 0 0 8px 0;
+	color: #fff;
+	position: relative;
+	z-index: 1;
+}
+
+.atables-stat-card p {
+	margin: 0;
+	font-size: 16px;
+	font-weight: 500;
+	opacity: 0.9;
+	position: relative;
+	z-index: 1;
+}
+
+/* ==========================================================================
+   Recent Tables Section
+   ========================================================================== */
+
+.atables-recent-section {
+	background: #fff;
+	padding: 32px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	margin-bottom: 32px;
+}
+
+.atables-recent-section > h2 {
+	font-size: 24px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 24px 0;
+	padding-bottom: 16px;
+	border-bottom: 2px solid #f0f0f1;
+}
+
+.atables-table-list {
+	overflow-x: auto;
+}
+
+.atables-table-list table {
+	border: none;
+	background: transparent;
+}
+
+.atables-table-list thead th {
+	background: #f6f7f7;
+	font-weight: 600;
+	color: #1d2327;
+	padding: 16px 12px;
+	border-bottom: 2px solid #e5e5e5;
+	text-transform: uppercase;
+	font-size: 12px;
+	letter-spacing: 0.5px;
+}
+
+.atables-table-list tbody td {
+	padding: 16px 12px;
+	border-bottom: 1px solid #f0f0f1;
+	vertical-align: middle;
+}
+
+.atables-table-list tbody tr {
+	transition: background 0.2s ease;
+}
+
+.atables-table-list tbody tr:hover {
+	background: #f6f7f7;
+}
+
+.atables-table-list tbody td strong {
+	color: #1d2327;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+.atables-table-list tbody td small {
+	color: #646970;
+	font-size: 13px;
+	line-height: 1.4;
+	display: block;
+	margin-top: 4px;
+}
+
+.atables-table-list .button-small {
+	padding: 6px 12px;
+	font-size: 13px;
+	height: auto;
+	line-height: 1.4;
+	margin-right: 4px;
+}
+
+/* ==========================================================================
+   Bulk Actions
+   ========================================================================== */
+
+.atables-bulk-actions {
+	margin-bottom: 16px;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.atables-bulk-actions select {
+	padding: 6px 8px;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	min-width: 150px;
+}
+
+.atables-bulk-actions .button {
+	height: 32px;
+	line-height: 30px;
+}
+
+.check-column {
+	width: 2.2em;
+	text-align: center !important;
+	padding-left: 8px !important;
+	padding-right: 8px !important;
+}
+
+.check-column input[type="checkbox"] {
+	margin: 0;
+}
+
+/* ==========================================================================
+   Getting Started Section
+   ========================================================================== */
+
+.atables-getting-started {
+	background: #fff;
+	padding: 32px;
+	border-radius: 12px;
+	box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+	margin-bottom: 32px;
+}
+
+.atables-getting-started > h2 {
+	font-size: 24px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 24px 0;
+	padding-bottom: 16px;
+	border-bottom: 2px solid #f0f0f1;
+}
+
+.atables-guide-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 24px;
+}
+
+.atables-guide-card {
+	padding: 24px;
+	background: linear-gradient(135deg, #f6f7f7 0%, #fff 100%);
+	border-radius: 8px;
+	border: 1px solid #e5e5e5;
+	transition: all 0.3s ease;
+	position: relative;
+	overflow: hidden;
+}
+
+.atables-guide-card::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 4px;
+	height: 100%;
+	background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+	transition: width 0.3s ease;
+}
+
+.atables-guide-card:hover {
+	transform: translateX(4px);
+	box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.atables-guide-card:hover::before {
+	width: 100%;
+	opacity: 0.05;
+}
+
+.atables-guide-card:nth-child(2)::before {
+	background: linear-gradient(180deg, #f093fb 0%, #f5576c 100%);
+}
+
+.atables-guide-card h3 {
+	font-size: 18px;
+	font-weight: 600;
+	color: #1d2327;
+	margin: 0 0 12px 0;
+	position: relative;
+	z-index: 1;
+}
+
+.atables-guide-card p {
+	font-size: 14px;
+	color: #646970;
+	line-height: 1.6;
+	margin: 0;
+	position: relative;
+	z-index: 1;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+	.atables-dashboard h1 {
+		font-size: 24px;
+		margin-bottom: 16px;
+	}
+	
+	.atables-dashboard .page-title-action {
+		display: block;
+		margin: 8px 0;
+		text-align: center;
+		justify-content: center;
+	}
+	
+	.atables-stats-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.atables-guide-grid {
+		grid-template-columns: 1fr;
+	}
+	
+	.atables-table-list {
+		font-size: 14px;
+	}
+	
+	.atables-table-list .button-small {
+		display: block;
+		width: 100%;
+		margin: 4px 0;
+	}
+	
+	.atables-bulk-actions {
+		flex-wrap: wrap;
+	}
+	
+	.atables-bulk-actions select {
+		flex: 1;
+		min-width: 120px;
+	}
+}

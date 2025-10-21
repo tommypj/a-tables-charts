@@ -1,0 +1,573 @@
+/**
+ * Edit Table Page Styles
+ */
+
+/* ==================================================================
+   Two Column Layout
+   ================================================================== */
+
+.atables-two-column-layout {
+	display: grid;
+	grid-template-columns: 1fr 420px;
+	gap: 24px;
+	margin-bottom: 24px;
+}
+
+.atables-column-left,
+.atables-column-right {
+	min-width: 0; /* Prevent grid blowout */
+}
+
+/* ==================================================================
+   Section Cards
+   ================================================================== */
+
+.atables-edit-section {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	padding: 24px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.atables-edit-section h2 {
+	margin: 0 0 20px 0;
+	font-size: 18px;
+	font-weight: 600;
+	color: #1e293b;
+	display: flex;
+	align-items: center;
+	gap: 8px;
+}
+
+.atables-edit-section h2 .dashicons {
+	color: #2271b1;
+	font-size: 22px;
+}
+
+/* ==================================================================
+   Form Elements
+   ================================================================== */
+
+.atables-form-row {
+	margin-bottom: 20px;
+}
+
+.atables-form-row:last-child {
+	margin-bottom: 0;
+}
+
+.atables-form-row label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 8px;
+	color: #1e293b;
+	font-size: 14px;
+}
+
+.atables-form-row label .required {
+	color: #dc2626;
+	font-weight: bold;
+}
+
+.atables-form-row input[type="text"],
+.atables-form-row textarea {
+	width: 100%;
+	max-width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: border-color 0.2s ease;
+}
+
+.atables-form-row input[type="text"]:focus,
+.atables-form-row textarea:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* ==================================================================
+   Meta Info Grid
+   ================================================================== */
+
+.atables-meta-info {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 16px;
+	padding: 16px;
+	background: #f8f9fa;
+	border-radius: 6px;
+	margin-top: 20px;
+}
+
+.atables-meta-item {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+}
+
+.atables-meta-label {
+	font-size: 11px;
+	font-weight: 700;
+	color: #64748b;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.atables-meta-item .atables-badge {
+	display: inline-block;
+	padding: 5px 12px;
+	background: #e0f2fe;
+	color: #0369a1;
+	border-radius: 4px;
+	font-size: 13px;
+	font-weight: 600;
+	width: fit-content;
+}
+
+.atables-meta-item .atables-badge-info {
+	background: #dbeafe;
+	color: #1e40af;
+}
+
+/* ==================================================================
+   Display Settings - Compact Layout
+   ================================================================== */
+
+.atables-settings-compact {
+	display: flex;
+	flex-direction: column;
+	gap: 20px;
+}
+
+.atables-setting-compact {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+.atables-setting-compact .atables-setting-label {
+	font-weight: 600;
+	font-size: 13px;
+	color: #1e293b;
+	margin: 0;
+	display: block;
+}
+
+.atables-setting-compact input[type="number"],
+.atables-setting-compact select.atables-select {
+	width: 100%;
+	max-width: 100%;
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	font-size: 14px;
+	transition: border-color 0.2s ease;
+}
+
+.atables-setting-compact input[type="number"]:focus,
+.atables-setting-compact select.atables-select:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* ==================================================================
+   Toggle Switches
+   ================================================================== */
+
+.atables-feature-toggles {
+	display: flex;
+	flex-direction: column;
+	gap: 14px;
+}
+
+.atables-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	font-size: 14px;
+	color: #2c3338;
+	padding: 4px 0;
+}
+
+.atables-toggle > span {
+	font-weight: 500;
+	color: #1e293b;
+}
+
+.atables-toggle-switch {
+	display: inline-flex;
+	background: #e5e7eb;
+	border-radius: 20px;
+	padding: 3px;
+	position: relative;
+}
+
+.atables-toggle-switch input[type="radio"] {
+	position: absolute;
+	opacity: 0;
+	pointer-events: none;
+	width: 0;
+	height: 0;
+}
+
+.atables-toggle-switch label {
+	padding: 7px 18px;
+	border-radius: 17px;
+	font-size: 12px;
+	font-weight: 700;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	color: #64748b;
+	margin: 0;
+	user-select: none;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.atables-toggle-switch input[type="radio"]:checked + label {
+	background: #2271b1;
+	color: #fff;
+	box-shadow: 0 2px 4px rgba(34, 113, 177, 0.3);
+}
+
+.atables-toggle-switch label:hover {
+	color: #1e293b;
+}
+
+.atables-toggle-switch input[type="radio"]:checked + label:hover {
+	color: #fff;
+	background: #1e5a8e;
+}
+
+/* ==================================================================
+   Display Settings Card Enhancement
+   ================================================================== */
+
+.atables-display-settings-section {
+	background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+	border: 1px solid #e2e8f0;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ==================================================================
+   Table Data Section
+   ================================================================== */
+
+.atables-data-section {
+	margin-top: 24px;
+}
+
+.atables-section-header {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 16px;
+}
+
+.atables-data-actions {
+	display: flex;
+	gap: 8px;
+}
+
+/* ==================================================================
+   Editable Table
+   ================================================================== */
+
+.atables-table-wrapper {
+	overflow-x: auto;
+	border: 1px solid #ddd;
+	border-radius: 6px;
+	background: #fff;
+}
+
+.atables-edit-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+/* Table Header */
+.atables-edit-table thead th {
+	background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+	padding: 12px;
+	text-align: left;
+	border-bottom: 2px solid #e2e8f0;
+	border-right: 1px solid #e2e8f0;
+	font-weight: 600;
+	color: #1e293b;
+	position: relative;
+	white-space: nowrap;
+}
+
+.atables-edit-table thead th:last-child {
+	border-right: none;
+}
+
+.atables-edit-table thead th.atables-row-number {
+	width: 80px;
+	text-align: center;
+	background: #f8fafc;
+	color: #64748b;
+	font-weight: 700;
+	font-size: 12px;
+}
+
+/* Header Input */
+.atables-header-input {
+	width: 100%;
+	min-width: 120px;
+	padding: 8px 10px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	font-size: 14px;
+	font-weight: 600;
+	background: transparent;
+	transition: all 0.2s ease;
+}
+
+.atables-header-input:hover {
+	background: #fff;
+	border-color: #cbd5e1;
+}
+
+.atables-header-input:focus {
+	background: #fff;
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Delete Column Button */
+.atables-delete-column {
+	position: absolute;
+	top: 50%;
+	right: 8px;
+	transform: translateY(-50%);
+	background: #dc2626;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	opacity: 0;
+	transition: all 0.2s ease;
+	padding: 0;
+}
+
+.atables-edit-table thead th:hover .atables-delete-column {
+	opacity: 1;
+}
+
+.atables-delete-column:hover {
+	background: #b91c1c;
+	transform: translateY(-50%) scale(1.1);
+}
+
+.atables-delete-column .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* Table Body */
+.atables-edit-table tbody td {
+	padding: 8px 12px;
+	border-bottom: 1px solid #f1f5f9;
+	border-right: 1px solid #f1f5f9;
+	vertical-align: middle;
+}
+
+.atables-edit-table tbody td:last-child {
+	border-right: none;
+}
+
+.atables-edit-table tbody tr:last-child td {
+	border-bottom: none;
+}
+
+.atables-edit-table tbody tr:hover {
+	background: #f8fafc;
+}
+
+/* Row Number Cell */
+.atables-edit-table tbody td.atables-row-number {
+	width: 80px;
+	text-align: center;
+	background: #fafafa;
+	color: #64748b;
+	font-weight: 600;
+	font-size: 13px;
+	position: relative;
+}
+
+/* Delete Row Button */
+.atables-delete-row {
+	display: none;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #dc2626;
+	color: #fff;
+	border: none;
+	border-radius: 4px;
+	width: 28px;
+	height: 28px;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	transition: all 0.2s ease;
+	padding: 0;
+}
+
+.atables-edit-table tbody tr:hover .atables-delete-row {
+	display: flex;
+}
+
+.atables-delete-row:hover {
+	background: #b91c1c;
+	transform: translate(-50%, -50%) scale(1.1);
+}
+
+.atables-delete-row .dashicons {
+	font-size: 16px;
+	width: 16px;
+	height: 16px;
+}
+
+/* Cell Input */
+.atables-cell-input {
+	width: 100%;
+	min-width: 100px;
+	padding: 6px 8px;
+	border: 1px solid transparent;
+	border-radius: 4px;
+	font-size: 14px;
+	background: transparent;
+	transition: all 0.2s ease;
+}
+
+.atables-cell-input:hover {
+	background: #fff;
+	border-color: #e2e8f0;
+}
+
+.atables-cell-input:focus {
+	background: #fff;
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+/* Table Stats */
+.atables-table-stats {
+	margin-top: 12px;
+	padding: 12px;
+	background: #f8fafc;
+	border-radius: 6px;
+	text-align: center;
+	font-size: 13px;
+	color: #64748b;
+	font-weight: 500;
+}
+
+.atables-table-stats span {
+	font-weight: 700;
+	color: #2271b1;
+}
+
+/* No Data Message */
+.atables-no-data td {
+	padding: 48px 20px !important;
+	text-align: center;
+	color: #94a3b8;
+	font-style: italic;
+}
+
+/* ==================================================================
+   Responsive Design
+   ================================================================== */
+
+@media (max-width: 1400px) {
+	.atables-two-column-layout {
+		grid-template-columns: 1fr 380px;
+		gap: 20px;
+	}
+}
+
+@media (max-width: 1200px) {
+	.atables-two-column-layout {
+		grid-template-columns: 1fr 350px;
+	}
+}
+
+@media (max-width: 1024px) {
+	.atables-two-column-layout {
+		grid-template-columns: 1fr;
+	}
+	
+	.atables-column-right {
+		order: -1; /* Display settings appear first on mobile */
+	}
+}
+
+@media (max-width: 768px) {
+	.atables-meta-info {
+		grid-template-columns: 1fr;
+		gap: 12px;
+	}
+	
+	.atables-table-wrapper {
+		border-radius: 4px;
+	}
+	
+	.atables-edit-table {
+		font-size: 13px;
+	}
+	
+	.atables-header-input,
+	.atables-cell-input {
+		font-size: 13px;
+		padding: 5px 7px;
+		min-width: 90px;
+	}
+}
+
+@media (max-width: 640px) {
+	.atables-edit-section {
+		padding: 16px;
+	}
+	
+	.atables-toggle {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 10px;
+	}
+	
+	.atables-toggle-switch {
+		width: 100%;
+		justify-content: center;
+	}
+	
+	.atables-section-header {
+		flex-direction: column;
+		align-items: flex-start;
+		gap: 12px;
+	}
+	
+	.atables-data-actions {
+		width: 100%;
+	}
+	
+	.atables-data-actions button {
+		flex: 1;
+	}
+}

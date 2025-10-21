@@ -1,0 +1,381 @@
+/**
+ * A-Tables & Charts - Conditional Formatting Styles
+ * 
+ * Visual styles for conditional formatting rules
+ * 
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Conditional Formatting Base
+   ========================================================================== */
+
+.atables-conditional {
+	transition: all 0.2s ease-in-out;
+}
+
+/* ==========================================================================
+   Positive/Negative Formatting
+   ========================================================================== */
+
+.atables-positive {
+	background-color: #d1e7dd !important;
+	color: #0f5132 !important;
+	font-weight: 600;
+}
+
+.atables-negative {
+	background-color: #f8d7da !important;
+	color: #842029 !important;
+	font-weight: 600;
+}
+
+.atables-neutral {
+	background-color: #e9ecef !important;
+	color: #495057 !important;
+}
+
+/* ==========================================================================
+   Traffic Light System (Red/Yellow/Green)
+   ========================================================================== */
+
+.atables-traffic-red {
+	background-color: #f8d7da !important;
+	color: #842029 !important;
+	font-weight: 600;
+}
+
+.atables-traffic-yellow {
+	background-color: #fff3cd !important;
+	color: #664d03 !important;
+	font-weight: 600;
+}
+
+.atables-traffic-green {
+	background-color: #d1e7dd !important;
+	color: #0f5132 !important;
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Priority Levels
+   ========================================================================== */
+
+.atables-priority-critical {
+	background-color: #dc3545 !important;
+	color: #ffffff !important;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 11px;
+	padding: 4px 8px;
+	border-radius: 4px;
+	display: inline-block;
+}
+
+.atables-priority-high {
+	background-color: #fd7e14 !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.atables-priority-medium {
+	background-color: #ffc107 !important;
+	color: #000000 !important;
+	font-weight: 600;
+}
+
+.atables-priority-low {
+	background-color: #0dcaf0 !important;
+	color: #000000 !important;
+}
+
+/* ==========================================================================
+   Heat Map Colors (Data Visualization)
+   ========================================================================== */
+
+.atables-heat-1 {
+	background-color: #f8f9fa !important;
+	color: #212529 !important;
+}
+
+.atables-heat-2 {
+	background-color: #e9ecef !important;
+	color: #212529 !important;
+}
+
+.atables-heat-3 {
+	background-color: #dee2e6 !important;
+	color: #212529 !important;
+}
+
+.atables-heat-4 {
+	background-color: #adb5bd !important;
+	color: #212529 !important;
+}
+
+.atables-heat-5 {
+	background-color: #6c757d !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.atables-heat-6 {
+	background-color: #495057 !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.atables-heat-7 {
+	background-color: #343a40 !important;
+	color: #ffffff !important;
+	font-weight: bold;
+}
+
+.atables-heat-8 {
+	background-color: #212529 !important;
+	color: #ffffff !important;
+	font-weight: bold;
+}
+
+/* ==========================================================================
+   Status Indicators
+   ========================================================================== */
+
+.atables-status-success {
+	background-color: #d1e7dd !important;
+	color: #0f5132 !important;
+	border-left: 4px solid #198754 !important;
+	padding-left: 12px !important;
+	font-weight: 600;
+}
+
+.atables-status-warning {
+	background-color: #fff3cd !important;
+	color: #664d03 !important;
+	border-left: 4px solid #ffc107 !important;
+	padding-left: 12px !important;
+	font-weight: 600;
+}
+
+.atables-status-danger {
+	background-color: #f8d7da !important;
+	color: #842029 !important;
+	border-left: 4px solid #dc3545 !important;
+	padding-left: 12px !important;
+	font-weight: 600;
+}
+
+.atables-status-info {
+	background-color: #cfe2ff !important;
+	color: #084298 !important;
+	border-left: 4px solid #0d6efd !important;
+	padding-left: 12px !important;
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Percentage Scale (Progressive)
+   ========================================================================== */
+
+.atables-percentage-0-25 {
+	background: linear-gradient(90deg, #dc3545 0%, #dc3545 100%) !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.atables-percentage-25-50 {
+	background: linear-gradient(90deg, #ffc107 0%, #ffc107 100%) !important;
+	color: #000000 !important;
+	font-weight: 600;
+}
+
+.atables-percentage-50-75 {
+	background: linear-gradient(90deg, #0dcaf0 0%, #0dcaf0 100%) !important;
+	color: #000000 !important;
+	font-weight: 600;
+}
+
+.atables-percentage-75-100 {
+	background: linear-gradient(90deg, #198754 0%, #198754 100%) !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Data Bars (Progress Bar Style)
+   ========================================================================== */
+
+.atables-databar {
+	position: relative;
+	height: 24px;
+	line-height: 24px;
+	padding: 0 8px;
+	overflow: hidden;
+}
+
+.atables-databar::before {
+	content: '';
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	background: linear-gradient(90deg, #0d6efd 0%, #0a58ca 100%);
+	opacity: 0.3;
+	z-index: 0;
+	transition: width 0.3s ease-in-out;
+}
+
+.atables-databar span {
+	position: relative;
+	z-index: 1;
+	font-weight: 600;
+}
+
+/* ==========================================================================
+   Icons and Indicators
+   ========================================================================== */
+
+.atables-icon-success::before {
+	content: '✓';
+	color: #198754;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-error::before {
+	content: '✗';
+	color: #dc3545;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-warning::before {
+	content: '⚠';
+	color: #ffc107;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-info::before {
+	content: 'ℹ';
+	color: #0d6efd;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-star::before {
+	content: '★';
+	color: #ffc107;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-arrow-up::before {
+	content: '↑';
+	color: #198754;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+.atables-icon-arrow-down::before {
+	content: '↓';
+	color: #dc3545;
+	font-weight: bold;
+	margin-right: 4px;
+}
+
+/* ==========================================================================
+   Highlight Effects
+   ========================================================================== */
+
+.atables-highlight-pulse {
+	animation: atables-pulse 2s infinite;
+}
+
+@keyframes atables-pulse {
+	0%, 100% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.7;
+	}
+}
+
+.atables-highlight-glow {
+	box-shadow: 0 0 10px rgba(13, 110, 253, 0.5);
+	border: 1px solid rgba(13, 110, 253, 0.3);
+}
+
+/* ==========================================================================
+   Text Formatting
+   ========================================================================== */
+
+.atables-text-strike {
+	text-decoration: line-through;
+	opacity: 0.6;
+}
+
+.atables-text-muted {
+	color: #6c757d !important;
+	font-style: italic;
+}
+
+.atables-text-emphasis {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+/* ==========================================================================
+   Row-Level Formatting
+   ========================================================================== */
+
+tr.atables-row-highlight {
+	background-color: #fff3cd !important;
+}
+
+tr.atables-row-success {
+	background-color: #d1e7dd !important;
+}
+
+tr.atables-row-danger {
+	background-color: #f8d7da !important;
+}
+
+tr.atables-row-info {
+	background-color: #cfe2ff !important;
+}
+
+tr.atables-row-muted {
+	opacity: 0.5;
+}
+
+/* ==========================================================================
+   Hover Effects for Conditional Cells
+   ========================================================================== */
+
+.atables-conditional:hover {
+	transform: scale(1.02);
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+	z-index: 10;
+}
+
+/* ==========================================================================
+   Responsive Adjustments
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+	.atables-databar {
+		height: 20px;
+		line-height: 20px;
+		font-size: 12px;
+	}
+	
+	.atables-priority-critical,
+	.atables-priority-high,
+	.atables-priority-medium,
+	.atables-priority-low {
+		font-size: 10px;
+		padding: 2px 6px;
+	}
+}

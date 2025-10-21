@@ -1,0 +1,470 @@
+/**
+ * A-Tables & Charts - Enhanced Edit Page Tabs CSS
+ * 
+ * Styling for tabbed interface
+ * 
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Tab Navigation
+   ========================================================================== */
+
+.atables-tab-navigation {
+    background: #fff;
+    border-bottom: 1px solid #dcdcde;
+    margin: 20px 0;
+    padding: 0;
+}
+
+.atables-tab-nav {
+    display: flex;
+    gap: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.atables-tab-nav button {
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    color: #50575e;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    padding: 15px 20px;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.atables-tab-nav button:hover {
+    background: #f6f7f7;
+    color: #2271b1;
+}
+
+.atables-tab-nav button.active {
+    border-bottom-color: #2271b1;
+    color: #2271b1;
+    background: #f6f7f7;
+}
+
+.atables-tab-nav button .dashicons {
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+}
+
+/* ==========================================================================
+   Tab Content
+   ========================================================================== */
+
+.atables-tab-panels {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 30px;
+    margin-bottom: 20px;
+}
+
+.atables-tab-content {
+    display: none;
+}
+
+.atables-tab-content.active {
+    display: block;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   Tab Headers
+   ========================================================================== */
+
+.atables-tab-header {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.atables-tab-header h3 {
+    margin: 0 0 10px 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1d2327;
+}
+
+.atables-tab-header p {
+    margin: 0;
+    color: #646970;
+    font-size: 14px;
+}
+
+/* ==========================================================================
+   Rule Items (Conditional, Validation, etc.)
+   ========================================================================== */
+
+.atables-rules-container {
+    margin-top: 20px;
+}
+
+.atables-rule-item,
+.atables-formula-item,
+.atables-validation-item,
+.atables-merge-item {
+    background: #f9f9f9;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    transition: all 0.2s ease;
+}
+
+.atables-rule-item:hover,
+.atables-formula-item:hover,
+.atables-validation-item:hover,
+.atables-merge-item:hover {
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.atables-rule-summary,
+.atables-formula-content,
+.atables-validation-summary,
+.atables-merge-info {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.atables-rule-column,
+.atables-validation-column {
+    font-weight: 600;
+    color: #2271b1;
+}
+
+.atables-rule-operator {
+    background: #e7f3ff;
+    color: #2271b1;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.atables-rule-value {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    padding: 4px 10px;
+    border-radius: 3px;
+    font-family: monospace;
+    font-size: 13px;
+}
+
+.atables-rule-style-preview {
+    padding: 6px 15px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 500;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.atables-formula-code {
+    background: #2d2d2d;
+    color: #f8f8f2;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+}
+
+.atables-rule-actions,
+.atables-formula-actions,
+.atables-validation-actions,
+.atables-merge-actions {
+    display: flex;
+    gap: 6px;
+}
+
+/* ==========================================================================
+   Empty States
+   ========================================================================== */
+
+.atables-empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #646970;
+    font-size: 14px;
+    background: #f9f9f9;
+    border: 2px dashed #dcdcde;
+    border-radius: 4px;
+}
+
+.atables-empty-state::before {
+    content: "📋";
+    display: block;
+    font-size: 48px;
+    margin-bottom: 10px;
+    opacity: 0.5;
+}
+
+/* ==========================================================================
+   Add Buttons
+   ========================================================================== */
+
+.atables-add-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 15px;
+}
+
+/* ==========================================================================
+   Form Builder
+   ========================================================================== */
+
+.atables-form-builder {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.atables-form-row {
+    margin-bottom: 20px;
+}
+
+.atables-form-row label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #1d2327;
+}
+
+.atables-form-row input[type="text"],
+.atables-form-row input[type="number"],
+.atables-form-row select,
+.atables-form-row textarea {
+    width: 100%;
+    max-width: 500px;
+}
+
+.atables-form-row .description {
+    font-size: 13px;
+    color: #646970;
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   Color Picker
+   ========================================================================== */
+
+.atables-color-picker-group {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+.atables-color-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.atables-color-preview {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #dcdcde;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.atables-color-input {
+    width: 100px;
+}
+
+/* ==========================================================================
+   Template Selector
+   ========================================================================== */
+
+.atables-template-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.atables-template-card {
+    background: #fff;
+    border: 2px solid #dcdcde;
+    border-radius: 6px;
+    padding: 15px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.atables-template-card:hover {
+    border-color: #2271b1;
+    box-shadow: 0 4px 12px rgba(34, 113, 177, 0.15);
+    transform: translateY(-2px);
+}
+
+.atables-template-card.selected {
+    border-color: #2271b1;
+    background: #e7f3ff;
+}
+
+.atables-template-icon {
+    font-size: 36px;
+    margin-bottom: 10px;
+}
+
+.atables-template-name {
+    font-weight: 600;
+    color: #1d2327;
+    margin-bottom: 5px;
+}
+
+.atables-template-desc {
+    font-size: 12px;
+    color: #646970;
+}
+
+/* ==========================================================================
+   Function Reference
+   ========================================================================== */
+
+.atables-function-reference {
+    background: #f9f9f9;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 15px;
+    margin-top: 20px;
+}
+
+.atables-function-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.atables-function-item {
+    background: #fff;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    padding: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.atables-function-item:hover {
+    border-color: #2271b1;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.atables-function-name {
+    font-weight: 600;
+    color: #2271b1;
+    font-family: monospace;
+}
+
+.atables-function-syntax {
+    font-size: 11px;
+    color: #646970;
+    font-family: monospace;
+    margin-top: 5px;
+}
+
+/* ==========================================================================
+   Preset Buttons
+   ========================================================================== */
+
+.atables-preset-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.atables-preset-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 15px;
+    background: #f0f0f1;
+    border: 1px solid #dcdcde;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 13px;
+}
+
+.atables-preset-btn:hover {
+    background: #2271b1;
+    color: #fff;
+    border-color: #2271b1;
+}
+
+/* ==========================================================================
+   Save Footer
+   ========================================================================== */
+
+.atables-tab-footer {
+    position: sticky;
+    bottom: 0;
+    background: #fff;
+    border-top: 1px solid #dcdcde;
+    padding: 20px;
+    margin: 30px -30px -30px -30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.atables-tab-footer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* ==========================================================================
+   Responsive
+   ========================================================================== */
+
+@media screen and (max-width: 782px) {
+    .atables-tab-nav {
+        flex-wrap: wrap;
+    }
+    
+    .atables-tab-nav button {
+        flex: 1 1 auto;
+        min-width: 120px;
+        justify-content: center;
+    }
+    
+    .atables-tab-panels {
+        padding: 20px 15px;
+    }
+    
+    .atables-template-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .atables-function-list {
+        grid-template-columns: 1fr;
+    }
+}

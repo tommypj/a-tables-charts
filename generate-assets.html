@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A-Tables & Charts - Plugin Assets Generator</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            margin: 0;
+            padding: 40px;
+            background: #f0f0f1;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #1d2327;
+            margin-bottom: 10px;
+        }
+        
+        p {
+            color: #646970;
+            margin-bottom: 40px;
+        }
+        
+        .asset-section {
+            margin-bottom: 60px;
+        }
+        
+        .asset-section h2 {
+            color: #1d2327;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .specs {
+            background: #f6f7f7;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            color: #646970;
+        }
+        
+        canvas {
+            border: 2px solid #dcdcdc;
+            border-radius: 8px;
+            display: block;
+            margin: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .preview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .preview-item {
+            text-align: center;
+        }
+        
+        .preview-item h3 {
+            font-size: 14px;
+            color: #646970;
+            margin: 10px 0;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: #38ef7d;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 A-Tables & Charts - Plugin Assets</h1>
+        <p>Professional graphics for WordPress.org submission</p>
+        
+        <!-- Banner -->
+        <div class="asset-section">
+            <h2>
+                📱 Plugin Banner
+                <span class="badge">1544 × 500</span>
+            </h2>
+            <div class="specs">
+                <strong>Specifications:</strong> 1544px × 500px (WordPress.org header banner)
+            </div>
+            <canvas id="banner"></canvas>
+            <button class="download-btn" onclick="downloadBanner()">
+                📥 Download Banner (1544×500)
+            </button>
+        </div>
+        
+        <!-- Icon -->
+        <div class="asset-section">
+            <h2>
+                🎯 Plugin Icon
+                <span class="badge">256 × 256</span>
+            </h2>
+            <div class="specs">
+                <strong>Specifications:</strong> 256px × 256px (WordPress.org plugin directory)
+            </div>
+            <canvas id="icon"></canvas>
+            <button class="download-btn" onclick="downloadIcon()">
+                📥 Download Icon (256×256)
+            </button>
+        </div>
+        
+        <!-- Additional Sizes -->
+        <div class="asset-section">
+            <h2>📦 Additional Sizes</h2>
+            <div class="specs">
+                <strong>Bonus:</strong> Multiple icon sizes for different use cases
+            </div>
+            <div class="preview-grid">
+                <div class="preview-item">
+                    <canvas id="icon-128"></canvas>
+                    <h3>Icon 128×128</h3>
+                    <button class="download-btn" onclick="downloadIcon128()">📥 Download</button>
+                </div>
+                <div class="preview-item">
+                    <canvas id="icon-64"></canvas>
+                    <h3>Icon 64×64</h3>
+                    <button class="download-btn" onclick="downloadIcon64()">📥 Download</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Draw Banner (1544 × 500)
+        function drawBanner() {
+            const canvas = document.getElementById('banner');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 1544;
+            canvas.height = 500;
+            
+            // Gradient background
+            const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(0.5, '#764ba2');
+            gradient.addColorStop(1, '#667eea');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Overlay pattern
+            ctx.globalAlpha = 0.1;
+            for (let i = 0; i < 50; i++) {
+                ctx.fillStyle = 'white';
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 100, 2);
+                ctx.fillRect(Math.random() * canvas.width, Math.random() * canvas.height, 2, 100);
+            }
+            ctx.globalAlpha = 1;
+            
+            // Icon/Logo on left
+            drawTableIcon(ctx, 150, 250, 180, 'white');
+            
+            // Title
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 90px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.fillText('A-Tables & Charts', 400, 230);
+            
+            // Subtitle
+            ctx.font = '36px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.globalAlpha = 0.9;
+            ctx.fillText('Powerful Tables & Charts for WordPress', 400, 290);
+            ctx.globalAlpha = 1;
+            
+            // Features
+            ctx.font = '24px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+            ctx.globalAlpha = 0.8;
+            const features = ['📊 CSV, JSON, Excel & XML Import', '🎨 Beautiful Tables', '📈 Interactive Charts'];
+            features.forEach((feature, index) => {
+                ctx.fillText(feature, 400, 350 + (index * 35));
+            });
+        }
+        
+        // Draw Icon (256 × 256)
+        function drawIcon(size = 256, canvasId = 'icon') {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            canvas.width = size;
+            canvas.height = size;
+            
+            // Gradient background with rounded corners
+            const gradient = ctx.createLinearGradient(0, 0, size, size);
+            gradient.addColorStop(0, '#667eea');
+            gradient.addColorStop(1, '#764ba2');
+            
+            // Rounded rectangle
+            const radius = size * 0.15;
+            ctx.beginPath();
+            ctx.moveTo(radius, 0);
+            ctx.lineTo(size - radius, 0);
+            ctx.quadraticCurveTo(size, 0, size, radius);
+            ctx.lineTo(size, size - radius);
+            ctx.quadraticCurveTo(size, size, size - radius, size);
+            ctx.lineTo(radius, size);
+            ctx.quadraticCurveTo(0, size, 0, size - radius);
+            ctx.lineTo(0, radius);
+            ctx.quadraticCurveTo(0, 0, radius, 0);
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+            
+            // Draw table icon in center
+            drawTableIcon(ctx, size / 2, size / 2, size * 0.5, 'white');
+        }
+        
+        // Helper function to draw table icon
+        function drawTableIcon(ctx, centerX, centerY, size, color) {
+            const cellSize = size / 3;
+            const startX = centerX - (size / 2);
+            const startY = centerY - (size / 2);
+            
+            ctx.save();
+            
+            // Draw table grid
+            ctx.strokeStyle = color;
+            ctx.lineWidth = size * 0.04;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            
+            // Outer border
+            ctx.strokeRect(startX, startY, size, size);
+            
+            // Vertical lines
+            ctx.beginPath();
+            ctx.moveTo(startX + cellSize, startY);
+            ctx.lineTo(startX + cellSize, startY + size);
+            ctx.moveTo(startX + cellSize * 2, startY);
+            ctx.lineTo(startX + cellSize * 2, startY + size);
+            ctx.stroke();
+            
+            // Horizontal lines
+            ctx.beginPath();
+            ctx.moveTo(startX, startY + cellSize);
+            ctx.lineTo(startX + size, startY + cellSize);
+            ctx.moveTo(startX, startY + cellSize * 2);
+            ctx.lineTo(startX + size, startY + cellSize * 2);
+            ctx.stroke();
+            
+            // Highlight header row
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.2;
+            ctx.fillRect(startX, startY, size, cellSize);
+            ctx.globalAlpha = 1;
+            
+            // Add chart overlay in bottom right
+            const chartSize = size * 0.25;
+            const chartX = startX + size - chartSize - (size * 0.1);
+            const chartY = startY + size - chartSize - (size * 0.1);
+            
+            // Small bar chart
+            ctx.fillStyle = color;
+            ctx.globalAlpha = 0.9;
+            const barWidth = chartSize / 4;
+            const heights = [0.6, 0.8, 0.5, 0.9];
+            heights.forEach((height, i) => {
+                const barHeight = chartSize * height;
+                ctx.fillRect(
+                    chartX + (i * barWidth),
+                    chartY + chartSize - barHeight,
+                    barWidth * 0.7,
+                    barHeight
+                );
+            });
+            ctx.globalAlpha = 1;
+            
+            ctx.restore();
+        }
+        
+        // Download functions
+        function downloadBanner() {
+            const canvas = document.getElementById('banner');
+            const link = document.createElement('a');
+            link.download = 'banner-1544x500.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadIcon() {
+            const canvas = document.getElementById('icon');
+            const link = document.createElement('a');
+            link.download = 'icon-256x256.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadIcon128() {
+            const canvas = document.getElementById('icon-128');
+            const link = document.createElement('a');
+            link.download = 'icon-128x128.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        function downloadIcon64() {
+            const canvas = document.getElementById('icon-64');
+            const link = document.createElement('a');
+            link.download = 'icon-64x64.png';
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Draw all graphics on load
+        window.onload = function() {
+            drawBanner();
+            drawIcon(256, 'icon');
+            drawIcon(128, 'icon-128');
+            drawIcon(64, 'icon-64');
+        };
+    </script>
+</body>
+</html>

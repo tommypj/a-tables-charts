@@ -1,0 +1,166 @@
+
+
+/* ==========================================================================
+   Pagination Styles
+   ========================================================================== */
+
+.atables-data-actions {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+.atables-per-page-selector {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	font-size: 14px;
+	color: #646970;
+}
+
+.atables-per-page-select {
+	padding: 6px 12px;
+	border: 1px solid #dcdcdc;
+	border-radius: 4px;
+	font-size: 14px;
+	background: #fff;
+	cursor: pointer;
+	transition: border-color 0.2s ease;
+}
+
+.atables-per-page-select:hover {
+	border-color: #2271b1;
+}
+
+.atables-per-page-select:focus {
+	border-color: #2271b1;
+	outline: none;
+	box-shadow: 0 0 0 1px #2271b1;
+}
+
+.atables-data-footer {
+	padding: 20px 32px;
+	background: #f6f7f7;
+	border-top: 1px solid #e5e5e5;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	gap: 16px;
+}
+
+.atables-pagination-info {
+	flex: 1;
+}
+
+.atables-pagination-controls {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+}
+
+.atables-page-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: 1px solid #dcdcdc;
+	background: #fff;
+	border-radius: 4px;
+	color: #646970;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.atables-page-btn:hover {
+	border-color: #2271b1;
+	color: #2271b1;
+	background: #f0f6fc;
+}
+
+.atables-page-btn.disabled {
+	opacity: 0.4;
+	cursor: not-allowed;
+	pointer-events: none;
+}
+
+.atables-page-btn .dashicons {
+	font-size: 18px;
+	width: 18px;
+	height: 18px;
+}
+
+.atables-page-numbers {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0 8px;
+}
+
+.atables-page-num {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 36px;
+	height: 36px;
+	padding: 0 12px;
+	border: 1px solid #dcdcdc;
+	background: #fff;
+	border-radius: 4px;
+	color: #646970;
+	font-size: 14px;
+	font-weight: 500;
+	text-decoration: none;
+	transition: all 0.2s ease;
+	cursor: pointer;
+}
+
+.atables-page-num:hover {
+	border-color: #2271b1;
+	color: #2271b1;
+	background: #f0f6fc;
+}
+
+.atables-page-num.active {
+	background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+	border-color: transparent;
+	color: #fff;
+	font-weight: 600;
+	cursor: default;
+	pointer-events: none;
+}
+
+.atables-page-ellipsis {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	color: #646970;
+	font-size: 14px;
+}
+
+/* Responsive Pagination */
+@media (max-width: 768px) {
+	.atables-data-footer {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	
+	.atables-pagination-controls {
+		width: 100%;
+		justify-content: center;
+	}
+	
+	.atables-page-numbers {
+		flex-wrap: wrap;
+		justify-content: center;
+	}
+	
+	.atables-per-page-selector {
+		width: 100%;
+		justify-content: center;
+	}
+}

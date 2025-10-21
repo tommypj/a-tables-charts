@@ -1,0 +1,38 @@
+{
+  "name": "a-tables-charts",
+  "version": "1.0.0",
+  "description": "Create responsive tables and charts from various data sources",
+  "main": "assets/js/public-main.js",
+  "scripts": {
+    "build": "webpack --mode production",
+    "dev": "webpack --mode development --watch",
+    "lint": "eslint assets/js/**/*.js"
+  },
+  "keywords": [
+    "wordpress",
+    "tables",
+    "charts",
+    "data-visualization",
+    "a-tables"
+  ],
+  "author": "A-Tables Team",
+  "license": "GPL-2.0-or-later",
+  "dependencies": {
+    "chart.js": "^4.4.0",
+    "lodash": "^4.17.21",
+    "axios": "^1.6.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "babel-loader": "^9.1.3",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.52.0",
+    "mini-css-extract-plugin": "^2.7.6",
+    "sass": "^1.69.0",
+    "sass-loader": "^13.3.2",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.4"
+  }
+}

@@ -1,0 +1,537 @@
+/**
+ * A-Tables & Charts - Bootstrap-Inspired Table Themes
+ * 
+ * Beautiful, modern table styles inspired by Bootstrap 5 and contemporary design
+ * 
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Theme Variables
+   ========================================================================== */
+
+:root {
+	--atables-primary: #0d6efd;
+	--atables-secondary: #6c757d;
+	--atables-success: #198754;
+	--atables-danger: #dc3545;
+	--atables-warning: #ffc107;
+	--atables-info: #0dcaf0;
+	--atables-dark: #212529;
+}
+
+/* ==========================================================================
+   Base Table Styles (Applied to all themes)
+   ========================================================================== */
+
+.atables-table-wrapper,
+.atables-frontend-table-wrapper {
+	width: 100%;
+	overflow-x: auto;
+	margin: 20px 0;
+	-webkit-overflow-scrolling: touch;
+}
+
+.atables-table {
+	width: 100% !important;
+	border-collapse: collapse !important;
+	font-size: 15px;
+	line-height: 1.5;
+	background: #fff;
+	margin: 0 !important;
+	color: #212529;
+}
+
+.atables-table th,
+.atables-table td {
+	padding: 12px 16px !important;
+	text-align: left;
+	vertical-align: middle;
+}
+
+.atables-table th {
+	font-weight: 600;
+	font-size: 14px;
+}
+
+/* ==========================================================================
+   THEME 1: Bootstrap Primary (Blue - Most Popular)
+   ========================================================================== */
+
+.atables-theme-classic,
+.atables-theme-bootstrap-primary {
+	border: 1px solid #dee2e6 !important;
+}
+
+.atables-theme-classic th,
+.atables-theme-classic thead th,
+table.atables-theme-classic > thead > tr > th,
+.atables-theme-bootstrap-primary th,
+.atables-theme-bootstrap-primary thead th,
+table.atables-theme-bootstrap-primary > thead > tr > th {
+	background: #0d6efd !important;
+	color: #fff !important;
+	border-color: #0d6efd !important;
+	font-weight: 600 !important;
+	padding: 14px 16px !important;
+}
+
+.atables-theme-classic td,
+.atables-theme-bootstrap-primary td {
+	border-bottom: 1px solid #dee2e6 !important;
+	color: #212529 !important;
+	background: #fff !important;
+}
+
+.atables-theme-classic tbody tr:hover td,
+.atables-theme-bootstrap-primary tbody tr:hover td {
+	background: #f8f9fa !important;
+}
+
+/* ==========================================================================
+   THEME 2: Bootstrap Striped (Zebra - Classic)
+   ========================================================================== */
+
+.atables-theme-striped,
+.atables-theme-bootstrap-striped {
+	border: 1px solid #dee2e6 !important;
+}
+
+.atables-theme-striped th,
+.atables-theme-striped thead th,
+table.atables-theme-striped > thead > tr > th,
+.atables-theme-bootstrap-striped th,
+.atables-theme-bootstrap-striped thead th,
+table.atables-theme-bootstrap-striped > thead > tr > th {
+	background: #f8f9fa !important;
+	color: #212529 !important;
+	border-bottom: 2px solid #dee2e6 !important;
+	font-weight: 600 !important;
+	padding: 14px 16px !important;
+}
+
+.atables-theme-striped tbody tr:nth-child(odd) td,
+.atables-theme-bootstrap-striped tbody tr:nth-child(odd) td {
+	background: #fff !important;
+}
+
+.atables-theme-striped tbody tr:nth-child(even) td,
+.atables-theme-bootstrap-striped tbody tr:nth-child(even) td {
+	background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.atables-theme-striped tbody tr:hover td,
+.atables-theme-bootstrap-striped tbody tr:hover td {
+	background: rgba(0, 0, 0, 0.075) !important;
+}
+
+.atables-theme-striped td,
+.atables-theme-bootstrap-striped td {
+	border-bottom: 1px solid #dee2e6 !important;
+	color: #212529 !important;
+}
+
+/* ==========================================================================
+   THEME 3: Bootstrap Dark (Dark Mode)
+   ========================================================================== */
+
+.atables-theme-dark,
+.atables-theme-bootstrap-dark {
+	background: #212529 !important;
+	border: 1px solid #495057 !important;
+}
+
+.atables-theme-dark th,
+.atables-theme-dark thead th,
+table.atables-theme-dark > thead > tr > th,
+.atables-theme-bootstrap-dark th,
+.atables-theme-bootstrap-dark thead th,
+table.atables-theme-bootstrap-dark > thead > tr > th {
+	background: #343a40 !important;
+	color: #fff !important;
+	border-color: #495057 !important;
+	font-weight: 600 !important;
+	padding: 14px 16px !important;
+}
+
+.atables-theme-dark td,
+.atables-theme-bootstrap-dark td {
+	background: #212529 !important;
+	color: #dee2e6 !important;
+	border-color: #495057 !important;
+	border-bottom: 1px solid #495057 !important;
+}
+
+.atables-theme-dark tbody tr:hover td,
+.atables-theme-bootstrap-dark tbody tr:hover td {
+	background: #2c3034 !important;
+	color: #fff !important;
+}
+
+/* ==========================================================================
+   THEME 4: Bootstrap Success (Green - Professional)
+   ========================================================================== */
+
+.atables-theme-modern,
+.atables-theme-bootstrap-success {
+	border: 1px solid #dee2e6 !important;
+}
+
+.atables-theme-modern th,
+.atables-theme-modern thead th,
+table.atables-theme-modern > thead > tr > th,
+.atables-theme-bootstrap-success th,
+.atables-theme-bootstrap-success thead th,
+table.atables-theme-bootstrap-success > thead > tr > th {
+	background: #198754 !important;
+	color: #fff !important;
+	border-color: #198754 !important;
+	font-weight: 600 !important;
+	padding: 14px 16px !important;
+}
+
+.atables-theme-modern td,
+.atables-theme-bootstrap-success td {
+	border-bottom: 1px solid #dee2e6 !important;
+	color: #212529 !important;
+	background: #fff !important;
+}
+
+.atables-theme-modern tbody tr:hover td,
+.atables-theme-bootstrap-success tbody tr:hover td {
+	background: #d1e7dd !important;
+}
+
+/* ==========================================================================
+   THEME 5: Bootstrap Bordered (Clear Structure)
+   ========================================================================== */
+
+.atables-theme-minimal,
+.atables-theme-bootstrap-bordered {
+	border: 2px solid #dee2e6 !important;
+}
+
+.atables-theme-minimal th,
+.atables-theme-minimal thead th,
+table.atables-theme-minimal > thead > tr > th,
+.atables-theme-bootstrap-bordered th,
+.atables-theme-bootstrap-bordered thead th,
+table.atables-theme-bootstrap-bordered > thead > tr > th {
+	background: #fff !important;
+	color: #212529 !important;
+	border: 1px solid #dee2e6 !important;
+	font-weight: 700 !important;
+	padding: 14px 16px !important;
+	text-transform: uppercase;
+	font-size: 13px;
+	letter-spacing: 0.5px;
+}
+
+.atables-theme-minimal td,
+.atables-theme-bootstrap-bordered td {
+	border: 1px solid #dee2e6 !important;
+	color: #212529 !important;
+	background: #fff !important;
+}
+
+.atables-theme-minimal tbody tr:hover td,
+.atables-theme-bootstrap-bordered tbody tr:hover td {
+	background: #f8f9fa !important;
+}
+
+/* ==========================================================================
+   THEME 6: Bootstrap Hover (Modern Minimalist)
+   ========================================================================== */
+
+.atables-theme-material,
+.atables-theme-bootstrap-hover {
+	border: none !important;
+}
+
+.atables-theme-material th,
+.atables-theme-material thead th,
+table.atables-theme-material > thead > tr > th,
+.atables-theme-bootstrap-hover th,
+.atables-theme-bootstrap-hover thead th,
+table.atables-theme-bootstrap-hover > thead > tr > th {
+	background: transparent !important;
+	color: #495057 !important;
+	border-bottom: 2px solid #dee2e6 !important;
+	font-weight: 700 !important;
+	padding: 14px 16px !important;
+}
+
+.atables-theme-material td,
+.atables-theme-bootstrap-hover td {
+	border-bottom: 1px solid #dee2e6 !important;
+	color: #212529 !important;
+	background: transparent !important;
+}
+
+.atables-theme-material tbody tr:hover td,
+.atables-theme-bootstrap-hover tbody tr:hover td {
+	background: rgba(0, 0, 0, 0.075) !important;
+}
+
+/* ==========================================================================
+   Responsive Styles
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+	.atables-table th,
+	.atables-table td {
+		padding: 10px 12px !important;
+		font-size: 14px;
+	}
+}
+
+/* Responsive Mode: Stack Columns */
+@media screen and (max-width: 768px) {
+	.atables-responsive-stack table,
+	.atables-responsive-stack thead,
+	.atables-responsive-stack tbody,
+	.atables-responsive-stack th,
+	.atables-responsive-stack td,
+	.atables-responsive-stack tr {
+		display: block !important;
+	}
+	
+	.atables-responsive-stack thead tr {
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	.atables-responsive-stack tr {
+		margin-bottom: 15px;
+		border: 1px solid #dee2e6;
+		border-radius: 8px;
+		background: #fff;
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+		overflow: hidden;
+	}
+	
+	.atables-responsive-stack td {
+		border: none !important;
+		position: relative;
+		padding-left: 45% !important;
+		min-height: 40px;
+		display: flex !important;
+		align-items: center;
+		border-bottom: 1px solid #f0f0f0 !important;
+	}
+	
+	.atables-responsive-stack td:last-child {
+		border-bottom: none !important;
+	}
+	
+	.atables-responsive-stack td:before {
+		content: attr(data-label);
+		position: absolute;
+		left: 12px;
+		font-weight: 600;
+		color: #495057;
+		font-size: 12px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+	}
+}
+
+/* Responsive Mode: Card View */
+@media screen and (max-width: 768px) {
+	.atables-responsive-cards .dataTables_wrapper {
+		overflow: visible !important;
+	}
+	
+	.atables-responsive-cards table,
+	.atables-responsive-cards thead,
+	.atables-responsive-cards tbody,
+	.atables-responsive-cards tr {
+		display: block !important;
+	}
+	
+	.atables-responsive-cards thead {
+		display: none !important;
+	}
+	
+	.atables-responsive-cards tr {
+		margin-bottom: 20px;
+		padding: 20px;
+		border: 1px solid #dee2e6;
+		border-radius: 12px;
+		background: #fff;
+		box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+	}
+	
+	.atables-responsive-cards td {
+		display: flex !important;
+		flex-direction: column;
+		margin-bottom: 12px;
+		border: none !important;
+		padding: 0 !important;
+	}
+	
+	.atables-responsive-cards td:last-child {
+		margin-bottom: 0;
+	}
+	
+	.atables-responsive-cards td:before {
+		content: attr(data-label);
+		font-weight: 700;
+		color: #212529;
+		font-size: 11px;
+		text-transform: uppercase;
+		letter-spacing: 0.5px;
+		margin-bottom: 4px;
+		opacity: 0.7;
+	}
+}
+
+/* Responsive Mode: Priority Columns (hide on mobile) */
+@media screen and (max-width: 768px) {
+	.atables-priority-1 { display: none !important; }
+}
+
+@media screen and (max-width: 992px) {
+	.atables-priority-2 { display: none !important; }
+}
+
+@media screen and (max-width: 1200px) {
+	.atables-priority-3 { display: none !important; }
+}
+
+/* Responsive Mode: Scroll (default - no special CSS needed) */
+.atables-responsive-scroll {
+	/* DataTables handles horizontal scroll by default */
+}
+
+/* ==========================================================================
+   Clickable Links & Images
+   ========================================================================== */
+
+.atables-table a {
+	color: #0d6efd;
+	text-decoration: none;
+	transition: color 0.15s ease-in-out;
+	font-weight: 500;
+}
+
+.atables-table a:hover {
+	color: #0a58ca;
+	text-decoration: underline;
+}
+
+.atables-table img {
+	max-width: 100px;
+	height: auto;
+	border-radius: 4px;
+	vertical-align: middle;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* ==========================================================================
+   DataTables Override - Force Bootstrap styles
+   ========================================================================== */
+
+/* Primary Theme */
+table.dataTable.atables-theme-classic thead th,
+table.dataTable.atables-theme-classic thead td,
+table.dataTable.atables-theme-bootstrap-primary thead th,
+table.dataTable.atables-theme-bootstrap-primary thead td,
+.dataTables_wrapper table.atables-theme-classic thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-primary thead th {
+	background: #0d6efd !important;
+	color: #fff !important;
+	border-color: #0d6efd !important;
+}
+
+/* Striped Theme */
+table.dataTable.atables-theme-striped thead th,
+table.dataTable.atables-theme-bootstrap-striped thead th,
+.dataTables_wrapper table.atables-theme-striped thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-striped thead th {
+	background: #f8f9fa !important;
+	color: #212529 !important;
+	border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* Dark Theme */
+table.dataTable.atables-theme-dark thead th,
+table.dataTable.atables-theme-bootstrap-dark thead th,
+.dataTables_wrapper table.atables-theme-dark thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-dark thead th {
+	background: #343a40 !important;
+	color: #fff !important;
+	border-color: #495057 !important;
+}
+
+/* Success Theme */
+table.dataTable.atables-theme-modern thead th,
+table.dataTable.atables-theme-bootstrap-success thead th,
+.dataTables_wrapper table.atables-theme-modern thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-success thead th {
+	background: #198754 !important;
+	color: #fff !important;
+	border-color: #198754 !important;
+}
+
+/* Bordered Theme */
+table.dataTable.atables-theme-minimal thead th,
+table.dataTable.atables-theme-bootstrap-bordered thead th,
+.dataTables_wrapper table.atables-theme-minimal thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-bordered thead th {
+	background: #fff !important;
+	color: #212529 !important;
+	border: 1px solid #dee2e6 !important;
+}
+
+/* Hover Theme */
+table.dataTable.atables-theme-material thead th,
+table.dataTable.atables-theme-bootstrap-hover thead th,
+.dataTables_wrapper table.atables-theme-material thead th,
+.dataTables_wrapper table.atables-theme-bootstrap-hover thead th {
+	background: transparent !important;
+	color: #495057 !important;
+	border-bottom: 2px solid #dee2e6 !important;
+}
+
+/* DataTables pagination with Bootstrap colors */
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+	border-radius: 4px;
+	padding: 6px 12px;
+	margin: 0 2px;
+	transition: all 0.15s ease-in-out;
+	border: 1px solid #dee2e6;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+	background: #0d6efd;
+	color: #fff !important;
+	border-color: #0d6efd;
+}
+
+.dataTables_wrapper .dataTables_paginate .paginate_button.current {
+	background: #0d6efd !important;
+	color: #fff !important;
+	border-color: #0d6efd !important;
+}
+
+/* ==========================================================================
+   Print Styles
+   ========================================================================== */
+
+@media print {
+	.atables-table {
+		border: 1px solid #000;
+	}
+	
+	.atables-table th {
+		background: #f0f0f0 !important;
+		color: #000 !important;
+	}
+	
+	.atables-table tbody tr:hover {
+		background: transparent !important;
+	}
+}

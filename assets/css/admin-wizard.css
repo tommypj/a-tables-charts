@@ -1,0 +1,429 @@
+/**
+ * A-Tables & Charts - Wizard/Create Table Styles
+ * Loaded only on create table page
+ *
+ * @package ATablesCharts
+ * @since 1.0.0
+ */
+
+/* ==========================================================================
+   Wizard Container
+   ========================================================================== */
+
+.atables-wizard {
+	max-width: 1000px;
+	margin: 20px auto;
+}
+
+.atables-step {
+	display: none;
+}
+
+.atables-step.active {
+	display: block;
+}
+
+/* ==========================================================================
+   Step Header
+   ========================================================================== */
+
+.atables-step-header {
+	background: #fff;
+	padding: 30px;
+	border: 1px solid #ccd0d4;
+	border-radius: 8px;
+	margin-bottom: 30px;
+	text-align: center;
+}
+
+.atables-step-header h2 {
+	margin: 0 0 10px;
+	font-size: 28px;
+	color: #23282d;
+}
+
+.atables-step-header p {
+	margin: 0;
+	font-size: 16px;
+	color: #666;
+}
+
+/* ==========================================================================
+   Data Source Cards
+   ========================================================================== */
+
+.atables-data-sources {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+	gap: 20px;
+	margin-bottom: 30px;
+}
+
+.atables-source-card {
+	background: #fff;
+	padding: 30px 20px;
+	border: 2px solid #ccd0d4;
+	border-radius: 8px;
+	text-align: center;
+	cursor: pointer;
+	transition: all 0.3s ease;
+	position: relative;
+}
+
+.atables-source-card:hover {
+	border-color: #0073aa;
+	transform: translateY(-5px);
+	box-shadow: 0 5px 15px rgba(0, 115, 170, 0.15);
+}
+
+.atables-source-card.selected {
+	border-color: #0073aa;
+	background: #f0f6fc;
+	box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+.atables-source-card.disabled {
+	opacity: 0.6;
+	cursor: not-allowed;
+}
+
+.atables-source-card.disabled:hover {
+	transform: none;
+	box-shadow: none;
+	border-color: #ccd0d4;
+}
+
+.atables-source-icon {
+	font-size: 48px;
+	margin-bottom: 15px;
+	line-height: 1;
+}
+
+.atables-source-card h3 {
+	margin: 0 0 10px;
+	font-size: 18px;
+	color: #23282d;
+}
+
+.atables-source-card p {
+	margin: 0;
+	font-size: 14px;
+	color: #666;
+	line-height: 1.5;
+}
+
+/* ==========================================================================
+   Upload Area
+   ========================================================================== */
+
+.atables-upload-container {
+	background: #fff;
+	padding: 30px;
+	border: 1px solid #ccd0d4;
+	border-radius: 8px;
+	margin-bottom: 30px;
+}
+
+.atables-upload-area {
+	border: 3px dashed #ccd0d4;
+	border-radius: 8px;
+	padding: 60px 30px;
+	text-align: center;
+	transition: all 0.3s ease;
+	cursor: pointer;
+}
+
+.atables-upload-area:hover {
+	border-color: #0073aa;
+	background: #f0f6fc;
+}
+
+.atables-upload-area.drag-over {
+	border-color: #0073aa;
+	background: #e5f5fa;
+	border-style: solid;
+}
+
+.atables-upload-icon {
+	font-size: 64px;
+	margin-bottom: 20px;
+	opacity: 0.5;
+}
+
+.atables-upload-area h3 {
+	margin: 0 0 10px;
+	font-size: 20px;
+	color: #23282d;
+}
+
+.atables-upload-area p {
+	margin: 0 0 20px;
+	color: #666;
+}
+
+.atables-upload-info {
+	font-size: 13px !important;
+	color: #999 !important;
+	margin-top: 20px !important;
+}
+
+/* ==========================================================================
+   File Info
+   ========================================================================== */
+
+.atables-file-info {
+	margin-top: 20px;
+	padding: 20px;
+	background: #f8f9fa;
+	border-radius: 6px;
+}
+
+.atables-file-details {
+	display: flex;
+	align-items: center;
+	gap: 15px;
+}
+
+.atables-file-icon {
+	font-size: 32px;
+}
+
+.atables-file-meta {
+	flex: 1;
+}
+
+.atables-file-name {
+	display: block;
+	font-size: 16px;
+	color: #23282d;
+	margin-bottom: 5px;
+}
+
+.atables-file-size {
+	display: block;
+	font-size: 13px;
+	color: #666;
+}
+
+.atables-file-remove {
+	background: #dc3232;
+	color: #fff;
+	border: none;
+	border-radius: 50%;
+	width: 30px;
+	height: 30px;
+	font-size: 20px;
+	line-height: 1;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.atables-file-remove:hover {
+	background: #a00;
+}
+
+/* ==========================================================================
+   Import Options
+   ========================================================================== */
+
+.atables-import-options {
+	margin-top: 30px;
+	padding-top: 30px;
+	border-top: 1px solid #e5e5e5;
+}
+
+.atables-import-options h3 {
+	margin: 0 0 20px;
+	font-size: 18px;
+}
+
+.atables-option-group {
+	margin-bottom: 20px;
+}
+
+.atables-option-group label {
+	display: block;
+	margin-bottom: 8px;
+	font-weight: 500;
+	color: #23282d;
+}
+
+.atables-option-group input[type="checkbox"] {
+	margin-right: 8px;
+}
+
+.atables-option-group select,
+.atables-option-group input[type="text"] {
+	max-width: 300px;
+}
+
+.atables-option-group .description {
+	margin-top: 5px;
+	font-size: 13px;
+	color: #666;
+}
+
+/* ==========================================================================
+   Progress Bar
+   ========================================================================== */
+
+.atables-progress {
+	margin-top: 30px;
+}
+
+.atables-progress-bar {
+	width: 100%;
+	height: 8px;
+	background: #e5e5e5;
+	border-radius: 4px;
+	overflow: hidden;
+	margin-bottom: 10px;
+}
+
+.atables-progress-fill {
+	height: 100%;
+	background: linear-gradient(90deg, #0073aa 0%, #00a0d2 100%);
+	width: 0;
+	transition: width 0.3s ease;
+}
+
+.atables-progress-text {
+	text-align: center;
+	font-size: 14px;
+	color: #666;
+}
+
+/* ==========================================================================
+   Preview Section
+   ========================================================================== */
+
+.atables-import-summary {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 8px;
+	margin-bottom: 30px;
+}
+
+.atables-summary-stats {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 20px;
+}
+
+.atables-stat {
+	text-align: center;
+	padding: 15px;
+	background: #f0f6fc;
+	border-radius: 6px;
+}
+
+.atables-stat-label {
+	display: block;
+	font-size: 13px;
+	color: #666;
+	margin-bottom: 5px;
+}
+
+.atables-stat-value {
+	display: block;
+	font-size: 32px;
+	font-weight: bold;
+	color: #0073aa;
+}
+
+.atables-table-name-section {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 8px;
+	margin-bottom: 30px;
+}
+
+.atables-table-name-section label {
+	display: block;
+	margin-bottom: 10px;
+}
+
+.atables-preview-container {
+	background: #fff;
+	padding: 20px;
+	border: 1px solid #ccd0d4;
+	border-radius: 8px;
+	margin-bottom: 30px;
+}
+
+.atables-preview-container h3 {
+	margin: 0 0 20px;
+	font-size: 18px;
+}
+
+.atables-preview-wrapper {
+	overflow-x: auto;
+	max-height: 500px;
+	overflow-y: auto;
+}
+
+#atables-data-preview table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 14px;
+}
+
+#atables-data-preview th {
+	background: #f8f9fa;
+	padding: 12px;
+	text-align: left;
+	font-weight: 600;
+	border: 1px solid #ddd;
+	position: sticky;
+	top: 0;
+	z-index: 10;
+}
+
+#atables-data-preview td {
+	padding: 10px 12px;
+	border: 1px solid #ddd;
+}
+
+#atables-data-preview tr:nth-child(even) {
+	background: #f8f9fa;
+}
+
+.atables-preview-note {
+	margin-top: 15px;
+	font-size: 13px;
+	color: #666;
+	text-align: center;
+}
+
+/* ==========================================================================
+   Step Footer
+   ========================================================================== */
+
+.atables-step-footer {
+	text-align: center;
+	padding-top: 30px;
+}
+
+.atables-step-footer .button {
+	margin: 0 5px;
+}
+
+/* ==========================================================================
+   Responsive Design
+   ========================================================================== */
+
+@media (max-width: 768px) {
+	.atables-data-sources {
+		grid-template-columns: 1fr;
+	}
+	
+	.atables-upload-area {
+		padding: 40px 20px;
+	}
+	
+	.atables-summary-stats {
+		grid-template-columns: 1fr;
+	}
+}

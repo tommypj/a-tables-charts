@@ -1,0 +1,327 @@
+/**
+ * A-Tables & Charts - Toast Notifications
+ * Beautiful bottom-right toast notifications
+ *
+ * @package ATablesCharts
+ * @since 1.0.6
+ */
+
+/* ==========================================================================
+   Toast Container
+   ========================================================================== */
+
+.atables-toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 999999;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 12px;
+    pointer-events: none;
+    max-width: 420px;
+}
+
+/* Allow interaction with toasts */
+.atables-toast-container > * {
+    pointer-events: auto;
+}
+
+/* ==========================================================================
+   Toast Base Styles
+   ========================================================================== */
+
+.atables-toast {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    border-left: 4px solid;
+    min-width: 300px;
+    max-width: 420px;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+    position: relative;
+}
+
+.atables-toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.atables-toast.hide {
+    opacity: 0;
+    transform: translateX(400px);
+}
+
+/* ==========================================================================
+   Toast Icon
+   ========================================================================== */
+
+.atables-toast-icon {
+    font-size: 24px;
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    font-weight: bold;
+}
+
+/* ==========================================================================
+   Toast Message
+   ========================================================================== */
+
+.atables-toast-message {
+    flex: 1;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #1d2327;
+    font-weight: 500;
+    word-wrap: break-word;
+}
+
+/* ==========================================================================
+   Toast Close Button
+   ========================================================================== */
+
+.atables-toast-close {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+    font-size: 24px;
+    line-height: 1;
+    color: #646970;
+    flex-shrink: 0;
+    border-radius: 4px;
+}
+
+.atables-toast-close:hover {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* ==========================================================================
+   Toast Types
+   ========================================================================== */
+
+/* Success */
+.atables-toast-success {
+    border-left-color: #00a32a;
+    background: linear-gradient(to right, #ecf7ed 0%, #fff 60px);
+}
+
+.atables-toast-success .atables-toast-icon {
+    color: #00a32a;
+    background: rgba(0, 163, 42, 0.1);
+}
+
+/* Error */
+.atables-toast-error {
+    border-left-color: #d63638;
+    background: linear-gradient(to right, #fcebec 0%, #fff 60px);
+}
+
+.atables-toast-error .atables-toast-icon {
+    color: #d63638;
+    background: rgba(214, 54, 56, 0.1);
+}
+
+/* Warning */
+.atables-toast-warning {
+    border-left-color: #dba617;
+    background: linear-gradient(to right, #fcf3cf 0%, #fff 60px);
+}
+
+.atables-toast-warning .atables-toast-icon {
+    color: #dba617;
+    background: rgba(219, 166, 23, 0.1);
+}
+
+/* Info */
+.atables-toast-info {
+    border-left-color: #2271b1;
+    background: linear-gradient(to right, #e5f3ff 0%, #fff 60px);
+}
+
+.atables-toast-info .atables-toast-icon {
+    color: #2271b1;
+    background: rgba(34, 113, 177, 0.1);
+}
+
+/* ==========================================================================
+   Progress Bar (optional)
+   ========================================================================== */
+
+.atables-toast::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: currentColor;
+    opacity: 0.2;
+    transform-origin: left;
+    animation: toast-progress linear;
+}
+
+.atables-toast-success::after {
+    color: #00a32a;
+    animation-duration: 5s;  /* Match JS duration */
+}
+
+.atables-toast-warning::after {
+    color: #dba617;
+    animation-duration: 7s;  /* Match JS duration */
+}
+
+.atables-toast-info::after {
+    color: #2271b1;
+    animation-duration: 6s;  /* Match JS duration */
+}
+
+.atables-toast-error::after {
+    display: none; /* No auto-dismiss for errors */
+}
+
+@keyframes toast-progress {
+    from {
+        transform: scaleX(1);
+    }
+    to {
+        transform: scaleX(0);
+    }
+}
+
+/* ==========================================================================
+   Hover State - Pause Progress
+   ========================================================================== */
+
+.atables-toast:hover::after {
+    animation-play-state: paused;
+}
+
+/* ==========================================================================
+   Responsive - Mobile
+   ========================================================================== */
+
+@media (max-width: 600px) {
+    .atables-toast-container {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .atables-toast {
+        min-width: auto;
+        max-width: none;
+        width: 100%;
+    }
+}
+
+/* Adjust for WordPress admin bar */
+@media screen and (min-width: 783px) {
+    body.admin-bar .atables-toast-container {
+        /* Admin bar is 32px on desktop */
+    }
+}
+
+@media screen and (max-width: 782px) {
+    body.admin-bar .atables-toast-container {
+        /* Admin bar is 46px on mobile */
+    }
+}
+
+/* ==========================================================================
+   Dark Mode Support (future)
+   ========================================================================== */
+
+@media (prefers-color-scheme: dark) {
+    .atables-toast {
+        background: #1d2327;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    .atables-toast-message {
+        color: #f0f0f1;
+    }
+
+    .atables-toast-close {
+        color: #f0f0f1;
+    }
+
+    .atables-toast-success {
+        background: linear-gradient(to right, rgba(0, 163, 42, 0.15) 0%, #1d2327 60px);
+    }
+
+    .atables-toast-error {
+        background: linear-gradient(to right, rgba(214, 54, 56, 0.15) 0%, #1d2327 60px);
+    }
+
+    .atables-toast-warning {
+        background: linear-gradient(to right, rgba(219, 166, 23, 0.15) 0%, #1d2327 60px);
+    }
+
+    .atables-toast-info {
+        background: linear-gradient(to right, rgba(34, 113, 177, 0.15) 0%, #1d2327 60px);
+    }
+}
+
+/* ==========================================================================
+   Print - Hide Toasts
+   ========================================================================== */
+
+@media print {
+    .atables-toast-container {
+        display: none !important;
+    }
+}
+
+/* ==========================================================================
+   Accessibility
+   ========================================================================== */
+
+.atables-toast:focus-within {
+    outline: 2px solid #2271b1;
+    outline-offset: 2px;
+}
+
+/* Screen reader only text */
+.atables-toast-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+}
+
+/* ==========================================================================
+   Stacking (multiple toasts)
+   ========================================================================== */
+
+.atables-toast-container .atables-toast:not(:last-child) {
+    margin-bottom: 0; /* Gap is handled by container */
+}
+
+/* Add subtle scale effect on hover */
+.atables-toast:hover {
+    transform: translateX(0) scale(1.02);
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.2);
+}
