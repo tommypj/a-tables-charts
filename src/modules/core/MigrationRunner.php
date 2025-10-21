@@ -116,16 +116,16 @@ class MigrationRunner {
     }
     
     /**
-     * Handle migration request
-     */
+    * Handle migration request
+    */
     public static function handle_migration_request() {
-        if (!isset($_GET['action']) || $_GET['action'] !== 'run-migrations') {
-            return;
-        }
-        
-        if (!isset($_GET['page']) || $_GET['page'] !== 'a-tables-charts') {
-            return;
-        }
+    if (!isset($_GET['action']) || sanitize_key($_GET['action']) !== 'run-migrations') {
+    return;
+    }
+    
+    if (!isset($_GET['page']) || sanitize_key($_GET['page']) !== 'a-tables-charts') {
+    return;
+    }
         
         if (!current_user_can('manage_options')) {
             wp_die('Access denied.');
@@ -157,23 +157,23 @@ class MigrationRunner {
     }
     
     /**
-     * Display migration messages
-     */
+    * Display migration messages
+    */
     public static function display_messages() {
-        if (isset($_GET['migrations-run'])) {
-            ?>
-            <div class="notice notice-success is-dismissible">
-                <p><strong>Success!</strong> Database migrations completed successfully.</p>
-            </div>
-            <?php
-        }
-        
-        if (isset($_GET['migrations-failed'])) {
-            ?>
-            <div class="notice notice-error is-dismissible">
-                <p><strong>Error:</strong> Some migrations failed. Please check the error log or contact support.</p>
-            </div>
-            <?php
-        }
+    if (isset($_GET['migrations-run']) && sanitize_key($_GET['migrations-run']) === '1') {
+    ?>
+    <div class="notice notice-success is-dismissible">
+    <p><strong>Success!</strong> Database migrations completed successfully.</p>
+    </div>
+    <?php
+    }
+    
+    if (isset($_GET['migrations-failed']) && sanitize_key($_GET['migrations-failed']) === '1') {
+    ?>
+    <div class="notice notice-error is-dismissible">
+    <p><strong>Error:</strong> Some migrations failed. Please check the error log or contact support.</p>
+    </div>
+    <?php
+    }
     }
 }

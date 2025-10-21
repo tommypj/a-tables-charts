@@ -1,0 +1,1463 @@
+Security Audit Report
+Generated: 2025-10-21 21:57:05
+
+Statistics:
+  files_scanned: 136
+  sql_injection: 20
+  xss_vulnerabilities: 13
+  unsanitized_input: 119
+  missing_nonces: 29
+
+Detailed Issues:
+
+Array
+(
+    [0] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => check-migration.php
+            [line] => 28
+            [code] => $table_exists = $wpdb->get_var($query) === $table_name;
+        )
+
+    [1] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => check-migration.php
+            [line] => 38
+            [code] => $columns = $wpdb->get_results("DESCRIBE {$table_name}");
+        )
+
+    [2] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => check-migration.php
+            [line] => 54
+            [code] => $count = $wpdb->get_var("SELECT COUNT(*) FROM {$table_name}");
+        )
+
+    [3] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => debug-table-17.php
+            [line] => 40
+            [code] => $all_tables = $wpdb->get_results("SELECT id, title FROM $table_name ORDER BY id");
+        )
+
+    [4] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => debug-table-18.php
+            [line] => 55
+            [code] => $all_tables = $wpdb->get_results("SELECT id, title, status FROM $table_name ORDER BY id DESC LIMIT 1
+        )
+
+    [5] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\charts\ChartsMigration.php
+            [line] => 55
+            [code] => $wpdb->query( "DROP TABLE IF EXISTS $table_name" );
+        )
+
+    [6] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 29
+            [code] => $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        )
+
+    [7] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 36
+            [code] => $columns = $wpdb->get_results("DESCRIBE $table_name");
+        )
+
+    [8] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 58
+            [code] => $table_exists = $wpdb->get_var("SHOW TABLES LIKE '$table_name'") === $table_name;
+        )
+
+    [9] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 90
+            [code] => $columns = $wpdb->get_results("DESCRIBE $table_name");
+        )
+
+    [10] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 109
+            [code] => $result = $wpdb->query($sql);
+        )
+
+    [11] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\migrations\AddDisplaySettingsColumn.php
+            [line] => 45
+            [code] => $result = $wpdb->query($sql);
+        )
+
+    [12] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\migrations\AddDisplaySettingsColumn.php
+            [line] => 73
+            [code] => $result = $wpdb->query($sql);
+        )
+
+    [13] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\migrations\AddFilterPresetsTable.php
+            [line] => 75
+            [code] => $result = $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
+        )
+
+    [14] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\core\migrations\AddFilterPresetsTable.php
+            [line] => 97
+            [code] => return $wpdb->get_var( $query ) === $table_name;
+        )
+
+    [15] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\database\MySQLQueryService.php
+            [line] => 45
+            [code] => $results = $wpdb->get_results( $query, ARRAY_A );
+        )
+
+    [16] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\database\MySQLQueryService.php
+            [line] => 188
+            [code] => $tables = $wpdb->get_results( 'SHOW TABLES', ARRAY_N );
+        )
+
+    [17] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => src\modules\database\MySQLQueryService.php
+            [line] => 210
+            [code] => $columns = $wpdb->get_results(
+        )
+
+    [18] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => tests\bootstrap\TestHelpers.php
+            [line] => 59
+            [code] => $wpdb->query("DELETE FROM {$table_name} WHERE title LIKE 'Test%'");
+        )
+
+    [19] => Array
+        (
+            [type] => SQL Injection Risk
+            [file] => uninstall.php
+            [line] => 39
+            [code] => $wpdb->query( "DROP TABLE IF EXISTS {$table}" ); // phpcs:ignore WordPress.DB.PreparedSQL.Interpolat
+        )
+
+    [20] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\charts.php
+            [line] => 80
+            [code] => renderChart(<?php echo $chart->id; ?>);
+        )
+
+    [21] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 62
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'default' ? 'selected' : ''; ?>">
+        )
+
+    [22] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 70
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'striped' ? 'selected' : ''; ?>">
+        )
+
+    [23] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 78
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'bordered' ? 'selected' : ''; ?>">
+        )
+
+    [24] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 86
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'hover' ? 'selected' : ''; ?>">
+        )
+
+    [25] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 94
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'dark' ? 'selected' : ''; ?>">
+        )
+
+    [26] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 102
+            [code] => <label class="atables-theme-option <?php echo $current_theme === 'minimal' ? 'selected' : ''; ?>">
+        )
+
+    [27] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 123
+            [code] => <label class="atables-responsive-option <?php echo $current_responsive === 'scroll' ? 'selected' : '
+        )
+
+    [28] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 132
+            [code] => <label class="atables-responsive-option <?php echo $current_responsive === 'stack' ? 'selected' : ''
+        )
+
+    [29] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\tabs\display-tab.php
+            [line] => 141
+            [code] => <label class="atables-responsive-option <?php echo $current_responsive === 'cards' ? 'selected' : ''
+        )
+
+    [30] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\upgrade.php
+            [line] => 36
+            [code] => <div class="atables-pricing-card <?php echo $plan['recommended'] ? 'atables-pricing-featured' : ''; 
+        )
+
+    [31] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\upgrade.php
+            [line] => 80
+            [code] => <div class="atables-feature-icon"><?php echo $feature['icon']; ?></div>
+        )
+
+    [32] => Array
+        (
+            [type] => Unescaped Output (XSS Risk)
+            [file] => src\modules\core\views\view-table.php
+            [line] => 268
+            [code] => <span class="dashicons dashicons-arrow-<?php echo $sort_order === 'asc' ? 'up' : 'down'; ?>-alt2"></
+        )
+
+    [33] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => check-table-settings.php
+            [line] => 19
+            [code] => $table_id = isset($_GET['table_id']) ? (int)$_GET['table_id'] : 0;
+        )
+
+    [34] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 24
+            [code] => $_POST['action'] = 'atables_update_table';
+        )
+
+    [35] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 25
+            [code] => $_POST['nonce'] = wp_create_nonce('atables_admin_nonce');
+        )
+
+    [36] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 26
+            [code] => $_POST['table_id'] = 7;
+        )
+
+    [37] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 27
+            [code] => $_POST['title'] = 'Test Table';
+        )
+
+    [38] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 28
+            [code] => $_POST['description'] = 'Test Description';
+        )
+
+    [39] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 29
+            [code] => $_POST['headers'] = array('Header 1', 'Header 2');
+        )
+
+    [40] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 30
+            [code] => $_POST['data'] = array(
+        )
+
+    [41] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => debug-ajax.php
+            [line] => 34
+            [code] => $_POST['display_settings'] = array(
+        )
+
+    [42] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => debug-display-settings.php
+            [line] => 13
+            [code] => $table_id = isset($_GET['table_id']) ? (int)$_GET['table_id'] : 0;
+        )
+
+    [43] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\bulk\BulkActionsController.php
+            [line] => 52
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [44] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\cellmerging\CellMergingController.php
+            [line] => 57
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [45] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\cellmerging\CellMergingController.php
+            [line] => 98
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [46] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\cellmerging\CellMergingController.php
+            [line] => 132
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [47] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 63
+            [code] => $table_id      = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [48] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 64
+            [code] => $title         = isset( $_POST['title'] ) ? Sanitizer::text( $_POST['title'] ) : '';
+        )
+
+    [49] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 65
+            [code] => $type          = isset( $_POST['type'] ) ? Sanitizer::text( $_POST['type'] ) : 'bar';
+        )
+
+    [50] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 66
+            [code] => $label_column  = isset( $_POST['label_column'] ) ? Sanitizer::text( $_POST['label_column'] ) : '';
+        )
+
+    [51] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 67
+            [code] => $data_columns  = isset( $_POST['data_columns'] ) ? $_POST['data_columns'] : array();
+        )
+
+    [52] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 105
+            [code] => $chart_id = isset( $_POST['chart_id'] ) ? (int) $_POST['chart_id'] : 0;
+        )
+
+    [53] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 131
+            [code] => $page     = isset( $_POST['page'] ) ? (int) $_POST['page'] : 1;
+        )
+
+    [54] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 132
+            [code] => $per_page = isset( $_POST['per_page'] ) ? (int) $_POST['per_page'] : 20;
+        )
+
+    [55] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 133
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : null;
+        )
+
+    [56] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 172
+            [code] => $chart_id = isset( $_POST['chart_id'] ) ? (int) $_POST['chart_id'] : 0;
+        )
+
+    [57] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 181
+            [code] => if ( isset( $_POST['title'] ) ) {
+        )
+
+    [58] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 182
+            [code] => $data['title'] = Sanitizer::text( $_POST['title'] );
+        )
+
+    [59] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 185
+            [code] => if ( isset( $_POST['type'] ) ) {
+        )
+
+    [60] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 186
+            [code] => $data['type'] = Sanitizer::text( $_POST['type'] );
+        )
+
+    [61] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 189
+            [code] => if ( isset( $_POST['status'] ) ) {
+        )
+
+    [62] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 190
+            [code] => $data['status'] = Sanitizer::text( $_POST['status'] );
+        )
+
+    [63] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 211
+            [code] => $chart_id = isset( $_POST['chart_id'] ) ? (int) $_POST['chart_id'] : 0;
+        )
+
+    [64] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 236
+            [code] => $chart_id = isset( $_POST['chart_id'] ) ? (int) $_POST['chart_id'] : 0;
+        )
+
+    [65] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 259
+            [code] => $nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+        )
+
+    [66] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\controllers\EnhancedTableController.php
+            [line] => 31
+            [code] => if ( ! isset( $_POST['table_id'] ) ) {
+        )
+
+    [67] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\controllers\EnhancedTableController.php
+            [line] => 40
+            [code] => $settings_json = isset( $_POST['display_settings'] ) ? stripslashes( $_POST['display_settings'] ) : 
+        )
+
+    [68] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 168
+            [code] => if (!isset($_GET['action']) || $_GET['action'] !== 'update-db') {
+        )
+
+    [69] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 172
+            [code] => if (!isset($_GET['page']) || $_GET['page'] !== 'a-tables-charts') {
+        )
+
+    [70] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 200
+            [code] => if (isset($_GET['db-updated'])) {
+        )
+
+    [71] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\DatabaseUpdater.php
+            [line] => 208
+            [code] => if (isset($_GET['db-update-failed'])) {
+        )
+
+    [72] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\MigrationRunner.php
+            [line] => 122
+            [code] => if (!isset($_GET['action']) || $_GET['action'] !== 'run-migrations') {
+        )
+
+    [73] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\MigrationRunner.php
+            [line] => 126
+            [code] => if (!isset($_GET['page']) || $_GET['page'] !== 'a-tables-charts') {
+        )
+
+    [74] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\MigrationRunner.php
+            [line] => 163
+            [code] => if (isset($_GET['migrations-run'])) {
+        )
+
+    [75] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\MigrationRunner.php
+            [line] => 171
+            [code] => if (isset($_GET['migrations-failed'])) {
+        )
+
+    [76] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 40
+            [code] => $table_id    = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [77] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 41
+            [code] => $per_page    = isset( $_POST['per_page'] ) ? (int) $_POST['per_page'] : 10;
+        )
+
+    [78] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 46
+            [code] => ? strtolower( $_POST['sort_order'] )
+        )
+
+    [79] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 127
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [80] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 128
+            [code] => $per_page = isset( $_POST['per_page'] ) ? (int) $_POST['per_page'] : 10;
+        )
+
+    [81] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 129
+            [code] => $page     = isset( $_POST['paged'] ) ? max( 1, (int) $_POST['paged'] ) : 1;
+        )
+
+    [82] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 130
+            [code] => $filters  = isset( $_POST['filters'] ) ? json_decode( stripslashes( $_POST['filters'] ), true ) : ar
+        )
+
+    [83] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\core\TableViewAjaxController.php
+            [line] => 243
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [84] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\edit-table-enhanced.php
+            [line] => 15
+            [code] => $table_id = isset( $_GET['table_id'] ) ? (int) $_GET['table_id'] : 0;
+        )
+
+    [85] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\edit-table.php
+            [line] => 17
+            [code] => $table_id = isset( $_GET['table_id'] ) ? (int) $_GET['table_id'] : 0;
+        )
+
+    [86] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\settings.php
+            [line] => 60
+            [code] => $settings_updated = isset( $_GET['settings-updated'] ) && $_GET['settings-updated'] === 'true';
+        )
+
+    [87] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 17
+            [code] => $table_id = isset( $_GET['table_id'] ) ? (int) $_GET['table_id'] : 0;
+        )
+
+    [88] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 24
+            [code] => $current_page = isset( $_GET['paged'] ) ? max( 1, (int) $_GET['paged'] ) : 1;
+        )
+
+    [89] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 71
+            [code] => 'table_id' => $_GET['table_id'],
+        )
+
+    [90] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 72
+            [code] => 'per_page' => $_GET['per_page'] ?? 10,
+        )
+
+    [91] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 73
+            [code] => 'paged' => $_GET['paged'] ?? 1,
+        )
+
+    [92] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 74
+            [code] => 's' => $_GET['s'] ?? '',
+        )
+
+    [93] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 75
+            [code] => 'sort' => $_GET['sort'] ?? '',
+        )
+
+    [94] => Array
+        (
+            [type] => Unsanitized GET Input
+            [file] => src\modules\core\views\view-table.php
+            [line] => 76
+            [code] => 'order' => $_GET['order'] ?? '',
+        )
+
+    [95] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\database\MySQLQueryController.php
+            [line] => 74
+            [code] => $query = isset( $_POST['query'] ) ? stripslashes( $_POST['query'] ) : '';
+        )
+
+    [96] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 127
+            [code] => $url = isset( $_POST['url'] ) ? Sanitizer::url( $_POST['url'] ) : '';
+        )
+
+    [97] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 215
+            [code] => $nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+        )
+
+    [98] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 228
+            [code] => if ( isset( $_POST['delimiter'] ) ) {
+        )
+
+    [99] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 229
+            [code] => $options['delimiter'] = Sanitizer::text( $_POST['delimiter'] );
+        )
+
+    [100] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 232
+            [code] => if ( isset( $_POST['has_header'] ) ) {
+        )
+
+    [101] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 233
+            [code] => $options['has_header'] = Sanitizer::boolean( $_POST['has_header'] );
+        )
+
+    [102] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 236
+            [code] => if ( isset( $_POST['encoding'] ) ) {
+        )
+
+    [103] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 237
+            [code] => $options['encoding'] = Sanitizer::text( $_POST['encoding'] );
+        )
+
+    [104] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 241
+            [code] => if ( isset( $_POST['array_key'] ) ) {
+        )
+
+    [105] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 242
+            [code] => $options['array_key'] = Sanitizer::text( $_POST['array_key'] );
+        )
+
+    [106] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 245
+            [code] => if ( isset( $_POST['flatten_nested'] ) ) {
+        )
+
+    [107] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 246
+            [code] => $options['flatten_nested'] = Sanitizer::boolean( $_POST['flatten_nested'] );
+        )
+
+    [108] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\filters\controllers\FilterController.php
+            [line] => 112
+            [code] => $is_default  = isset( $_POST['is_default'] ) ? (bool) $_POST['is_default'] : false;
+        )
+
+    [109] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\filters\controllers\FilterController.php
+            [line] => 172
+            [code] => $is_default  = isset( $_POST['is_default'] ) ? (bool) $_POST['is_default'] : null;
+        )
+
+    [110] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\formulas\FormulaController.php
+            [line] => 58
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [111] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\formulas\FormulaController.php
+            [line] => 110
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [112] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\formulas\FormulaController.php
+            [line] => 151
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [113] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\formulas\FormulaController.php
+            [line] => 185
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [114] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\googlesheets\GoogleSheetsController.php
+            [line] => 58
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_import_nonce' ) ) {
+        )
+
+    [115] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\googlesheets\GoogleSheetsController.php
+            [line] => 71
+            [code] => $url = isset( $_POST['url'] ) ? esc_url_raw( $_POST['url'] ) : '';
+        )
+
+    [116] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\googlesheets\GoogleSheetsController.php
+            [line] => 93
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_import_nonce' ) ) {
+        )
+
+    [117] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\googlesheets\GoogleSheetsController.php
+            [line] => 166
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [118] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\import\controllers\ImportController.php
+            [line] => 109
+            [code] => 'has_headers' => isset( $_POST['has_headers'] ) && $_POST['has_headers'] === 'true',
+        )
+
+    [119] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\import\controllers\ImportController.php
+            [line] => 110
+            [code] => 'sheet_index' => isset( $_POST['sheet_index'] ) ? (int) $_POST['sheet_index'] : 0,
+        )
+
+    [120] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\import\controllers\ImportController.php
+            [line] => 179
+            [code] => 'sheet_index' => isset( $_POST['sheet_index'] ) ? (int) $_POST['sheet_index'] : 0,
+        )
+
+    [121] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 85
+            [code] => $title       = isset( $_POST['title'] ) ? Sanitizer::text( $_POST['title'] ) : '';
+        )
+
+    [122] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 86
+            [code] => $description = isset( $_POST['description'] ) ? Sanitizer::textarea( $_POST['description'] ) : '';
+        )
+
+    [123] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 87
+            [code] => $source_type = isset( $_POST['source_type'] ) ? Sanitizer::text( $_POST['source_type'] ) : 'csv';
+        )
+
+    [124] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 90
+            [code] => $import_data = isset( $_POST['import_data'] ) ? $_POST['import_data'] : null;
+        )
+
+    [125] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 149
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [126] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 178
+            [code] => $page     = isset( $_POST['page'] ) ? (int) $_POST['page'] : 1;
+        )
+
+    [127] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 179
+            [code] => $per_page = isset( $_POST['per_page'] ) ? (int) $_POST['per_page'] : 20;
+        )
+
+    [128] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 180
+            [code] => $status   = isset( $_POST['status'] ) ? Sanitizer::text( $_POST['status'] ) : 'active';
+        )
+
+    [129] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 232
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [130] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 243
+            [code] => if ( isset( $_POST['title'] ) ) {
+        )
+
+    [131] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 244
+            [code] => $data['title'] = Sanitizer::text( $_POST['title'] );
+        )
+
+    [132] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 247
+            [code] => if ( isset( $_POST['description'] ) ) {
+        )
+
+    [133] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 248
+            [code] => $data['description'] = Sanitizer::textarea( $_POST['description'] );
+        )
+
+    [134] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 251
+            [code] => if ( isset( $_POST['status'] ) ) {
+        )
+
+    [135] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 252
+            [code] => $data['status'] = Sanitizer::text( $_POST['status'] );
+        )
+
+    [136] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 256
+            [code] => if ( isset( $_POST['headers'] ) && isset( $_POST['data'] ) ) {
+        )
+
+    [137] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 257
+            [code] => $headers = isset( $_POST['headers'] ) ? $_POST['headers'] : array();
+        )
+
+    [138] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 258
+            [code] => $table_data = isset( $_POST['data'] ) ? $_POST['data'] : array();
+        )
+
+    [139] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 282
+            [code] => if ( isset( $_POST['display_settings'] ) ) {
+        )
+
+    [140] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 283
+            [code] => $display_settings_input = $_POST['display_settings'];
+        )
+
+    [141] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 338
+            [code] => $table_id = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [142] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 375
+            [code] => $table_id  = isset( $_POST['table_id'] ) ? (int) $_POST['table_id'] : 0;
+        )
+
+    [143] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 376
+            [code] => $new_title = isset( $_POST['new_title'] ) ? Sanitizer::text( $_POST['new_title'] ) : '';
+        )
+
+    [144] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 412
+            [code] => $title       = isset( $_POST['title'] ) ? Sanitizer::text( $_POST['title'] ) : '';
+        )
+
+    [145] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 413
+            [code] => $description = isset( $_POST['description'] ) ? Sanitizer::textarea( $_POST['description'] ) : '';
+        )
+
+    [146] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 414
+            [code] => $headers     = isset( $_POST['headers'] ) ? $_POST['headers'] : array();
+        )
+
+    [147] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 415
+            [code] => $data        = isset( $_POST['data'] ) ? $_POST['data'] : array();
+        )
+
+    [148] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 548
+            [code] => $nonce = isset( $_POST['nonce'] ) ? $_POST['nonce'] : '';
+        )
+
+    [149] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\validation\ValidationController.php
+            [line] => 57
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [150] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\validation\ValidationController.php
+            [line] => 118
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [151] => Array
+        (
+            [type] => Unsanitized POST Input
+            [file] => src\modules\validation\ValidationController.php
+            [line] => 159
+            [code] => if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'atables_admin_nonce' ) ) {
+        )
+
+    [152] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_create_chart
+        )
+
+    [153] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_chart
+        )
+
+    [154] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_charts
+        )
+
+    [155] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_update_chart
+        )
+
+    [156] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_delete_chart
+        )
+
+    [157] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\charts\controllers\ChartController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_chart_data
+        )
+
+    [158] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_export_table
+        )
+
+    [159] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_nopriv_atables_export_table
+        )
+
+    [160] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_test_query
+        )
+
+    [161] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_create_table_from_query
+        )
+
+    [162] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_db_tables
+        )
+
+    [163] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_table_columns
+        )
+
+    [164] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_sample_queries
+        )
+
+    [165] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_preview_excel
+        )
+
+    [166] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_import_excel
+        )
+
+    [167] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_excel_sheets
+        )
+
+    [168] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_preview_xml
+        )
+
+    [169] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_import_xml
+        )
+
+    [170] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\core\Plugin.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_xml_structure
+        )
+
+    [171] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_import_file
+        )
+
+    [172] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_import_url
+        )
+
+    [173] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\dataSources\controllers\ImportController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_preview_import
+        )
+
+    [174] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_save_table
+        )
+
+    [175] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_table
+        )
+
+    [176] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_get_tables
+        )
+
+    [177] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_update_table
+        )
+
+    [178] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_delete_table
+        )
+
+    [179] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_duplicate_table
+        )
+
+    [180] => Array
+        (
+            [type] => Missing AJAX Nonce Check
+            [file] => src\modules\tables\controllers\TableController.php
+            [line] => 0
+            [code] => Action: wp_ajax_atables_save_manual_table
+        )
+
+)
