@@ -52,6 +52,8 @@ class ChartsMigration {
 	public static function down() {
 		global $wpdb;
 		$table_name = $wpdb->prefix . 'atables_charts';
+		// DROP TABLE doesn't support prepared statements, but table name is hardcoded so it's safe
+		// phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		$wpdb->query( "DROP TABLE IF EXISTS $table_name" );
 	}
 }
