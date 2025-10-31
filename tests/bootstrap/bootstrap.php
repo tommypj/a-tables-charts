@@ -15,6 +15,14 @@ define( 'ATABLES_PLUGIN_DIR', dirname( dirname( __DIR__ ) ) . '/' );
 define( 'ATABLES_PLUGIN_URL', 'http://example.com/wp-content/plugins/a-tables-charts/' );
 define( 'ATABLES_PLUGIN_BASENAME', 'a-tables-charts/a-tables-charts.php' );
 
+// Define WP_DEBUG for testing (can be overridden in individual tests).
+if ( ! defined( 'WP_DEBUG' ) ) {
+	define( 'WP_DEBUG', true );
+}
+if ( ! defined( 'WP_DEBUG_LOG' ) ) {
+	define( 'WP_DEBUG_LOG', true );
+}
+
 // Load Composer autoloader if available.
 if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
@@ -453,6 +461,69 @@ if ( ! function_exists( 'wp_strip_all_tags' ) ) {
 		}
 
 		return trim( $string );
+	}
+}
+
+if ( ! function_exists( 'wp_upload_dir' ) ) {
+	/**
+	 * Mock WordPress wp_upload_dir function
+	 *
+	 * @return array
+	 */
+	function wp_upload_dir() {
+		$upload_path = sys_get_temp_dir() . '/atables-test-uploads';
+		return array(
+			'path'    => $upload_path,
+			'url'     => 'http://example.com/wp-content/uploads',
+			'subdir'  => '',
+			'basedir' => $upload_path,
+			'baseurl' => 'http://example.com/wp-content/uploads',
+			'error'   => false,
+		);
+	}
+}
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	/**
+	 * Mock WordPress wp_json_encode function
+	 *
+	 * @param mixed $data Data to encode.
+	 * @param int   $options JSON options.
+	 * @param int   $depth Maximum depth.
+	 * @return string|false
+	 */
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
+if ( ! function_exists( 'wp_mkdir_p' ) ) {
+	/**
+	 * Mock WordPress wp_mkdir_p function
+	 *
+	 * @param string $target Directory path.
+	 * @return bool
+	 */
+	function wp_mkdir_p( $target ) {
+		if ( file_exists( $target ) ) {
+			return is_dir( $target );
+		}
+		return @mkdir( $target, 0755, true );
+	}
+}
+
+if ( ! function_exists( 'wp_delete_file' ) ) {
+	/**
+	 * Mock WordPress wp_delete_file function
+	 *
+	 * @param string $file File path.
+	 * @return bool
+	 */
+	function wp_delete_file( $file ) {
+		if ( file_exists( $file ) ) {
+			return @unlink( $file );
+		}
+		return true;
 	}
 }
 
