@@ -298,6 +298,164 @@ if ( ! function_exists( 'sanitize_key' ) ) {
 	}
 }
 
+if ( ! function_exists( 'sanitize_textarea_field' ) ) {
+	/**
+	 * Mock WordPress sanitize_textarea_field function
+	 *
+	 * @param string $str String to sanitize.
+	 * @return string
+	 */
+	function sanitize_textarea_field( $str ) {
+		$filtered = wp_check_invalid_utf8( $str );
+		$filtered = str_replace( "\r", '', $filtered );
+		return $filtered;
+	}
+}
+
+if ( ! function_exists( 'sanitize_email' ) ) {
+	/**
+	 * Mock WordPress sanitize_email function
+	 *
+	 * @param string $email Email to sanitize.
+	 * @return string
+	 */
+	function sanitize_email( $email ) {
+		return strtolower( trim( $email ) );
+	}
+}
+
+if ( ! function_exists( 'esc_url_raw' ) ) {
+	/**
+	 * Mock WordPress esc_url_raw function
+	 *
+	 * @param string $url URL to escape.
+	 * @return string
+	 */
+	function esc_url_raw( $url ) {
+		return filter_var( $url, FILTER_SANITIZE_URL );
+	}
+}
+
+if ( ! function_exists( 'sanitize_file_name' ) ) {
+	/**
+	 * Mock WordPress sanitize_file_name function
+	 *
+	 * @param string $filename Filename to sanitize.
+	 * @return string
+	 */
+	function sanitize_file_name( $filename ) {
+		$filename = preg_replace( '/[^a-zA-Z0-9._\-]/', '', $filename );
+		return $filename;
+	}
+}
+
+if ( ! function_exists( 'sanitize_title' ) ) {
+	/**
+	 * Mock WordPress sanitize_title function
+	 *
+	 * @param string $title Title to sanitize.
+	 * @return string
+	 */
+	function sanitize_title( $title ) {
+		$title = strtolower( $title );
+		$title = preg_replace( '/[^a-z0-9\-]/', '-', $title );
+		$title = preg_replace( '/-+/', '-', $title );
+		$title = trim( $title, '-' );
+		return $title;
+	}
+}
+
+if ( ! function_exists( 'sanitize_hex_color' ) ) {
+	/**
+	 * Mock WordPress sanitize_hex_color function
+	 *
+	 * @param string $color Hex color to sanitize.
+	 * @return string|null
+	 */
+	function sanitize_hex_color( $color ) {
+		if ( '' === $color ) {
+			return '';
+		}
+
+		if ( preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
+			return $color;
+		}
+
+		if ( preg_match( '/^#[a-f0-9]{3}$/i', $color ) ) {
+			return $color;
+		}
+
+		return null;
+	}
+}
+
+if ( ! function_exists( 'wp_kses_allowed_html' ) ) {
+	/**
+	 * Mock WordPress wp_kses_allowed_html function
+	 *
+	 * @param string $context Context.
+	 * @return array
+	 */
+	function wp_kses_allowed_html( $context = 'post' ) {
+		return array(
+			'a'      => array( 'href' => true, 'title' => true ),
+			'b'      => array(),
+			'strong' => array(),
+			'em'     => array(),
+			'i'      => array(),
+			'p'      => array(),
+			'br'     => array(),
+		);
+	}
+}
+
+if ( ! function_exists( 'wp_kses' ) ) {
+	/**
+	 * Mock WordPress wp_kses function
+	 *
+	 * @param string $string HTML string.
+	 * @param array  $allowed_html Allowed HTML.
+	 * @return string
+	 */
+	function wp_kses( $string, $allowed_html ) {
+		// Simple implementation: strip all tags except allowed
+		$allowed_tags = '<' . implode( '><', array_keys( $allowed_html ) ) . '>';
+		return strip_tags( $string, $allowed_tags );
+	}
+}
+
+if ( ! function_exists( 'wp_kses_post' ) ) {
+	/**
+	 * Mock WordPress wp_kses_post function
+	 *
+	 * @param string $data Data to sanitize.
+	 * @return string
+	 */
+	function wp_kses_post( $data ) {
+		return wp_kses( $data, wp_kses_allowed_html( 'post' ) );
+	}
+}
+
+if ( ! function_exists( 'wp_strip_all_tags' ) ) {
+	/**
+	 * Mock WordPress wp_strip_all_tags function
+	 *
+	 * @param string $string String to strip.
+	 * @param bool   $remove_breaks Whether to remove breaks.
+	 * @return string
+	 */
+	function wp_strip_all_tags( $string, $remove_breaks = false ) {
+		$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
+		$string = strip_tags( $string );
+
+		if ( $remove_breaks ) {
+			$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+		}
+
+		return trim( $string );
+	}
+}
+
 // Load test helpers.
 if ( file_exists( __DIR__ . '/TestCase.php' ) ) {
 	require __DIR__ . '/TestCase.php';
