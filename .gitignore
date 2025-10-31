@@ -1,0 +1,44 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Environment & Config
+.env
+.env.local
+wp-config.php
+
+# Logs
+*.log
+debug.log
+error_log
+
+# OS Files
+.DS_Store
+Thumbs.db
+*~
+
+# IDE
+.idea/
+.vscode/
+*.sublime-*
+
+# Build
+dist/
+build/
+*.min.js
+*.min.css
+*.map
+
+# Cache
+cache/
+*.cache
+
+# Backups
+*.sql
+*.zip
+*.tar.gz
+backups/
+
+# WordPress
+/wp-content/uploads/
+/wp-content/cache/
