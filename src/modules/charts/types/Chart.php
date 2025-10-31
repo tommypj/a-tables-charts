@@ -39,7 +39,7 @@ class Chart {
 	public $title;
 
 	/**
-	 * Chart type (bar, line, pie, doughnut)
+	 * Chart type (bar, line, pie, doughnut, column, area, scatter, radar)
 	 *
 	 * @var string
 	 */
@@ -153,7 +153,7 @@ class Chart {
 			$errors[] = __( 'Chart title is required.', 'a-tables-charts' );
 		}
 
-		$allowed_types = array( 'bar', 'line', 'pie', 'doughnut' );
+		$allowed_types = array( 'bar', 'line', 'pie', 'doughnut', 'column', 'area', 'scatter', 'radar' );
 		if ( ! in_array( $this->type, $allowed_types, true ) ) {
 			$errors[] = __( 'Invalid chart type.', 'a-tables-charts' );
 		}
