@@ -13,6 +13,7 @@ namespace ATablesCharts\Tests\Unit;
 use ATablesCharts\Tests\Bootstrap\TestCase;
 use ATablesCharts\Tables\Repositories\TableRepository;
 use ATablesCharts\Tables\Types\Table;
+use Mockery;
 
 /**
  * TableRepositoryTest Class
@@ -27,11 +28,36 @@ class TableRepositoryTest extends TestCase {
 	private $repository;
 
 	/**
+	 * Mock wpdb object
+	 *
+	 * @var \Mockery\MockInterface
+	 */
+	private $wpdb_mock;
+
+	/**
 	 * Set up test environment
 	 */
 	public function setUp(): void {
 		parent::setUp();
+
+		// Create wpdb mock with shouldIgnoreMissing for flexibility
+		$this->wpdb_mock = Mockery::mock( 'wpdb' )->shouldIgnoreMissing();
+		$this->wpdb_mock->prefix = 'wp_';
+		$this->wpdb_mock->insert_id = 0;
+
+		// Set global wpdb
+		global $wpdb;
+		$wpdb = $this->wpdb_mock;
+
 		$this->repository = new TableRepository();
+	}
+
+	/**
+	 * Tear down test
+	 */
+	public function tearDown(): void {
+		Mockery::close();
+		parent::tearDown();
 	}
 
 	/**
