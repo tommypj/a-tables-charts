@@ -23,6 +23,17 @@ if ( ! defined( 'WP_DEBUG_LOG' ) ) {
 	define( 'WP_DEBUG_LOG', true );
 }
 
+// Define WordPress database constants
+if ( ! defined( 'ARRAY_A' ) ) {
+	define( 'ARRAY_A', 'ARRAY_A' );
+}
+if ( ! defined( 'ARRAY_N' ) ) {
+	define( 'ARRAY_N', 'ARRAY_N' );
+}
+if ( ! defined( 'OBJECT' ) ) {
+	define( 'OBJECT', 'OBJECT' );
+}
+
 // Load Composer autoloader if available.
 if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
@@ -106,6 +117,42 @@ spl_autoload_register( function ( $class ) {
 	}
 } );
 
+// Custom autoloader for A_Tables_Charts namespace (legacy underscore namespace in includes/)
+spl_autoload_register( function ( $class ) {
+	// Only handle A_Tables_Charts namespace (with underscores)
+	$prefix = 'A_Tables_Charts\\';
+	$base_dir = dirname( dirname( __DIR__ ) ) . '/includes/';
+
+	// Check if the class uses the namespace prefix
+	$len = strlen( $prefix );
+	if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+		return; // Not our namespace
+	}
+
+	// Get the relative class name
+	$relative_class = substr( $class, $len );
+
+	// Convert namespace separators to directory separators and keep case
+	$file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
+
+	// Try lowercase directories
+	$parts = explode( '/', str_replace( '\\', '/', $relative_class ) );
+	if ( count( $parts ) > 1 ) {
+		$class_name = array_pop( $parts );
+		$dirs = array_map( 'strtolower', $parts );
+		$file_alt = $base_dir . implode( '/', $dirs ) . '/' . $class_name . '.php';
+
+		if ( file_exists( $file_alt ) ) {
+			require $file_alt;
+			return;
+		}
+	}
+
+	if ( file_exists( $file ) ) {
+		require $file;
+	}
+} );
+
 // Mock WordPress functions for unit tests that don't need full WordPress.
 if ( ! function_exists( 'is_email' ) ) {
 	/**
@@ -141,6 +188,42 @@ if ( ! function_exists( 'esc_html__' ) ) {
 	 * @return string
 	 */
 	function esc_html__( $text, $domain = 'default' ) {
+		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_attr' ) ) {
+	/**
+	 * Mock WordPress esc_attr function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_attr( $text ) {
+		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_js' ) ) {
+	/**
+	 * Mock WordPress esc_js function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_js( $text ) {
+		return addslashes( $text );
+	}
+}
+
+if ( ! function_exists( 'esc_html' ) ) {
+	/**
+	 * Mock WordPress esc_html function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_html( $text ) {
 		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
 	}
 }
@@ -237,6 +320,30 @@ if ( ! function_exists( 'get_current_user_id' ) ) {
 	function get_current_user_id() {
 		// For testing purposes, return a test user ID.
 		return 1;
+	}
+}
+
+if ( ! function_exists( 'wp_parse_args' ) ) {
+	/**
+	 * Mock WordPress wp_parse_args function
+	 *
+	 * @param string|array|object $args     Value to merge with $defaults.
+	 * @param array               $defaults Optional. Array of default parameters.
+	 * @return array
+	 */
+	function wp_parse_args( $args, $defaults = array() ) {
+		if ( is_object( $args ) ) {
+			$parsed_args = get_object_vars( $args );
+		} elseif ( is_array( $args ) ) {
+			$parsed_args =& $args;
+		} else {
+			parse_str( $args, $parsed_args );
+		}
+
+		if ( is_array( $defaults ) && $defaults ) {
+			return array_merge( $defaults, $parsed_args );
+		}
+		return $parsed_args;
 	}
 }
 
