@@ -49,10 +49,6 @@ class SettingsController {
 	 * @return array Sanitized settings.
 	 */
 	public function sanitize_settings( $input ) {
-		// Debug logging
-		error_log( '=== ATABLES SETTINGS SAVE ===' );
-		error_log( 'Input received: ' . print_r( $input, true ) );
-		
 		$sanitized = array();
 
 		// General Settings
@@ -174,10 +170,7 @@ class SettingsController {
 				}
 				}
 
-				// Debug logging
-		error_log( 'Sanitized output: ' . print_r( $sanitized, true ) );
-		error_log( 'enable_mysql_query in sanitized: ' . ( isset( $sanitized['enable_mysql_query'] ) ? ( $sanitized['enable_mysql_query'] ? 'TRUE' : 'FALSE' ) : 'NOT SET' ) );
-
+		
 		return $sanitized;
 	}
 

@@ -51,9 +51,6 @@ class Activator {
 
 		// Flush rewrite rules.
 		flush_rewrite_rules();
-
-		// Log activation.
-		error_log( 'A-Tables and Charts plugin activated successfully' );
 	}
 
 	/**

@@ -8,6 +8,7 @@
 namespace ATablesCharts\Core\Controllers;
 
 use ATablesCharts\Tables\Repositories\TableRepository;
+use ATablesCharts\Shared\Utils\Logger;
 
 class EnhancedTableController {
 
@@ -77,7 +78,7 @@ class EnhancedTableController {
 			wp_send_json_success( array( 'message' => 'All changes saved successfully!' ) );
 			
 		} catch ( \Exception $e ) {
-			error_log( 'Enhanced Table Save Error: ' . $e->getMessage() );
+			Logger::log_error( 'Enhanced table save error', array( 'error' => $e->getMessage() ) );
 			wp_send_json_error( array( 'message' => 'Error: ' . $e->getMessage() ) );
 		}
 	}
@@ -101,7 +102,7 @@ class EnhancedTableController {
 			wp_send_json_error( array( 'message' => 'Template not found' ) );
 			
 		} catch ( \Exception $e ) {
-			error_log( 'Template Apply Error: ' . $e->getMessage() );
+			Logger::log_error( 'Template apply error', array( 'error' => $e->getMessage() ) );
 			wp_send_json_error( array( 'message' => 'Error: ' . $e->getMessage() ) );
 		}
 	}

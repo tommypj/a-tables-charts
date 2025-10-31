@@ -19,6 +19,11 @@ namespace ATablesCharts\Shared\Utils;
  * - Format log messages consistently
  * - Support context data
  * - Control logging based on WP_DEBUG
+ * - Sanitize sensitive data before logging
+ * - Provide static helper methods for easy access
+ *
+ * SECURITY: Only logs when WP_DEBUG is enabled to prevent
+ * sensitive information exposure in production environments.
  */
 class Logger {
 
@@ -29,6 +34,13 @@ class Logger {
 	const LEVEL_INFO    = 'info';
 	const LEVEL_WARNING = 'warning';
 	const LEVEL_ERROR   = 'error';
+
+	/**
+	 * Singleton instance
+	 *
+	 * @var Logger
+	 */
+	private static $instance = null;
 
 	/**
 	 * Whether logging is enabled
@@ -51,9 +63,22 @@ class Logger {
 	 */
 	public function __construct() {
 		$this->enabled = defined( 'WP_DEBUG' ) && WP_DEBUG;
-		
+
 		$upload_dir     = wp_upload_dir();
 		$this->log_file = $upload_dir['basedir'] . '/atables/debug.log';
+	}
+
+	/**
+	 * Get singleton instance
+	 *
+	 * @since 1.0.5
+	 * @return Logger Logger instance
+	 */
+	public static function instance() {
+		if ( null === self::$instance ) {
+			self::$instance = new self();
+		}
+		return self::$instance;
 	}
 
 	/**
@@ -250,5 +275,159 @@ class Logger {
 	 */
 	public function disable() {
 		$this->enabled = false;
+	}
+
+	/**
+	 * Sanitize data before logging
+	 *
+	 * Removes or masks sensitive information that should not be logged.
+	 *
+	 * @since 1.0.5
+	 * @param mixed $data Data to sanitize.
+	 * @return mixed Sanitized data
+	 */
+	private function sanitize_data( $data ) {
+		// If it's a string, mask common sensitive patterns
+		if ( is_string( $data ) ) {
+			// Mask SQL queries with potential sensitive data
+			$data = preg_replace( '/password\s*=\s*[\'"][^\'"]*[\'"]?/i', 'password=***', $data );
+			$data = preg_replace( '/api[_-]?key\s*[=:]\s*[\'"]?[\w-]+[\'"]?/i', 'api_key=***', $data );
+			$data = preg_replace( '/token\s*[=:]\s*[\'"]?[\w-]+[\'"]?/i', 'token=***', $data );
+
+			// Limit string length to prevent log bloat
+			if ( strlen( $data ) > 1000 ) {
+				$data = substr( $data, 0, 1000 ) . '... [truncated]';
+			}
+		}
+
+		// If it's an array, recursively sanitize
+		if ( is_array( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				// Mask sensitive keys entirely
+				if ( in_array( strtolower( $key ), array( 'password', 'api_key', 'secret', 'token', 'auth' ), true ) ) {
+					$data[ $key ] = '***';
+				} else {
+					$data[ $key ] = $this->sanitize_data( $value );
+				}
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Sanitize database error messages
+	 *
+	 * Removes potentially sensitive information from database errors.
+	 *
+	 * @since 1.0.5
+	 * @param string $error Database error message.
+	 * @return string Sanitized error message
+	 */
+	private function sanitize_db_error( $error ) {
+		// Remove table prefixes that might expose database structure
+		$error = preg_replace( '/wp_[\w]+/', 'wp_***', $error );
+
+		// Remove actual values from error messages
+		$error = preg_replace( '/\'[^\']{20,}\'/', '\'***\'', $error );
+
+		return $error;
+	}
+
+	// ========================================
+	// STATIC HELPER METHODS
+	// ========================================
+
+	/**
+	 * Static helper: Log debug message
+	 *
+	 * Only logs when WP_DEBUG is enabled.
+	 *
+	 * @since 1.0.5
+	 * @param string $message Log message.
+	 * @param array  $context Additional context data.
+	 */
+	public static function log_debug( $message, $context = array() ) {
+		self::instance()->debug( $message, $context );
+	}
+
+	/**
+	 * Static helper: Log info message
+	 *
+	 * Only logs when WP_DEBUG is enabled.
+	 *
+	 * @since 1.0.5
+	 * @param string $message Log message.
+	 * @param array  $context Additional context data.
+	 */
+	public static function log_info( $message, $context = array() ) {
+		self::instance()->info( $message, $context );
+	}
+
+	/**
+	 * Static helper: Log warning message
+	 *
+	 * Only logs when WP_DEBUG is enabled.
+	 *
+	 * @since 1.0.5
+	 * @param string $message Log message.
+	 * @param array  $context Additional context data.
+	 */
+	public static function log_warning( $message, $context = array() ) {
+		self::instance()->warning( $message, $context );
+	}
+
+	/**
+	 * Static helper: Log error message
+	 *
+	 * Only logs when WP_DEBUG is enabled.
+	 *
+	 * @since 1.0.5
+	 * @param string $message Log message.
+	 * @param array  $context Additional context data.
+	 */
+	public static function log_error( $message, $context = array() ) {
+		self::instance()->error( $message, $context );
+	}
+
+	/**
+	 * Static helper: Log database error
+	 *
+	 * Sanitizes database errors before logging.
+	 * Only logs when WP_DEBUG is enabled.
+	 *
+	 * @since 1.0.5
+	 * @param string $message Error message.
+	 * @param string $db_error Database error from wpdb.
+	 * @param string $query Optional SQL query.
+	 */
+	public static function log_db_error( $message, $db_error = '', $query = '' ) {
+		$logger = self::instance();
+		if ( ! $logger->is_enabled() ) {
+			return;
+		}
+
+		$context = array();
+
+		if ( ! empty( $db_error ) ) {
+			$context['db_error'] = $logger->sanitize_db_error( $db_error );
+		}
+
+		if ( ! empty( $query ) ) {
+			// Limit query length and sanitize
+			$context['query'] = $logger->sanitize_data( $query );
+		}
+
+		$logger->error( $message, $context );
+	}
+
+	/**
+	 * Static helper: Check if logging is enabled
+	 *
+	 * @since 1.0.5
+	 * @return bool True if enabled, false otherwise
+	 */
+	public static function is_debug_enabled() {
+		return self::instance()->is_enabled();
 	}
 }

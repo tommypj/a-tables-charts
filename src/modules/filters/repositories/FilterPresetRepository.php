@@ -12,6 +12,7 @@ namespace ATablesCharts\Filters\Repositories;
 
 use ATablesCharts\Filters\Types\FilterPreset;
 use ATablesCharts\Filters\Types\Filter;
+use ATablesCharts\Shared\Utils\Logger;
 use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
@@ -58,7 +59,7 @@ class FilterPresetRepository {
 		// Validate preset
 		$validation = $preset->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Filter preset validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Filter preset validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
@@ -66,7 +67,7 @@ class FilterPresetRepository {
 		$data = $preset->to_database();
 
 		// Debug log
-		error_log( 'Creating filter preset: ' . print_r( $data, true ) );
+		Logger::log_debug( 'Creating filter preset', array( 'data' => $data ) );
 
 		// Insert into database
 		$result = $this->wpdb->insert(
@@ -85,13 +86,12 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Database insert failed. Last error: ' . $this->wpdb->last_error );
-			error_log( 'Last query: ' . $this->wpdb->last_query );
+			Logger::log_db_error( 'Filter preset insert failed', $this->wpdb->last_error, $this->wpdb->last_query );
 			return false;
 		}
 
 		$preset_id = $this->wpdb->insert_id;
-		error_log( 'Filter preset created successfully with ID: ' . $preset_id );
+		Logger::log_info( 'Filter preset created successfully', array( 'preset_id' => $preset_id ) );
 
 		return $preset_id;
 	}
@@ -238,7 +238,7 @@ class FilterPresetRepository {
 		// Validate preset
 		$validation = $preset->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Filter preset validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Filter preset validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
@@ -262,7 +262,7 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Filter preset update failed. Last error: ' . $this->wpdb->last_error );
+			Logger::log_db_error( 'Filter preset update failed', $this->wpdb->last_error );
 			return false;
 		}
 
@@ -283,7 +283,7 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Filter preset deletion failed. Last error: ' . $this->wpdb->last_error );
+			Logger::log_db_error( 'Filter preset deletion failed', $this->wpdb->last_error );
 			return false;
 		}
 
@@ -343,7 +343,7 @@ class FilterPresetRepository {
 		} catch ( \Exception $e ) {
 			// Rollback on error
 			$this->wpdb->query( 'ROLLBACK' );
-			error_log( 'Failed to set default preset: ' . $e->getMessage() );
+			Logger::log_error( 'Failed to set default preset', array( 'error' => $e->getMessage() ) );
 			return false;
 		}
 	}

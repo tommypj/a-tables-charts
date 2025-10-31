@@ -49,12 +49,10 @@ class AddFilterPresetsTable {
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-		
+
 		$result = dbDelta( $sql );
 
-		// Log migration result
 		if ( ! empty( $result ) ) {
-			error_log( 'Filter presets table migration completed: ' . print_r( $result, true ) );
 			return true;
 		}
 
@@ -73,8 +71,6 @@ class AddFilterPresetsTable {
 
 		// Drop the table
 		$result = $wpdb->query( "DROP TABLE IF EXISTS {$table_name}" );
-
-		error_log( 'Filter presets table dropped: ' . ( $result !== false ? 'success' : 'failed' ) );
 
 		return $result !== false;
 	}

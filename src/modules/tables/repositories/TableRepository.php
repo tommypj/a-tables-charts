@@ -11,6 +11,7 @@
 namespace ATablesCharts\Tables\Repositories;
 
 use ATablesCharts\Tables\Types\Table;
+use ATablesCharts\Shared\Utils\Logger;
 use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
@@ -73,15 +74,15 @@ class TableRepository {
 		// Validate table.
 		$validation = $table->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Table validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Table validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
 		// Prepare data for insertion.
 		$data = $table->to_database();
-		
+
 		// Debug log the data being inserted.
-		error_log( 'Attempting to insert table with data: ' . print_r( $data, true ) );
+		Logger::log_debug( 'Attempting to insert table', array( 'data' => $data ) );
 
 		// Insert into database.
 		$result = $this->wpdb->insert(
@@ -101,13 +102,12 @@ class TableRepository {
 
 		if ( false === $result ) {
 			// Log the actual database error.
-			error_log( 'Database insert failed. Last error: ' . $this->wpdb->last_error );
-			error_log( 'Last query: ' . $this->wpdb->last_query );
+			Logger::log_db_error( 'Table insert failed', $this->wpdb->last_error, $this->wpdb->last_query );
 			return false;
 		}
 
 		$table_id = $this->wpdb->insert_id;
-		error_log( 'Table created successfully with ID: ' . $table_id );
+		Logger::log_info( 'Table created successfully', array( 'table_id' => $table_id ) );
 
 		// Store individual rows in table_data for better performance.
 		$this->store_table_rows( $table_id, $table->get_data() );
