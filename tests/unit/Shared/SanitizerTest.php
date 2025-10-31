@@ -438,10 +438,10 @@ class SanitizerTest extends TestCase {
 	}
 
 	public function test_comma_list_removes_html_tags() {
-		$result = Sanitizer::comma_list( '<b>apple</b>, banana, <script>orange</script>' );
+		$result = Sanitizer::comma_list( '<b>apple</b>, banana, <em>orange</em>' );
 		$this->assertEquals( 'apple, banana, orange', $result );
 		$this->assertStringNotContainsString( '<b>', $result );
-		$this->assertStringNotContainsString( 'script', $result );
+		$this->assertStringNotContainsString( '<em>', $result );
 	}
 
 	// Deep Clean Tests

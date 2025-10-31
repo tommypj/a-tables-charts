@@ -89,6 +89,14 @@ spl_autoload_register( function ( $class ) {
 	$possible_paths[] = $base_dir . $normalized_shared . '.php';
 	$possible_paths[] = $base_dir . strtolower( $normalized_shared ) . '.php';
 
+	// Strategy 3: lowercase directories but preserve class filename case.
+	$parts_shared = explode( '/', $normalized_shared );
+	if ( count( $parts_shared ) > 1 ) {
+		$class_name = array_pop( $parts_shared );
+		$dirs = array_map( 'strtolower', $parts_shared );
+		$possible_paths[] = $base_dir . implode( '/', $dirs ) . '/' . $class_name . '.php';
+	}
+
 	// Try each possible path.
 	foreach ( $possible_paths as $file ) {
 		if ( file_exists( $file ) ) {
@@ -269,6 +277,9 @@ if ( ! function_exists( 'sanitize_text_field' ) ) {
 	 */
 	function sanitize_text_field( $str ) {
 		$filtered = wp_check_invalid_utf8( $str );
+		// Remove script/style tags AND their content (security)
+		$filtered = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $filtered );
+		// Now strip remaining tags but keep their content
 		$filtered = strip_tags( $filtered );
 		$filtered = trim( $filtered );
 		return $filtered;
@@ -340,7 +351,26 @@ if ( ! function_exists( 'esc_url_raw' ) ) {
 	 * @return string
 	 */
 	function esc_url_raw( $url ) {
+		// Remove dangerous protocols
+		$dangerous_protocols = array( 'javascript:', 'data:', 'vbscript:', 'file:' );
+		foreach ( $dangerous_protocols as $protocol ) {
+			if ( stripos( $url, $protocol ) === 0 ) {
+				return '';
+			}
+		}
 		return filter_var( $url, FILTER_SANITIZE_URL );
+	}
+}
+
+if ( ! function_exists( 'esc_url' ) ) {
+	/**
+	 * Mock WordPress esc_url function
+	 *
+	 * @param string $url URL to escape.
+	 * @return string
+	 */
+	function esc_url( $url ) {
+		return esc_url_raw( $url );
 	}
 }
 
@@ -426,7 +456,14 @@ if ( ! function_exists( 'wp_kses' ) ) {
 	 * @return string
 	 */
 	function wp_kses( $string, $allowed_html ) {
-		// Simple implementation: strip all tags except allowed
+		// Remove script tags and their content
+		$string = preg_replace( '@<script[^>]*?>.*?</script>@si', '', $string );
+
+		// Remove dangerous event handlers
+		$string = preg_replace( '/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $string );
+		$string = preg_replace( '/\s*on\w+\s*=\s*[^\s>]*/i', '', $string );
+
+		// Strip all tags except allowed
 		$allowed_tags = '<' . implode( '><', array_keys( $allowed_html ) ) . '>';
 		return strip_tags( $string, $allowed_tags );
 	}
