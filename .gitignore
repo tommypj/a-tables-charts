@@ -42,3 +42,4 @@ backups/
 # WordPress
 /wp-content/uploads/
 /wp-content/cache/
+.phpunit.result.cache
