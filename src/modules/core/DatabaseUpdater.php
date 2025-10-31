@@ -33,7 +33,10 @@ class DatabaseUpdater {
         }
         
         // Get existing columns
-        $columns = $wpdb->get_results($wpdb->prepare("DESCRIBE %s", $table_name));
+        // Note: DESCRIBE doesn't support prepared statements for table names
+        // Table name is safe as it's constructed from $wpdb->prefix (trusted)
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $columns = $wpdb->get_results("DESCRIBE $table_name");
         $existing_columns = array_map(function($col) { return $col->Field; }, $columns);
         
         // Check for any missing required columns
@@ -87,7 +90,10 @@ class DatabaseUpdater {
         }
         
         // Table exists - check for missing columns
-        $columns = $wpdb->get_results($wpdb->prepare("DESCRIBE %s", $table_name));
+        // Note: DESCRIBE doesn't support prepared statements for table names
+        // Table name is safe as it's constructed from $wpdb->prefix (trusted)
+        // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+        $columns = $wpdb->get_results("DESCRIBE $table_name");
         $existing_columns = array_map(function($col) { return $col->Field; }, $columns);
         
         $updates_made = array();

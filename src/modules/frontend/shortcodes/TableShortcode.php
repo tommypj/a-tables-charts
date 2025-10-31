@@ -143,6 +143,18 @@ class TableShortcode {
 			$mapped_data[] = $mapped_row;
 		}
 
+		// Process formulas if they exist
+		$display_settings = $this->repository->get_display_settings( $table_id );
+		if ( ! empty( $display_settings['formulas'] ) ) {
+			// Load FormulaService
+			if ( ! class_exists( 'ATablesCharts\\Formulas\\Services\\FormulaService' ) ) {
+				require_once ATABLES_PLUGIN_DIR . 'src/modules/formulas/FormulaService.php';
+			}
+			
+			$formula_service = new \ATablesCharts\Formulas\Services\FormulaService();
+			$mapped_data = $formula_service->process_formulas( $mapped_data, $headers, $display_settings['formulas'] );
+		}
+
 		$options = array(
 			'table'           => $table,
 			'data'            => $mapped_data,

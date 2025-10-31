@@ -26,7 +26,7 @@ class FormulaService {
 	 *
 	 * @var array
 	 */
-	private $functions = array( 'SUM', 'AVERAGE', 'AVG', 'MIN', 'MAX', 'COUNT', 'IF', 'ROUND', 'ABS' );
+	private $functions = array( 'SUM', 'AVERAGE', 'AVG', 'MIN', 'MAX', 'COUNT', 'IF', 'ROUND', 'ABS', 'MEDIAN', 'PRODUCT', 'POWER', 'POW', 'SQRT', 'CONCAT', 'CONCATENATE' );
 
 	/**
 	 * Process formulas in table data
@@ -366,6 +366,48 @@ class FormulaService {
 				}
 				return 0;
 
+			case 'MEDIAN':
+				if ( count( $numeric_args ) === 0 ) {
+					return 0;
+				}
+				sort( $numeric_args );
+				$count = count( $numeric_args );
+				$middle = floor( $count / 2 );
+				if ( $count % 2 === 0 ) {
+					// Even number of values - average the two middle values
+					return ( $numeric_args[ $middle - 1 ] + $numeric_args[ $middle ] ) / 2;
+				}
+				// Odd number of values - return the middle value
+				return $numeric_args[ $middle ];
+
+			case 'PRODUCT':
+				return count( $numeric_args ) > 0 ? array_product( $numeric_args ) : 0;
+
+			case 'POWER':
+			case 'POW':
+				$base = isset( $numeric_args[0] ) ? $numeric_args[0] : 0;
+				$exponent = isset( $numeric_args[1] ) ? $numeric_args[1] : 1;
+				return pow( $base, $exponent );
+
+			case 'SQRT':
+				$value = isset( $numeric_args[0] ) ? $numeric_args[0] : 0;
+				if ( $value < 0 ) {
+					return 0; // Return 0 for negative numbers to avoid errors
+				}
+				return sqrt( $value );
+
+			case 'CONCAT':
+			case 'CONCATENATE':
+				// For text concatenation, use original args (not numeric_args)
+				$parts = array_map( 'trim', explode( ',', $args_str ) );
+				$text_parts = array();
+				foreach ( $parts as $part ) {
+					// Remove quotes if present
+					$cleaned = trim( $part, '"\'' );
+					$text_parts[] = $cleaned;
+				}
+				return implode( '', $text_parts );
+
 			default:
 				return 0;
 		}
@@ -458,6 +500,36 @@ class FormulaService {
 				'syntax'      => 'IF(condition, true_value, false_value)',
 				'example'     => '=IF(A1>100, "High", "Low")',
 			),
+			'MEDIAN' => array(
+				'label'       => 'MEDIAN',
+				'description' => __( 'Middle value (statistical median)', 'a-tables-charts' ),
+				'syntax'      => 'MEDIAN(A1:A10)',
+				'example'     => '=MEDIAN(B2:B10)',
+			),
+			'PRODUCT' => array(
+				'label'       => 'PRODUCT',
+				'description' => __( 'Multiply all values', 'a-tables-charts' ),
+				'syntax'      => 'PRODUCT(A1:A10) or PRODUCT(A1,A2,A3)',
+				'example'     => '=PRODUCT(B2:B4)',
+			),
+			'POWER' => array(
+				'label'       => 'POWER',
+				'description' => __( 'Raise number to a power', 'a-tables-charts' ),
+				'syntax'      => 'POWER(base, exponent)',
+				'example'     => '=POWER(2, 3)',
+			),
+			'SQRT' => array(
+				'label'       => 'SQRT',
+				'description' => __( 'Square root', 'a-tables-charts' ),
+				'syntax'      => 'SQRT(value)',
+				'example'     => '=SQRT(16)',
+			),
+			'CONCAT' => array(
+				'label'       => 'CONCAT',
+				'description' => __( 'Concatenate text values', 'a-tables-charts' ),
+				'syntax'      => 'CONCAT(text1, text2, ...)',
+				'example'     => '=CONCAT("Hello", " ", "World")',
+			),
 		);
 	}
 
@@ -492,6 +564,16 @@ class FormulaService {
 				'label'       => __( 'Difference', 'a-tables-charts' ),
 				'description' => __( 'Subtract values', 'a-tables-charts' ),
 				'formula'     => '=A1-B1',
+			),
+			'product_calc' => array(
+				'label'       => __( 'Product (Price × Quantity)', 'a-tables-charts' ),
+				'description' => __( 'Multiply price by quantity', 'a-tables-charts' ),
+				'formula'     => '=PRODUCT(A1,B1)',
+			),
+			'growth_rate' => array(
+				'label'       => __( 'Growth Rate', 'a-tables-charts' ),
+				'description' => __( 'Calculate compound growth', 'a-tables-charts' ),
+				'formula'     => '=POWER(1.05, A1)',
 			),
 		);
 	}

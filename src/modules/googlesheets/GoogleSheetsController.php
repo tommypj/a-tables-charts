@@ -149,7 +149,7 @@ class GoogleSheetsController {
 			wp_send_json_success( array(
 				'message'  => __( 'Google Sheet imported successfully!', 'a-tables-charts' ),
 				'table_id' => $table_id,
-				'redirect' => admin_url( 'admin.php?page=a-tables-charts-view&id=' . $table_id ),
+				'redirect' => admin_url( 'admin.php?page=a-tables-charts-view&table_id=' . $table_id ),
 			) );
 		} else {
 			wp_send_json_error( array(

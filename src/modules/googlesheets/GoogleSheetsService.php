@@ -178,49 +178,96 @@ class GoogleSheetsService {
 	 * @return string|WP_Error CSV data or error
 	 */
 	public function fetch_sheet_data( $url ) {
-		$response = wp_remote_get( $url, array(
-			'timeout' => 30,
-			'headers' => array(
-				'User-Agent' => 'WordPress/' . get_bloginfo( 'version' ) . '; ' . get_bloginfo( 'url' ),
+		// Configure request with redirect following
+		$args = array(
+			'timeout'     => 30,
+			'redirection' => 5,  // Follow up to 5 redirects
+			'httpversion' => '1.1',
+			'user-agent'  => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+			'headers'     => array(
+				'Accept'          => 'text/csv,application/csv,text/plain,*/*',
+				'Accept-Language' => 'en-US,en;q=0.9',
+				'Accept-Encoding' => 'gzip, deflate',
 			),
-		) );
+			'sslverify'   => true,
+		);
+
+		$response = wp_remote_get( $url, $args );
 
 		if ( is_wp_error( $response ) ) {
+			$error_message = $response->get_error_message();
 			return new \WP_Error(
 				'fetch_failed',
-				__( 'Failed to fetch data from Google Sheets. Please check the URL and try again.', 'a-tables-charts' )
+				sprintf(
+					__( 'Failed to fetch data from Google Sheets: %s. Please check the URL and sharing settings.', 'a-tables-charts' ),
+					$error_message
+				)
 			);
 		}
 
 		$status_code = wp_remote_retrieve_response_code( $response );
 
-		if ( $status_code !== 200 ) {
-			if ( $status_code === 403 ) {
+		// Handle different status codes
+		if ( $status_code === 200 ) {
+			$body = wp_remote_retrieve_body( $response );
+
+			if ( empty( $body ) ) {
 				return new \WP_Error(
-					'permission_denied',
-					__( 'Access denied. Please make sure the Google Sheet is set to "Anyone with the link can view".', 'a-tables-charts' )
+					'empty_response',
+					__( 'The sheet appears to be empty or inaccessible.', 'a-tables-charts' )
 				);
+			}
+
+			return $body;
+
+		} elseif ( $status_code === 307 || $status_code === 301 || $status_code === 302 ) {
+			// Get redirect location
+			$headers = wp_remote_retrieve_headers( $response );
+			$location = isset( $headers['location'] ) ? $headers['location'] : '';
+
+			if ( $location ) {
+				// Try following the redirect manually
+				return $this->fetch_sheet_data( $location );
+			}
+
+			return new \WP_Error(
+				'redirect_error',
+				sprintf(
+					__( 'Google Sheets returned a redirect (HTTP %d). Please ensure the sheet is published and shared properly. Try using the "Published to web" URL instead.', 'a-tables-charts' ),
+					$status_code
+				)
+			);
+
+		} elseif ( $status_code === 403 ) {
+			return new \WP_Error(
+				'permission_denied',
+				__( 'Access denied. Please make sure the Google Sheet is set to "Anyone with the link can view" or use a published sheet URL.', 'a-tables-charts' )
+			);
+
+		} elseif ( $status_code === 404 ) {
+			return new \WP_Error(
+				'not_found',
+				__( 'Sheet not found. Please check the URL and make sure the sheet exists and is accessible.', 'a-tables-charts' )
+			);
+
+		} else {
+			// Get response body for debugging
+			$body = wp_remote_retrieve_body( $response );
+			$error_details = '';
+
+			if ( strpos( $body, 'sign' ) !== false || strpos( $body, 'login' ) !== false ) {
+				$error_details = ' The sheet may require authentication.';
 			}
 
 			return new \WP_Error(
 				'fetch_failed',
 				sprintf(
-					__( 'Failed to fetch data. HTTP Status: %d', 'a-tables-charts' ),
-					$status_code
+					__( 'Failed to fetch data. HTTP Status: %d.%s Please ensure the sheet is publicly accessible or published to the web.', 'a-tables-charts' ),
+					$status_code,
+					$error_details
 				)
 			);
 		}
-
-		$body = wp_remote_retrieve_body( $response );
-
-		if ( empty( $body ) ) {
-			return new \WP_Error(
-				'empty_response',
-				__( 'The sheet appears to be empty or inaccessible.', 'a-tables-charts' )
-			);
-		}
-
-		return $body;
 	}
 
 	/**
@@ -240,7 +287,7 @@ class GoogleSheetsService {
 
 		$options = wp_parse_args( $options, $defaults );
 
-		$lines = str_getcsv( $csv_data, "\n" );
+		$lines = str_getcsv( $csv_data, "\n", $options['enclosure'], $options['escape'] );
 		$data = array();
 		$headers = array();
 
@@ -290,15 +337,26 @@ class GoogleSheetsService {
 	public static function get_sharing_instructions() {
 		return '
 			<div class="atables-instructions">
-				<h4>' . __( 'How to Share Your Google Sheet:', 'a-tables-charts' ) . '</h4>
+				<h4>' . __( 'How to Make Your Google Sheet Accessible:', 'a-tables-charts' ) . '</h4>
+				<p><strong>' . __( 'Method 1: Share with Link (Recommended)', 'a-tables-charts' ) . '</strong></p>
 				<ol>
 					<li>' . __( 'Open your Google Sheet', 'a-tables-charts' ) . '</li>
 					<li>' . __( 'Click the "Share" button in the top-right corner', 'a-tables-charts' ) . '</li>
 					<li>' . __( 'Under "Get link", click "Change to anyone with the link"', 'a-tables-charts' ) . '</li>
 					<li>' . __( 'Set permissions to "Viewer"', 'a-tables-charts' ) . '</li>
-					<li>' . __( 'Click "Copy link" and paste it here', 'a-tables-charts' ) . '</li>
+					<li>' . __( 'Click "Copy link" and paste it in the field below', 'a-tables-charts' ) . '</li>
 				</ol>
-				<p class="description">' . __( 'Note: The sheet must be publicly accessible for import to work.', 'a-tables-charts' ) . '</p>
+				<p><strong>' . __( 'Method 2: Publish to Web (Best for Public Data)', 'a-tables-charts' ) . '</strong></p>
+				<ol>
+					<li>' . __( 'In your Google Sheet, go to File → Share → Publish to web', 'a-tables-charts' ) . '</li>
+					<li>' . __( 'Select the sheet/tab you want to publish', 'a-tables-charts' ) . '</li>
+					<li>' . __( 'Choose "Entire Document" or specific sheet', 'a-tables-charts' ) . '</li>
+					<li>' . __( 'Click "Publish"', 'a-tables-charts' ) . '</li>
+					<li>' . __( 'Copy the link and paste it in the field below', 'a-tables-charts' ) . '</li>
+				</ol>
+				<div style="background: #fff3cd; border-left: 4px solid #ffc107; padding: 12px; margin-top: 15px;">
+					<strong>⚠️ ' . __( 'Important:', 'a-tables-charts' ) . '</strong> ' . __( 'The sheet must be publicly accessible (anyone with link can view) for the import to work. Private sheets will result in access errors.', 'a-tables-charts' ) . '
+				</div>
 			</div>
 		';
 	}
@@ -327,7 +385,21 @@ class GoogleSheetsService {
 		}
 
 		$csv_url = $this->build_csv_url( $sheet_id );
-		$response = wp_remote_head( $csv_url, array( 'timeout' => 10 ) );
+		
+		// Use same configuration as fetch_sheet_data
+		$args = array(
+			'timeout'     => 10,
+			'redirection' => 5,  // Follow up to 5 redirects
+			'httpversion' => '1.1',
+			'user-agent'  => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+			'headers'     => array(
+				'Accept'          => 'text/csv,application/csv,text/plain,*/*',
+				'Accept-Language' => 'en-US,en;q=0.9',
+			),
+			'sslverify'   => true,
+		);
+		
+		$response = wp_remote_head( $csv_url, $args );
 
 		if ( is_wp_error( $response ) ) {
 			return array(
@@ -348,10 +420,15 @@ class GoogleSheetsService {
 				'success' => false,
 				'message' => __( 'Access denied. Please check sharing settings.', 'a-tables-charts' ),
 			);
+		} elseif ( $status_code === 307 || $status_code === 301 || $status_code === 302 ) {
+			return array(
+				'success' => false,
+				'message' => sprintf( __( 'Redirect detected (HTTP %d). Redirects should be followed automatically, but may require "Publish to web" instead.', 'a-tables-charts' ), $status_code ),
+			);
 		} else {
 			return array(
 				'success' => false,
-				'message' => sprintf( __( 'Unexpected status code: %d', 'a-tables-charts' ), $status_code ),
+				'message' => sprintf( __( 'Unexpected status code: %d. Please ensure the sheet is publicly accessible.', 'a-tables-charts' ), $status_code ),
 			);
 		}
 	}

@@ -232,6 +232,26 @@ function get_url_with_params( $new_params = array() ) {
 				<h2><?php esc_html_e( 'Table Data', 'a-tables-charts' ); ?></h2>
 			</div>
 			<div class="atables-data-actions">
+				<!-- Search Box -->
+				<div class="atables-search-box">
+					<input type="search" 
+						   id="atables-table-search" 
+						   class="atables-search-input" 
+						   placeholder="<?php esc_attr_e( 'Search table...', 'a-tables-charts' ); ?>" 
+						   value="<?php echo esc_attr( $search ); ?>">
+					<button type="button" id="atables-table-search-btn" class="button">
+						<span class="dashicons dashicons-search"></span>
+						<?php esc_html_e( 'Search', 'a-tables-charts' ); ?>
+					</button>
+					<?php if ( ! empty( $search ) ) : ?>
+						<a href="<?php echo esc_url( get_url_with_params( array( 's' => '', 'paged' => 1 ) ) ); ?>" 
+						   class="button">
+							<span class="dashicons dashicons-no"></span>
+							<?php esc_html_e( 'Clear', 'a-tables-charts' ); ?>
+						</a>
+					<?php endif; ?>
+				</div>
+				
 				<!-- Rows per page selector -->
 				<div class="atables-per-page-selector">
 					<label for="per-page-select"><?php esc_html_e( 'Show', 'a-tables-charts' ); ?></label>
@@ -430,8 +450,76 @@ function get_url_with_params( $new_params = array() ) {
 	</div>
 </div>
 
+<style>
+/* Search Box Styling */
+.atables-search-box {
+	display: flex;
+	gap: 8px;
+	align-items: center;
+	margin-right: 20px;
+}
+
+.atables-search-input {
+	min-width: 250px;
+	height: 32px;
+	padding: 0 10px;
+	border: 1px solid #8c8f94;
+	border-radius: 4px;
+	font-size: 14px;
+}
+
+.atables-search-input:focus {
+	border-color: #2271b1;
+	box-shadow: 0 0 0 1px #2271b1;
+	outline: 2px solid transparent;
+}
+
+.atables-search-box .button {
+	height: 32px !important;
+	line-height: 30px !important;
+	padding: 0 12px !important;
+}
+
+.atables-data-actions {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 12px;
+}
+
+@media screen and (max-width: 782px) {
+	.atables-search-box {
+		width: 100%;
+		margin-right: 0;
+		margin-bottom: 12px;
+	}
+	
+	.atables-search-input {
+		flex: 1;
+		min-width: 0;
+	}
+}
+</style>
+
 <script>
 jQuery(document).ready(function($) {
+	// Handle search button click
+	$('#atables-table-search-btn').on('click', function() {
+		var searchTerm = $('#atables-table-search').val();
+		var currentUrl = new URL(window.location.href);
+		currentUrl.searchParams.set('s', searchTerm);
+		currentUrl.searchParams.set('paged', 1); // Reset to first page
+		window.location.href = currentUrl.toString();
+	});
+	
+	// Handle Enter key in search box
+	$('#atables-table-search').on('keypress', function(e) {
+		if (e.which === 13) {
+			e.preventDefault();
+			$('#atables-table-search-btn').click();
+		}
+	});
+	
 	// Handle per-page change
 	$('#per-page-select').on('change', function() {
 		var perPage = $(this).val();

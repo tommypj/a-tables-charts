@@ -172,20 +172,39 @@ class TableRepository {
 	 */
 	public function find_all( $args = array() ) {
 		$defaults = array(
-			'status'   => 'active',
-			'per_page' => 20,
-			'page'     => 1,
-			'orderby'  => 'created_at',
-			'order'    => 'DESC',
+			'status'      => 'active',
+			'per_page'    => 20,
+			'page'        => 1,
+			'orderby'     => 'created_at',
+			'order'       => 'DESC',
+			'search'      => '',
+			'source_type' => '',
+			'sort_by'     => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
+		
+		// Map sort_by to orderby if provided
+		if ( ! empty( $args['sort_by'] ) ) {
+			$args['orderby'] = $args['sort_by'];
+		}
 
 		// Build query.
 		$where = "WHERE 1=1";
 
 		if ( ! empty( $args['status'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND status = %s', $args['status'] );
+		}
+		
+		// Add search filter
+		if ( ! empty( $args['search'] ) ) {
+			$search_term = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
+			$where .= $this->wpdb->prepare( ' AND (title LIKE %s OR description LIKE %s)', $search_term, $search_term );
+		}
+		
+		// Add source type filter (case-insensitive)
+		if ( ! empty( $args['source_type'] ) ) {
+			$where .= $this->wpdb->prepare( ' AND UPPER(data_source_type) = UPPER(%s)', $args['source_type'] );
 		}
 
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
@@ -287,6 +306,17 @@ class TableRepository {
 
 		if ( isset( $args['status'] ) && ! empty( $args['status'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND status = %s', $args['status'] );
+		}
+		
+		// Add search filter
+		if ( isset( $args['search'] ) && ! empty( $args['search'] ) ) {
+			$search_term = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
+			$where .= $this->wpdb->prepare( ' AND (title LIKE %s OR description LIKE %s)', $search_term, $search_term );
+		}
+		
+		// Add source type filter (case-insensitive)
+		if ( isset( $args['source_type'] ) && ! empty( $args['source_type'] ) ) {
+			$where .= $this->wpdb->prepare( ' AND UPPER(data_source_type) = UPPER(%s)', $args['source_type'] );
 		}
 
 		$query = "SELECT COUNT(*) FROM {$this->table_name} {$where}";

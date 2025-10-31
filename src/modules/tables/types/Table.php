@@ -231,7 +231,7 @@ class Table {
 		}
 
 		// Valid source types.
-		$valid_types = array( 'csv', 'json', 'excel', 'xml', 'manual', 'mysql', 'api' );
+		$valid_types = array( 'csv', 'json', 'excel', 'xml', 'manual', 'mysql', 'google_sheets', 'api' );
 		if ( ! in_array( $this->source_type, $valid_types, true ) ) {
 			$errors[] = __( 'Invalid source type.', 'a-tables-charts' );
 		}
