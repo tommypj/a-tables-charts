@@ -11,6 +11,7 @@
 namespace ATablesCharts\Tables\Repositories;
 
 use ATablesCharts\Tables\Types\Table;
+use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
  * TableRepository Class
@@ -183,11 +184,16 @@ class TableRepository {
 		);
 
 		$args = wp_parse_args( $args, $defaults );
-		
+
 		// Map sort_by to orderby if provided
 		if ( ! empty( $args['sort_by'] ) ) {
 			$args['orderby'] = $args['sort_by'];
 		}
+
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'title', 'created_at', 'updated_at', 'status', 'row_count', 'column_count', 'data_source_type' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
 
 		// Build query.
 		$where = "WHERE 1=1";
@@ -195,13 +201,13 @@ class TableRepository {
 		if ( ! empty( $args['status'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND status = %s', $args['status'] );
 		}
-		
+
 		// Add search filter
 		if ( ! empty( $args['search'] ) ) {
 			$search_term = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
 			$where .= $this->wpdb->prepare( ' AND (title LIKE %s OR description LIKE %s)', $search_term, $search_term );
 		}
-		
+
 		// Add source type filter (case-insensitive)
 		if ( ! empty( $args['source_type'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND UPPER(data_source_type) = UPPER(%s)', $args['source_type'] );
@@ -209,9 +215,9 @@ class TableRepository {
 
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
-				  {$where} 
-				  ORDER BY {$args['orderby']} {$args['order']} 
+		$query = "SELECT * FROM {$this->table_name}
+				  {$where}
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
@@ -341,11 +347,16 @@ class TableRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'title', 'created_at', 'updated_at', 'status', 'row_count', 'column_count', 'data_source_type' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
+		$query = "SELECT * FROM {$this->table_name}
 				  WHERE title LIKE %s OR description LIKE %s
-				  ORDER BY {$args['orderby']} {$args['order']} 
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(

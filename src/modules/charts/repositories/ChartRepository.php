@@ -11,6 +11,7 @@
 namespace ATablesCharts\Charts\Repositories;
 
 use ATablesCharts\Charts\Types\Chart;
+use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
  * ChartRepository Class
@@ -107,6 +108,11 @@ class ChartRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'title', 'chart_type', 'created_at', 'updated_at', 'status' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$where = "WHERE 1=1";
 
 		if ( ! empty( $args['table_id'] ) ) {
@@ -119,9 +125,9 @@ class ChartRepository {
 
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
-				  {$where} 
-				  ORDER BY {$args['orderby']} {$args['order']} 
+		$query = "SELECT * FROM {$this->table_name}
+				  {$where}
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(

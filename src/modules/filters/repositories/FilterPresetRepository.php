@@ -12,6 +12,7 @@ namespace ATablesCharts\Filters\Repositories;
 
 use ATablesCharts\Filters\Types\FilterPreset;
 use ATablesCharts\Filters\Types\Filter;
+use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
  * FilterPresetRepository Class
@@ -131,10 +132,15 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$query = $this->wpdb->prepare(
-			"SELECT * FROM {$this->table_name} 
-			WHERE table_id = %d 
-			ORDER BY {$args['orderby']} {$args['order']}",
+			"SELECT * FROM {$this->table_name}
+			WHERE table_id = %d
+			ORDER BY {$safe_orderby} {$safe_order}",
 			$table_id
 		);
 
@@ -192,11 +198,16 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
-				  WHERE created_by = %d 
-				  ORDER BY {$args['orderby']} {$args['order']} 
+		$query = "SELECT * FROM {$this->table_name}
+				  WHERE created_by = %d
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
@@ -375,11 +386,16 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
+		$query = "SELECT * FROM {$this->table_name}
 				  WHERE name LIKE %s OR description LIKE %s
-				  ORDER BY {$args['orderby']} {$args['order']} 
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
