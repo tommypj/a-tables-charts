@@ -20,6 +20,76 @@ if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
 }
 
+// Custom autoloader for ATablesCharts namespace to handle case-insensitive directories.
+spl_autoload_register( function ( $class ) {
+	// Only handle ATablesCharts namespace.
+	$prefix = 'ATablesCharts\\';
+	$base_dir = dirname( dirname( __DIR__ ) ) . '/src/';
+
+	// Check if the class uses the namespace prefix.
+	$len = strlen( $prefix );
+	if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+		return; // Not our namespace.
+	}
+
+	// Get the relative class name.
+	$relative_class = substr( $class, $len );
+
+	// Convert namespace separators to directory separators.
+	$relative_class_path = str_replace( '\\', '/', $relative_class );
+
+	// Handle the specific directory structure:
+	// - First level: lcfirst (Export -> export, Tables -> tables, DataSources -> dataSources)
+	// - Second level: lowercase (Services -> services, Types -> types, etc.)
+	// - Class file: as-is (CSVExportService.php, Table.php, etc.)
+
+	// Common directory name mappings.
+	$dir_mappings = array(
+		'/Services/'      => '/services/',
+		'/Types/'         => '/types/',
+		'/Repositories/'  => '/repositories/',
+		'/Controllers/'   => '/controllers/',
+		'/Parsers/'       => '/parsers/',
+		'/Renderers/'     => '/renderers/',
+		'/Utils/'         => '/utils/',
+		'/Interfaces/'    => '/interfaces/',
+		'/Exceptions/'    => '/exceptions/',
+		'/Middleware/'    => '/middleware/',
+		'/Validators/'    => '/validators/',
+		'/Migrations/'    => '/migrations/',
+	);
+
+	// Try different path strategies.
+	$possible_paths = array();
+
+	// Strategy 1: modules/ + lcfirst first segment + lowercase middle segments.
+	$normalized_path = $relative_class_path;
+	foreach ( $dir_mappings as $upper => $lower ) {
+		$normalized_path = str_replace( $upper, $lower, $normalized_path );
+	}
+	$parts = explode( '/', $normalized_path );
+	if ( count( $parts ) > 0 ) {
+		$parts[0] = lcfirst( $parts[0] );
+		$possible_paths[] = $base_dir . 'modules/' . implode( '/', $parts ) . '.php';
+	}
+
+	// Strategy 2: shared/ + lowercase segments (for shared utilities).
+	$normalized_shared = $relative_class_path;
+	foreach ( $dir_mappings as $upper => $lower ) {
+		$normalized_shared = str_replace( $upper, $lower, $normalized_shared );
+	}
+	$possible_paths[] = $base_dir . $normalized_shared . '.php';
+	$possible_paths[] = $base_dir . strtolower( $normalized_shared ) . '.php';
+
+	// Try each possible path.
+	foreach ( $possible_paths as $file ) {
+		if ( file_exists( $file ) ) {
+			require $file;
+			return;
+		}
+	}
+} );
+
 // Mock WordPress functions for unit tests that don't need full WordPress.
 if ( ! function_exists( 'is_email' ) ) {
 	/**
@@ -120,6 +190,111 @@ if ( ! function_exists( 'wp_verify_nonce' ) ) {
 	function wp_verify_nonce( $nonce, $action ) {
 		// For testing purposes, accept any non-empty nonce.
 		return ! empty( $nonce ) ? 1 : false;
+	}
+}
+
+if ( ! function_exists( 'current_time' ) ) {
+	/**
+	 * Mock WordPress current_time function
+	 *
+	 * @param string $type Type of time to retrieve (mysql, timestamp, or PHP date format).
+	 * @param int    $gmt  Optional. Whether to use GMT timezone. Default false.
+	 * @return int|string
+	 */
+	function current_time( $type, $gmt = 0 ) {
+		if ( 'mysql' === $type ) {
+			return gmdate( 'Y-m-d H:i:s' );
+		}
+		if ( 'timestamp' === $type || 'U' === $type ) {
+			return time();
+		}
+		return gmdate( $type );
+	}
+}
+
+if ( ! function_exists( 'get_current_user_id' ) ) {
+	/**
+	 * Mock WordPress get_current_user_id function
+	 *
+	 * @return int
+	 */
+	function get_current_user_id() {
+		// For testing purposes, return a test user ID.
+		return 1;
+	}
+}
+
+if ( ! function_exists( 'wp_unslash' ) ) {
+	/**
+	 * Mock WordPress wp_unslash function
+	 *
+	 * @param string|array $value String or array to remove slashes from.
+	 * @return string|array
+	 */
+	function wp_unslash( $value ) {
+		return is_string( $value ) ? stripslashes( $value ) : $value;
+	}
+}
+
+if ( ! function_exists( 'esc_sql' ) ) {
+	/**
+	 * Mock WordPress esc_sql function
+	 *
+	 * @param string $data Data to escape.
+	 * @return string
+	 */
+	function esc_sql( $data ) {
+		global $wpdb;
+		if ( isset( $wpdb ) && method_exists( $wpdb, '_real_escape' ) ) {
+			return $wpdb->_real_escape( $data );
+		}
+		return addslashes( $data );
+	}
+}
+
+if ( ! function_exists( 'sanitize_text_field' ) ) {
+	/**
+	 * Mock WordPress sanitize_text_field function
+	 *
+	 * @param string $str String to sanitize.
+	 * @return string
+	 */
+	function sanitize_text_field( $str ) {
+		$filtered = wp_check_invalid_utf8( $str );
+		$filtered = strip_tags( $filtered );
+		$filtered = trim( $filtered );
+		return $filtered;
+	}
+}
+
+if ( ! function_exists( 'wp_check_invalid_utf8' ) ) {
+	/**
+	 * Mock WordPress wp_check_invalid_utf8 function
+	 *
+	 * @param string $string String to check.
+	 * @param bool   $strip  Whether to strip invalid UTF8.
+	 * @return string
+	 */
+	function wp_check_invalid_utf8( $string, $strip = false ) {
+		// Simple UTF-8 validation.
+		if ( ! preg_match( '//u', $string ) ) {
+			return '';
+		}
+		return $string;
+	}
+}
+
+if ( ! function_exists( 'sanitize_key' ) ) {
+	/**
+	 * Mock WordPress sanitize_key function
+	 *
+	 * @param string $key String key.
+	 * @return string
+	 */
+	function sanitize_key( $key ) {
+		$key = strtolower( $key );
+		$key = preg_replace( '/[^a-z0-9_\-]/', '', $key );
+		return $key;
 	}
 }
 
