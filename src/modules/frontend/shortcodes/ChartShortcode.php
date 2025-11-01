@@ -46,26 +46,46 @@ class ChartShortcode {
 		);
 
 		$chart_id = (int) $atts['id'];
-		
+
 		if ( empty( $chart_id ) ) {
-			return '<p><strong>A-Charts Error:</strong> Chart ID is required. Usage: [achart id="123"]</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Charts Error:', 'a-tables-charts' ),
+				esc_html__( 'Chart ID is required. Usage: [achart id="123"]', 'a-tables-charts' )
+			);
 		}
 
 		$chart = $this->repository->find_by_id( $chart_id );
-		
+
 		if ( ! $chart ) {
-			return '<p><strong>A-Charts Error:</strong> Chart not found.</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Charts Error:', 'a-tables-charts' ),
+				sprintf(
+					/* translators: %d: chart ID */
+					esc_html__( 'Chart not found. (ID: %d)', 'a-tables-charts' ),
+					(int) $chart_id
+				)
+			);
 		}
 
 		if ( $chart->status !== 'active' ) {
-			return '<p><strong>A-Charts Error:</strong> This chart is not available.</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Charts Error:', 'a-tables-charts' ),
+				esc_html__( 'This chart is not available.', 'a-tables-charts' )
+			);
 		}
 
 		// Get processed chart data
 		$chart_data = $this->service->get_chart_data( $chart_id );
-		
+
 		if ( ! $chart_data ) {
-			return '<p><strong>A-Charts Error:</strong> Unable to load chart data. Please check chart configuration.</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Charts Error:', 'a-tables-charts' ),
+				esc_html__( 'Unable to load chart data. Please check chart configuration.', 'a-tables-charts' )
+			);
 		}
 
 		// Determine which library to use

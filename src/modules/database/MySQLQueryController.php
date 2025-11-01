@@ -42,6 +42,13 @@ class MySQLQueryController {
 	private $logger;
 
 	/**
+	 * Rate limit transient key prefix
+	 *
+	 * @var string
+	 */
+	private $rate_limit_prefix = 'atables_mysql_rate_limit_';
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
@@ -51,13 +58,75 @@ class MySQLQueryController {
 	}
 
 	/**
+	 * Check rate limit for MySQL queries
+	 *
+	 * Prevents abuse by limiting number of queries per user per time period.
+	 *
+	 * @return array Array with 'allowed' boolean and 'message' string.
+	 */
+	private function check_rate_limit() {
+		$user_id = get_current_user_id();
+		$transient_key = $this->rate_limit_prefix . $user_id;
+
+		// Get current request count
+		$requests = get_transient( $transient_key );
+
+		// Rate limit: 10 queries per minute
+		$max_requests = apply_filters( 'atables_mysql_query_rate_limit', 10 );
+		$time_window = apply_filters( 'atables_mysql_query_rate_window', 60 ); // seconds
+
+		if ( false === $requests ) {
+			// First request in this time window
+			set_transient( $transient_key, 1, $time_window );
+			return array(
+				'allowed' => true,
+				'remaining' => $max_requests - 1,
+			);
+		}
+
+		if ( $requests >= $max_requests ) {
+			// Rate limit exceeded
+			$this->logger->warning( 'MySQL query rate limit exceeded', array(
+				'user_id' => $user_id,
+				'requests' => $requests,
+			) );
+
+			return array(
+				'allowed' => false,
+				'message' => sprintf(
+					/* translators: 1: number of requests, 2: time window in seconds */
+					__( 'Rate limit exceeded. Maximum %1$d queries allowed per %2$d seconds. Please try again later.', 'a-tables-charts' ),
+					$max_requests,
+					$time_window
+				),
+			);
+		}
+
+		// Increment request count
+		set_transient( $transient_key, $requests + 1, $time_window );
+
+		return array(
+			'allowed' => true,
+			'remaining' => $max_requests - ( $requests + 1 ),
+		);
+	}
+
+	/**
 	 * Test MySQL query
+	 *
+	 * SECURITY: Multiple layers of protection:
+	 * - Nonce verification
+	 * - Capability check (manage_options)
+	 * - Rate limiting
+	 * - Query validation (SELECT-only, whitelist, complexity limits)
+	 * - Audit logging
 	 *
 	 * @return void Sends JSON response.
 	 */
 	public function test_query() {
 		// Verify nonce
 		if ( ! check_ajax_referer( 'atables_admin_nonce', 'nonce', false ) ) {
+			$this->logger->warning( 'Nonce verification failed for test_query' );
 			wp_send_json_error( array(
 				'message' => __( 'Security check failed.', 'a-tables-charts' ),
 			), 403 );
@@ -65,12 +134,24 @@ class MySQLQueryController {
 
 		// Check permissions
 		if ( ! current_user_can( 'manage_options' ) ) {
+			$this->logger->warning( 'Permission denied for test_query', array(
+				'user_id' => get_current_user_id(),
+			) );
 			wp_send_json_error( array(
 				'message' => __( 'You do not have permission to execute queries.', 'a-tables-charts' ),
 			), 403 );
 		}
 
-		// Get query
+		// Check rate limit
+		$rate_limit = $this->check_rate_limit();
+		if ( ! $rate_limit['allowed'] ) {
+			wp_send_json_error( array(
+				'message' => $rate_limit['message'],
+			), 429 );
+		}
+
+		// Get and sanitize query
+		// Note: stripslashes only removes added slashes, query is still validated by service
 		$query = isset( $_POST['query'] ) ? stripslashes( $_POST['query'] ) : '';
 
 		if ( empty( $query ) ) {
@@ -79,7 +160,13 @@ class MySQLQueryController {
 			) );
 		}
 
-		// Test query
+		// Log query attempt
+		$this->logger->info( 'MySQL test query attempt', array(
+			'user_id' => get_current_user_id(),
+			'query_length' => strlen( $query ),
+		) );
+
+		// Test query (validation happens in service)
 		$result = $this->query_service->test_query( $query, 5 );
 
 		if ( ! $result['success'] ) {
@@ -94,11 +181,20 @@ class MySQLQueryController {
 			'data'    => $result['data'],
 			'rows'    => $result['rows'],
 			'columns' => $result['columns'],
+			'rate_limit_remaining' => $rate_limit['remaining'],
 		) );
 	}
 
 	/**
 	 * Create table from MySQL query
+	 *
+	 * SECURITY: Multiple layers of protection:
+	 * - Nonce verification
+	 * - Capability check (manage_options)
+	 * - Rate limiting
+	 * - Query validation (SELECT-only, whitelist, complexity limits)
+	 * - Input sanitization
+	 * - Audit logging
 	 *
 	 * @return void Sends JSON response.
 	 */
@@ -117,6 +213,14 @@ class MySQLQueryController {
 			wp_send_json_error( array(
 				'message' => __( 'You do not have permission to create tables.', 'a-tables-charts' ),
 			), 403 );
+		}
+
+		// Check rate limit
+		$rate_limit = $this->check_rate_limit();
+		if ( ! $rate_limit['allowed'] ) {
+			wp_send_json_error( array(
+				'message' => $rate_limit['message'],
+			), 429 );
 		}
 
 		// Get data
