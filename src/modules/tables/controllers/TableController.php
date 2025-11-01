@@ -15,6 +15,7 @@ use ATablesCharts\Shared\Utils\Validator;
 use ATablesCharts\Shared\Utils\Sanitizer;
 use ATablesCharts\Shared\Utils\Helpers;
 use ATablesCharts\Shared\Utils\Logger;
+use ATablesCharts\Cache\Services\CacheService;
 
 /**
  * TableController Class
@@ -581,9 +582,8 @@ class TableController {
 	 */
 	private function clear_table_cache( $table_id ) {
 		try {
-			require_once ATABLES_PLUGIN_DIR . 'src/modules/cache/index.php';
-			$cache_service = new \ATablesCharts\Cache\Services\CacheService();
-			
+			$cache_service = new CacheService();
+
 			// Clear both cache keys for this table
 			$cache_service->delete( 'table_all_data_' . $table_id );
 			$cache_service->delete( 'table_' . $table_id );

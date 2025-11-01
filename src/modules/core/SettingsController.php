@@ -10,6 +10,8 @@
 
 namespace ATablesCharts\Core;
 
+use ATablesCharts\Cache\Services\CacheService;
+
 /**
  * Settings Controller Class
  */
@@ -189,9 +191,7 @@ class SettingsController {
 		}
 
 		try {
-			// Load cache module
-			require_once ATABLES_PLUGIN_DIR . 'src/modules/cache/index.php';
-			$cache_service = new \ATablesCharts\Cache\Services\CacheService();
+			$cache_service = new CacheService();
 
 			// Clear cache
 			$cleared_count = $cache_service->clear_all();
@@ -225,9 +225,7 @@ class SettingsController {
 		}
 
 		try {
-			// Load cache module
-			require_once ATABLES_PLUGIN_DIR . 'src/modules/cache/index.php';
-			$cache_service = new \ATablesCharts\Cache\Services\CacheService();
+			$cache_service = new CacheService();
 
 			// Reset stats
 			$cache_service->reset_stats();

@@ -10,6 +10,12 @@
 
 namespace ATablesCharts\Core;
 
+use ATablesCharts\Tables\Services\TableService;
+use ATablesCharts\Tables\Repositories\TableRepository;
+use ATablesCharts\Cache\Services\CacheService;
+use ATablesCharts\Filters\Types\Filter;
+use ATablesCharts\Filters\Services\FilterService;
+
 /**
  * Table View AJAX Controller
  */
@@ -51,10 +57,7 @@ class TableViewAjaxController {
 			wp_send_json_error( 'Invalid table ID.' );
 		}
 
-		// Load Tables module
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
-
-		$table_service = new \ATablesCharts\Tables\Services\TableService();
+		$table_service = new TableService();
 		$table = $table_service->get_table( $table_id );
 
 		if ( ! $table ) {
@@ -134,11 +137,7 @@ class TableViewAjaxController {
 			wp_send_json_error( 'Invalid table ID.' );
 		}
 
-		// Load Tables and Filters modules
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/filters/index.php';
-
-		$table_service = new \ATablesCharts\Tables\Services\TableService();
+		$table_service = new TableService();
 		$table = $table_service->get_table( $table_id );
 
 		if ( ! $table ) {
@@ -148,7 +147,7 @@ class TableViewAjaxController {
 		$headers = $table->get_headers();
 
 		// Get all table data
-		$table_repository = new \ATablesCharts\Tables\Repositories\TableRepository();
+		$table_repository = new TableRepository();
 		$all_data = $table_repository->get_table_data( $table_id );
 
 		// Map data to headers
@@ -170,7 +169,7 @@ class TableViewAjaxController {
 			foreach ( $filters as $filter_data ) {
 				if ( isset( $filter_data['column'] ) && isset( $filter_data['operator'] ) ) {
 					// Create Filter object with array data
-					$filter_objects[] = new \ATablesCharts\Filters\Types\Filter( array(
+					$filter_objects[] = new Filter( array(
 						'column'   => $filter_data['column'],
 						'operator' => $filter_data['operator'],
 						'value'    => isset( $filter_data['value'] ) ? $filter_data['value'] : '',
@@ -180,7 +179,7 @@ class TableViewAjaxController {
 
 			// Apply filters
 			if ( ! empty( $filter_objects ) ) {
-				$filter_service = new \ATablesCharts\Filters\Services\FilterService();
+				$filter_service = new FilterService();
 				$mapped_data = $filter_service->apply_filters( $mapped_data, $filter_objects );
 			}
 		}
@@ -248,8 +247,7 @@ class TableViewAjaxController {
 		}
 
 		// Check cache first
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/cache/index.php';
-		$cache_service = new \ATablesCharts\Cache\Services\CacheService();
+		$cache_service = new CacheService();
 		$cache_key = 'table_all_data_' . $table_id;
 		$cached_data = $cache_service->get( $cache_key );
 
@@ -259,10 +257,7 @@ class TableViewAjaxController {
 			return;
 		}
 
-		// Load Tables module
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
-
-		$table_service = new \ATablesCharts\Tables\Services\TableService();
+		$table_service = new TableService();
 		$table = $table_service->get_table( $table_id );
 
 		if ( ! $table ) {
