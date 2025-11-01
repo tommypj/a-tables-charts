@@ -1,0 +1,113 @@
+/**
+ * A-Tables & Charts Gutenberg Blocks Editor Styles
+ */
+
+/* Block Wrapper */
+.atables-block-wrapper {
+	margin: 20px 0;
+	padding: 20px;
+	background: #fff;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+}
+
+/* Block Notice */
+.atables-block-notice {
+	padding: 15px;
+	background: #f0f0f1;
+	border-left: 4px solid #2271b1;
+	color: #1d2327;
+	font-size: 14px;
+	line-height: 1.5;
+}
+
+/* Placeholder Styling */
+.atables-block-wrapper .components-placeholder {
+	min-height: 200px;
+	padding: 40px;
+}
+
+.atables-block-wrapper .components-placeholder__label {
+	margin-bottom: 20px;
+	font-size: 16px;
+	font-weight: 600;
+}
+
+.atables-block-wrapper .components-placeholder__instructions {
+	margin-bottom: 20px;
+	color: #757575;
+}
+
+/* Select Control in Placeholder */
+.atables-block-wrapper .components-placeholder .components-base-control {
+	width: 100%;
+	max-width: 400px;
+}
+
+/* Inspector Controls */
+.atables-block-wrapper .components-panel__body {
+	border-top: 1px solid #e0e0e0;
+}
+
+.atables-block-wrapper .components-base-control__help {
+	margin-top: 8px;
+	font-size: 12px;
+	color: #757575;
+	line-height: 1.4;
+}
+
+/* Server Side Render Preview */
+.atables-block-wrapper .components-disabled {
+	pointer-events: none;
+	opacity: 0.8;
+}
+
+/* Table Preview in Editor */
+.atables-block-wrapper table {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.atables-block-wrapper table th,
+.atables-block-wrapper table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: left;
+}
+
+.atables-block-wrapper table th {
+	background-color: #f7f7f7;
+	font-weight: 600;
+}
+
+/* Chart Preview in Editor */
+.atables-block-wrapper .atables-chart-container {
+	min-height: 300px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+/* Loading State */
+.atables-block-wrapper .components-spinner {
+	margin: 40px auto;
+	display: block;
+}
+
+/* Wide and Full Width Alignments */
+.wp-block[data-align="wide"] .atables-block-wrapper,
+.wp-block[data-align="full"] .atables-block-wrapper {
+	max-width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 782px) {
+	.atables-block-wrapper {
+		padding: 15px;
+	}
+
+	.atables-block-wrapper .components-placeholder {
+		padding: 20px;
+		min-height: 150px;
+	}
+}

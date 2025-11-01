@@ -7,6 +7,8 @@
 
 namespace ATablesCharts\Templates\Services;
 
+use ATablesCharts\Tables\Repositories\TableRepository;
+
 class TemplateService {
 
 	/**
@@ -142,9 +144,8 @@ class TemplateService {
 			return false;
 		}
 
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
-		$repository = new \ATablesCharts\Tables\Repositories\TableRepository();
-		
+		$repository = new TableRepository();
+
 		return $repository->save_display_settings( $table_id, $template['config'] );
 	}
 }

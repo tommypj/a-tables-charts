@@ -1,0 +1,23 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 2,
+	"name": "atables/chart",
+	"version": "1.0.0",
+	"title": "A-Tables Chart",
+	"category": "widgets",
+	"icon": "chart-bar",
+	"description": "Display a chart created with A-Tables & Charts plugin.",
+	"keywords": ["chart", "graph", "visualization", "atables"],
+	"supports": {
+		"html": false,
+		"align": ["wide", "full"]
+	},
+	"attributes": {
+		"chartId": {
+			"type": "number",
+			"default": 0
+		}
+	},
+	"textdomain": "a-tables-charts",
+	"editorScript": "file:./index.js"
+}

@@ -13,6 +13,7 @@ namespace ATablesCharts\Import\Controllers;
 use ATablesCharts\Import\Services\ExcelImportService;
 use ATablesCharts\Import\Services\XmlImportService;
 use ATablesCharts\Shared\Utils\Logger;
+use ATablesCharts\Tables\Services\TableService;
 
 /**
  * ImportController Class
@@ -410,10 +411,9 @@ class ImportController {
 			// Import file.
 			$import_result = $this->xml_service->import( $file_path );
 
-			// Load Table Service to create the table.
-			require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
-			$table_service = new \ATablesCharts\Tables\Services\TableService();
-			
+			// Create the table.
+			$table_service = new TableService();
+
 			// Create table from import result.
 			$result = $table_service->create_from_import( $title, $import_result, 'xml' );
 
