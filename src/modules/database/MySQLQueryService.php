@@ -33,13 +33,30 @@ class MySQLQueryService {
 	 * - Execution time limits
 	 * - Result size limits
 	 *
+	 * IMPORTANT SECURITY NOTE:
+	 * This method CANNOT use $wpdb->prepare() because it accepts full SELECT queries
+	 * from administrators (not parameter values). Instead, it uses a 6-layer validation
+	 * system that:
+	 * 1. Enforces SELECT-only (blocks DROP, DELETE, INSERT, UPDATE, etc.)
+	 * 2. Strips SQL comments (prevents comment-based bypasses)
+	 * 3. Detects 30+ dangerous keywords (UNION, BENCHMARK, LOAD_FILE, etc.)
+	 * 4. Enforces table whitelist (only WordPress core + plugin tables)
+	 * 5. Limits query complexity (max JOINs, subquery depth)
+	 * 6. Validates character set (ASCII-only)
+	 *
+	 * All queries are logged. Failed validation attempts are logged as security warnings.
+	 *
 	 * @param string $query SQL query to execute.
 	 * @return array Result with headers and data.
 	 */
 	public function execute_query( $query ) {
 		global $wpdb;
 
-		// Validate query
+		// SECURITY: Validate query BEFORE execution
+		// This comprehensive validation prevents SQL injection by enforcing:
+		// - SELECT-only queries
+		// - Table whitelist
+		// - No dangerous keywords (DROP, DELETE, UNION, etc.)
 		$validation = $this->validate_query( $query );
 		if ( ! $validation['valid'] ) {
 			// Log security violation

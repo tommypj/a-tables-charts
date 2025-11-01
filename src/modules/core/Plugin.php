@@ -279,13 +279,15 @@ class Plugin {
 		
 		// Register Export Controller.
 		$export_controller = new \ATablesCharts\Export\Controllers\ExportController();
-		
-		// Register export AJAX actions (for logged-in users).
+
+		// Register export AJAX actions (for logged-in users only).
+		// SECURITY: Unauthenticated exports completely disabled to prevent:
+		// - Resource exhaustion (DoS attacks)
+		// - Unauthorized data access
+		// - Mass data scraping
+		// Users must be logged in to export tables.
 		add_action( 'wp_ajax_atables_export_table', array( $export_controller, 'export_table' ) );
-		
-		// Register export AJAX actions (for non-logged-in users on frontend).
-		add_action( 'wp_ajax_nopriv_atables_export_table', array( $export_controller, 'export_table' ) );
-		
+
 		// Load Database module.
 		require_once ATABLES_PLUGIN_DIR . 'src/modules/database/index.php';
 		
