@@ -17,6 +17,38 @@ use ATablesCharts\Shared\Utils\Logger;
  * MySQLQueryController Class
  *
  * Handles HTTP requests for MySQL queries.
+ *
+ * SECURITY ARCHITECTURE:
+ * =====================
+ * 1. ADMIN-ONLY ACCESS:
+ *    - All methods require current_user_can('manage_options')
+ *    - This is WordPress Administrator-level permission
+ *    - No access for Editors, Authors, Subscribers, or unauthenticated users
+ *
+ * 2. NONCE VERIFICATION:
+ *    - All AJAX actions require valid nonce
+ *    - Nonce: 'atables_admin_nonce'
+ *    - Prevents CSRF attacks
+ *
+ * 3. RATE LIMITING:
+ *    - 10 queries per minute per admin user
+ *    - Prevents resource exhaustion
+ *    - Configurable via filters
+ *
+ * 4. QUERY VALIDATION:
+ *    - SELECT-only enforcement (blocks DROP, DELETE, UPDATE, etc.)
+ *    - Table whitelist (only WordPress core + plugin tables)
+ *    - Dangerous keyword detection (30+ keywords blocked)
+ *    - Query complexity limits (max JOINs, subquery depth)
+ *    - See MySQLQueryService::validate_query() for full details
+ *
+ * 5. COMPREHENSIVE LOGGING:
+ *    - All query attempts logged
+ *    - Failed validation logged as security warnings
+ *    - User ID tracked for all operations
+ *
+ * IMPORTANT: This feature is for ADMINISTRATORS ONLY to create tables from
+ * database queries. It is NOT accessible to regular users or unauthenticated visitors.
  */
 class MySQLQueryController {
 
