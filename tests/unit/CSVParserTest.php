@@ -11,7 +11,7 @@
 namespace ATablesCharts\Tests\Unit;
 
 use ATablesCharts\Tests\Bootstrap\TestCase;
-use ATablesCharts\DataSources\Parsers\CSVParser;
+use ATablesCharts\DataSources\Parsers\CsvParser;
 
 /**
  * CSVParserTest Class
@@ -21,7 +21,7 @@ class CSVParserTest extends TestCase {
 	/**
 	 * Parser instance
 	 *
-	 * @var CSVParser
+	 * @var CsvParser
 	 */
 	private $parser;
 
@@ -30,7 +30,7 @@ class CSVParserTest extends TestCase {
 	 */
 	public function setUp(): void {
 		parent::setUp();
-		$this->parser = new CSVParser();
+		$this->parser = new CsvParser();
 	}
 
 	/**

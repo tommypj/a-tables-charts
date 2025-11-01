@@ -13,6 +13,7 @@ namespace ATablesCharts\Filters\Services;
 use ATablesCharts\Filters\Types\FilterPreset;
 use ATablesCharts\Filters\Types\Filter;
 use ATablesCharts\Filters\Repositories\FilterPresetRepository;
+use ATablesCharts\Shared\Utils\Logger;
 
 /**
  * FilterPresetService Class
@@ -108,7 +109,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Filter preset creation error: ' . $e->getMessage() );
+			Logger::log_error( 'Filter preset creation error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred.', 'a-tables-charts' ) ),
@@ -192,7 +193,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Filter preset update error: ' . $e->getMessage() );
+			Logger::log_error( 'Filter preset update error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred.', 'a-tables-charts' ) ),
@@ -231,7 +232,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Filter preset deletion error: ' . $e->getMessage() );
+			Logger::log_error( 'Filter preset deletion error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred.', 'a-tables-charts' ) ),
@@ -345,7 +346,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Set default preset error: ' . $e->getMessage() );
+			Logger::log_error( 'Set default preset error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred.', 'a-tables-charts' ) ),
@@ -379,7 +380,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Duplicate preset error: ' . $e->getMessage() );
+			Logger::log_error( 'Duplicate preset error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred.', 'a-tables-charts' ) ),
@@ -417,7 +418,7 @@ class FilterPresetService {
 			);
 
 		} catch ( \Exception $e ) {
-			error_log( 'Apply preset error: ' . $e->getMessage() );
+			Logger::log_error( 'Apply preset error', array( 'error' => $e->getMessage() ) );
 			return array(
 				'success' => false,
 				'errors'  => array( __( 'An unexpected error occurred while applying filters.', 'a-tables-charts' ) ),

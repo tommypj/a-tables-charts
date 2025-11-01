@@ -15,10 +15,143 @@ define( 'ATABLES_PLUGIN_DIR', dirname( dirname( __DIR__ ) ) . '/' );
 define( 'ATABLES_PLUGIN_URL', 'http://example.com/wp-content/plugins/a-tables-charts/' );
 define( 'ATABLES_PLUGIN_BASENAME', 'a-tables-charts/a-tables-charts.php' );
 
+// Define WP_DEBUG for testing (can be overridden in individual tests).
+if ( ! defined( 'WP_DEBUG' ) ) {
+	define( 'WP_DEBUG', true );
+}
+if ( ! defined( 'WP_DEBUG_LOG' ) ) {
+	define( 'WP_DEBUG_LOG', true );
+}
+
+// Define WordPress database constants
+if ( ! defined( 'ARRAY_A' ) ) {
+	define( 'ARRAY_A', 'ARRAY_A' );
+}
+if ( ! defined( 'ARRAY_N' ) ) {
+	define( 'ARRAY_N', 'ARRAY_N' );
+}
+if ( ! defined( 'OBJECT' ) ) {
+	define( 'OBJECT', 'OBJECT' );
+}
+
 // Load Composer autoloader if available.
 if ( file_exists( dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php' ) ) {
 	require_once dirname( dirname( __DIR__ ) ) . '/vendor/autoload.php';
 }
+
+// Custom autoloader for ATablesCharts namespace to handle case-insensitive directories.
+spl_autoload_register( function ( $class ) {
+	// Only handle ATablesCharts namespace.
+	$prefix = 'ATablesCharts\\';
+	$base_dir = dirname( dirname( __DIR__ ) ) . '/src/';
+
+	// Check if the class uses the namespace prefix.
+	$len = strlen( $prefix );
+	if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+		return; // Not our namespace.
+	}
+
+	// Get the relative class name.
+	$relative_class = substr( $class, $len );
+
+	// Convert namespace separators to directory separators.
+	$relative_class_path = str_replace( '\\', '/', $relative_class );
+
+	// Handle the specific directory structure:
+	// - First level: lcfirst (Export -> export, Tables -> tables, DataSources -> dataSources)
+	// - Second level: lowercase (Services -> services, Types -> types, etc.)
+	// - Class file: as-is (CSVExportService.php, Table.php, etc.)
+
+	// Common directory name mappings.
+	$dir_mappings = array(
+		'/Services/'      => '/services/',
+		'/Types/'         => '/types/',
+		'/Repositories/'  => '/repositories/',
+		'/Controllers/'   => '/controllers/',
+		'/Parsers/'       => '/parsers/',
+		'/Renderers/'     => '/renderers/',
+		'/Utils/'         => '/utils/',
+		'/Interfaces/'    => '/interfaces/',
+		'/Exceptions/'    => '/exceptions/',
+		'/Middleware/'    => '/middleware/',
+		'/Validators/'    => '/validators/',
+		'/Migrations/'    => '/migrations/',
+	);
+
+	// Try different path strategies.
+	$possible_paths = array();
+
+	// Strategy 1: modules/ + lcfirst first segment + lowercase middle segments.
+	$normalized_path = $relative_class_path;
+	foreach ( $dir_mappings as $upper => $lower ) {
+		$normalized_path = str_replace( $upper, $lower, $normalized_path );
+	}
+	$parts = explode( '/', $normalized_path );
+	if ( count( $parts ) > 0 ) {
+		$parts[0] = lcfirst( $parts[0] );
+		$possible_paths[] = $base_dir . 'modules/' . implode( '/', $parts ) . '.php';
+	}
+
+	// Strategy 2: shared/ + lowercase segments (for shared utilities).
+	$normalized_shared = $relative_class_path;
+	foreach ( $dir_mappings as $upper => $lower ) {
+		$normalized_shared = str_replace( $upper, $lower, $normalized_shared );
+	}
+	$possible_paths[] = $base_dir . $normalized_shared . '.php';
+	$possible_paths[] = $base_dir . strtolower( $normalized_shared ) . '.php';
+
+	// Strategy 3: lowercase directories but preserve class filename case.
+	$parts_shared = explode( '/', $normalized_shared );
+	if ( count( $parts_shared ) > 1 ) {
+		$class_name = array_pop( $parts_shared );
+		$dirs = array_map( 'strtolower', $parts_shared );
+		$possible_paths[] = $base_dir . implode( '/', $dirs ) . '/' . $class_name . '.php';
+	}
+
+	// Try each possible path.
+	foreach ( $possible_paths as $file ) {
+		if ( file_exists( $file ) ) {
+			require $file;
+			return;
+		}
+	}
+} );
+
+// Custom autoloader for A_Tables_Charts namespace (legacy underscore namespace in includes/)
+spl_autoload_register( function ( $class ) {
+	// Only handle A_Tables_Charts namespace (with underscores)
+	$prefix = 'A_Tables_Charts\\';
+	$base_dir = dirname( dirname( __DIR__ ) ) . '/includes/';
+
+	// Check if the class uses the namespace prefix
+	$len = strlen( $prefix );
+	if ( strncmp( $prefix, $class, $len ) !== 0 ) {
+		return; // Not our namespace
+	}
+
+	// Get the relative class name
+	$relative_class = substr( $class, $len );
+
+	// Convert namespace separators to directory separators and keep case
+	$file = $base_dir . str_replace( '\\', '/', $relative_class ) . '.php';
+
+	// Try lowercase directories
+	$parts = explode( '/', str_replace( '\\', '/', $relative_class ) );
+	if ( count( $parts ) > 1 ) {
+		$class_name = array_pop( $parts );
+		$dirs = array_map( 'strtolower', $parts );
+		$file_alt = $base_dir . implode( '/', $dirs ) . '/' . $class_name . '.php';
+
+		if ( file_exists( $file_alt ) ) {
+			require $file_alt;
+			return;
+		}
+	}
+
+	if ( file_exists( $file ) ) {
+		require $file;
+	}
+} );
 
 // Mock WordPress functions for unit tests that don't need full WordPress.
 if ( ! function_exists( 'is_email' ) ) {
@@ -55,6 +188,42 @@ if ( ! function_exists( 'esc_html__' ) ) {
 	 * @return string
 	 */
 	function esc_html__( $text, $domain = 'default' ) {
+		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_attr' ) ) {
+	/**
+	 * Mock WordPress esc_attr function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_attr( $text ) {
+		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
+	}
+}
+
+if ( ! function_exists( 'esc_js' ) ) {
+	/**
+	 * Mock WordPress esc_js function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_js( $text ) {
+		return addslashes( $text );
+	}
+}
+
+if ( ! function_exists( 'esc_html' ) ) {
+	/**
+	 * Mock WordPress esc_html function
+	 *
+	 * @param string $text Text to escape.
+	 * @return string
+	 */
+	function esc_html( $text ) {
 		return htmlspecialchars( $text, ENT_QUOTES, 'UTF-8' );
 	}
 }
@@ -120,6 +289,385 @@ if ( ! function_exists( 'wp_verify_nonce' ) ) {
 	function wp_verify_nonce( $nonce, $action ) {
 		// For testing purposes, accept any non-empty nonce.
 		return ! empty( $nonce ) ? 1 : false;
+	}
+}
+
+if ( ! function_exists( 'current_time' ) ) {
+	/**
+	 * Mock WordPress current_time function
+	 *
+	 * @param string $type Type of time to retrieve (mysql, timestamp, or PHP date format).
+	 * @param int    $gmt  Optional. Whether to use GMT timezone. Default false.
+	 * @return int|string
+	 */
+	function current_time( $type, $gmt = 0 ) {
+		if ( 'mysql' === $type ) {
+			return gmdate( 'Y-m-d H:i:s' );
+		}
+		if ( 'timestamp' === $type || 'U' === $type ) {
+			return time();
+		}
+		return gmdate( $type );
+	}
+}
+
+if ( ! function_exists( 'get_current_user_id' ) ) {
+	/**
+	 * Mock WordPress get_current_user_id function
+	 *
+	 * @return int
+	 */
+	function get_current_user_id() {
+		// For testing purposes, return a test user ID.
+		return 1;
+	}
+}
+
+if ( ! function_exists( 'wp_parse_args' ) ) {
+	/**
+	 * Mock WordPress wp_parse_args function
+	 *
+	 * @param string|array|object $args     Value to merge with $defaults.
+	 * @param array               $defaults Optional. Array of default parameters.
+	 * @return array
+	 */
+	function wp_parse_args( $args, $defaults = array() ) {
+		if ( is_object( $args ) ) {
+			$parsed_args = get_object_vars( $args );
+		} elseif ( is_array( $args ) ) {
+			$parsed_args =& $args;
+		} else {
+			parse_str( $args, $parsed_args );
+		}
+
+		if ( is_array( $defaults ) && $defaults ) {
+			return array_merge( $defaults, $parsed_args );
+		}
+		return $parsed_args;
+	}
+}
+
+if ( ! function_exists( 'wp_unslash' ) ) {
+	/**
+	 * Mock WordPress wp_unslash function
+	 *
+	 * @param string|array $value String or array to remove slashes from.
+	 * @return string|array
+	 */
+	function wp_unslash( $value ) {
+		return is_string( $value ) ? stripslashes( $value ) : $value;
+	}
+}
+
+if ( ! function_exists( 'esc_sql' ) ) {
+	/**
+	 * Mock WordPress esc_sql function
+	 *
+	 * @param string $data Data to escape.
+	 * @return string
+	 */
+	function esc_sql( $data ) {
+		global $wpdb;
+		if ( isset( $wpdb ) && method_exists( $wpdb, '_real_escape' ) ) {
+			return $wpdb->_real_escape( $data );
+		}
+		return addslashes( $data );
+	}
+}
+
+if ( ! function_exists( 'sanitize_text_field' ) ) {
+	/**
+	 * Mock WordPress sanitize_text_field function
+	 *
+	 * @param string $str String to sanitize.
+	 * @return string
+	 */
+	function sanitize_text_field( $str ) {
+		$filtered = wp_check_invalid_utf8( $str );
+		// Remove script/style tags AND their content (security)
+		$filtered = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $filtered );
+		// Now strip remaining tags but keep their content
+		$filtered = strip_tags( $filtered );
+		$filtered = trim( $filtered );
+		return $filtered;
+	}
+}
+
+if ( ! function_exists( 'wp_check_invalid_utf8' ) ) {
+	/**
+	 * Mock WordPress wp_check_invalid_utf8 function
+	 *
+	 * @param string $string String to check.
+	 * @param bool   $strip  Whether to strip invalid UTF8.
+	 * @return string
+	 */
+	function wp_check_invalid_utf8( $string, $strip = false ) {
+		// Simple UTF-8 validation.
+		if ( ! preg_match( '//u', $string ) ) {
+			return '';
+		}
+		return $string;
+	}
+}
+
+if ( ! function_exists( 'sanitize_key' ) ) {
+	/**
+	 * Mock WordPress sanitize_key function
+	 *
+	 * @param string $key String key.
+	 * @return string
+	 */
+	function sanitize_key( $key ) {
+		$key = strtolower( $key );
+		$key = preg_replace( '/[^a-z0-9_\-]/', '', $key );
+		return $key;
+	}
+}
+
+if ( ! function_exists( 'sanitize_textarea_field' ) ) {
+	/**
+	 * Mock WordPress sanitize_textarea_field function
+	 *
+	 * @param string $str String to sanitize.
+	 * @return string
+	 */
+	function sanitize_textarea_field( $str ) {
+		$filtered = wp_check_invalid_utf8( $str );
+		$filtered = str_replace( "\r", '', $filtered );
+		return $filtered;
+	}
+}
+
+if ( ! function_exists( 'sanitize_email' ) ) {
+	/**
+	 * Mock WordPress sanitize_email function
+	 *
+	 * @param string $email Email to sanitize.
+	 * @return string
+	 */
+	function sanitize_email( $email ) {
+		return strtolower( trim( $email ) );
+	}
+}
+
+if ( ! function_exists( 'esc_url_raw' ) ) {
+	/**
+	 * Mock WordPress esc_url_raw function
+	 *
+	 * @param string $url URL to escape.
+	 * @return string
+	 */
+	function esc_url_raw( $url ) {
+		// Remove dangerous protocols
+		$dangerous_protocols = array( 'javascript:', 'data:', 'vbscript:', 'file:' );
+		foreach ( $dangerous_protocols as $protocol ) {
+			if ( stripos( $url, $protocol ) === 0 ) {
+				return '';
+			}
+		}
+		return filter_var( $url, FILTER_SANITIZE_URL );
+	}
+}
+
+if ( ! function_exists( 'esc_url' ) ) {
+	/**
+	 * Mock WordPress esc_url function
+	 *
+	 * @param string $url URL to escape.
+	 * @return string
+	 */
+	function esc_url( $url ) {
+		return esc_url_raw( $url );
+	}
+}
+
+if ( ! function_exists( 'sanitize_file_name' ) ) {
+	/**
+	 * Mock WordPress sanitize_file_name function
+	 *
+	 * @param string $filename Filename to sanitize.
+	 * @return string
+	 */
+	function sanitize_file_name( $filename ) {
+		$filename = preg_replace( '/[^a-zA-Z0-9._\-]/', '', $filename );
+		return $filename;
+	}
+}
+
+if ( ! function_exists( 'sanitize_title' ) ) {
+	/**
+	 * Mock WordPress sanitize_title function
+	 *
+	 * @param string $title Title to sanitize.
+	 * @return string
+	 */
+	function sanitize_title( $title ) {
+		$title = strtolower( $title );
+		$title = preg_replace( '/[^a-z0-9\-]/', '-', $title );
+		$title = preg_replace( '/-+/', '-', $title );
+		$title = trim( $title, '-' );
+		return $title;
+	}
+}
+
+if ( ! function_exists( 'sanitize_hex_color' ) ) {
+	/**
+	 * Mock WordPress sanitize_hex_color function
+	 *
+	 * @param string $color Hex color to sanitize.
+	 * @return string|null
+	 */
+	function sanitize_hex_color( $color ) {
+		if ( '' === $color ) {
+			return '';
+		}
+
+		if ( preg_match( '/^#[a-f0-9]{6}$/i', $color ) ) {
+			return $color;
+		}
+
+		if ( preg_match( '/^#[a-f0-9]{3}$/i', $color ) ) {
+			return $color;
+		}
+
+		return null;
+	}
+}
+
+if ( ! function_exists( 'wp_kses_allowed_html' ) ) {
+	/**
+	 * Mock WordPress wp_kses_allowed_html function
+	 *
+	 * @param string $context Context.
+	 * @return array
+	 */
+	function wp_kses_allowed_html( $context = 'post' ) {
+		return array(
+			'a'      => array( 'href' => true, 'title' => true ),
+			'b'      => array(),
+			'strong' => array(),
+			'em'     => array(),
+			'i'      => array(),
+			'p'      => array(),
+			'br'     => array(),
+		);
+	}
+}
+
+if ( ! function_exists( 'wp_kses' ) ) {
+	/**
+	 * Mock WordPress wp_kses function
+	 *
+	 * @param string $string HTML string.
+	 * @param array  $allowed_html Allowed HTML.
+	 * @return string
+	 */
+	function wp_kses( $string, $allowed_html ) {
+		// Remove script tags and their content
+		$string = preg_replace( '@<script[^>]*?>.*?</script>@si', '', $string );
+
+		// Remove dangerous event handlers
+		$string = preg_replace( '/\s*on\w+\s*=\s*["\'][^"\']*["\']/i', '', $string );
+		$string = preg_replace( '/\s*on\w+\s*=\s*[^\s>]*/i', '', $string );
+
+		// Strip all tags except allowed
+		$allowed_tags = '<' . implode( '><', array_keys( $allowed_html ) ) . '>';
+		return strip_tags( $string, $allowed_tags );
+	}
+}
+
+if ( ! function_exists( 'wp_kses_post' ) ) {
+	/**
+	 * Mock WordPress wp_kses_post function
+	 *
+	 * @param string $data Data to sanitize.
+	 * @return string
+	 */
+	function wp_kses_post( $data ) {
+		return wp_kses( $data, wp_kses_allowed_html( 'post' ) );
+	}
+}
+
+if ( ! function_exists( 'wp_strip_all_tags' ) ) {
+	/**
+	 * Mock WordPress wp_strip_all_tags function
+	 *
+	 * @param string $string String to strip.
+	 * @param bool   $remove_breaks Whether to remove breaks.
+	 * @return string
+	 */
+	function wp_strip_all_tags( $string, $remove_breaks = false ) {
+		$string = preg_replace( '@<(script|style)[^>]*?>.*?</\\1>@si', '', $string );
+		$string = strip_tags( $string );
+
+		if ( $remove_breaks ) {
+			$string = preg_replace( '/[\r\n\t ]+/', ' ', $string );
+		}
+
+		return trim( $string );
+	}
+}
+
+if ( ! function_exists( 'wp_upload_dir' ) ) {
+	/**
+	 * Mock WordPress wp_upload_dir function
+	 *
+	 * @return array
+	 */
+	function wp_upload_dir() {
+		$upload_path = sys_get_temp_dir() . '/atables-test-uploads';
+		return array(
+			'path'    => $upload_path,
+			'url'     => 'http://example.com/wp-content/uploads',
+			'subdir'  => '',
+			'basedir' => $upload_path,
+			'baseurl' => 'http://example.com/wp-content/uploads',
+			'error'   => false,
+		);
+	}
+}
+
+if ( ! function_exists( 'wp_json_encode' ) ) {
+	/**
+	 * Mock WordPress wp_json_encode function
+	 *
+	 * @param mixed $data Data to encode.
+	 * @param int   $options JSON options.
+	 * @param int   $depth Maximum depth.
+	 * @return string|false
+	 */
+	function wp_json_encode( $data, $options = 0, $depth = 512 ) {
+		return json_encode( $data, $options, $depth );
+	}
+}
+
+if ( ! function_exists( 'wp_mkdir_p' ) ) {
+	/**
+	 * Mock WordPress wp_mkdir_p function
+	 *
+	 * @param string $target Directory path.
+	 * @return bool
+	 */
+	function wp_mkdir_p( $target ) {
+		if ( file_exists( $target ) ) {
+			return is_dir( $target );
+		}
+		return @mkdir( $target, 0755, true );
+	}
+}
+
+if ( ! function_exists( 'wp_delete_file' ) ) {
+	/**
+	 * Mock WordPress wp_delete_file function
+	 *
+	 * @param string $file File path.
+	 * @return bool
+	 */
+	function wp_delete_file( $file ) {
+		if ( file_exists( $file ) ) {
+			return @unlink( $file );
+		}
+		return true;
 	}
 }
 

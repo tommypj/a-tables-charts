@@ -12,6 +12,7 @@ namespace ATablesCharts\Frontend\Shortcodes;
 
 use ATablesCharts\Tables\Repositories\TableRepository;
 use ATablesCharts\Frontend\Renderers\TableRenderer;
+use ATablesCharts\Shared\Utils\Logger;
 
 class TableShortcode {
 
@@ -53,7 +54,7 @@ class TableShortcode {
 		
 		if ( ! $table ) {
 			// Log for debugging
-			error_log( 'A-Tables: Table not found - ID: ' . $table_id );
+			Logger::log_error( 'Table not found in shortcode', array( 'table_id' => $table_id ) );
 			return '<p><strong>A-Tables Error:</strong> Table not found. (ID: ' . esc_html( $table_id ) . ')</p>';
 		}
 

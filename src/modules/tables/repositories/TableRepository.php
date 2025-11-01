@@ -11,6 +11,8 @@
 namespace ATablesCharts\Tables\Repositories;
 
 use ATablesCharts\Tables\Types\Table;
+use ATablesCharts\Shared\Utils\Logger;
+use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
  * TableRepository Class
@@ -72,15 +74,15 @@ class TableRepository {
 		// Validate table.
 		$validation = $table->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Table validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Table validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
 		// Prepare data for insertion.
 		$data = $table->to_database();
-		
+
 		// Debug log the data being inserted.
-		error_log( 'Attempting to insert table with data: ' . print_r( $data, true ) );
+		Logger::log_debug( 'Attempting to insert table', array( 'data' => $data ) );
 
 		// Insert into database.
 		$result = $this->wpdb->insert(
@@ -100,13 +102,12 @@ class TableRepository {
 
 		if ( false === $result ) {
 			// Log the actual database error.
-			error_log( 'Database insert failed. Last error: ' . $this->wpdb->last_error );
-			error_log( 'Last query: ' . $this->wpdb->last_query );
+			Logger::log_db_error( 'Table insert failed', $this->wpdb->last_error, $this->wpdb->last_query );
 			return false;
 		}
 
 		$table_id = $this->wpdb->insert_id;
-		error_log( 'Table created successfully with ID: ' . $table_id );
+		Logger::log_info( 'Table created successfully', array( 'table_id' => $table_id ) );
 
 		// Store individual rows in table_data for better performance.
 		$this->store_table_rows( $table_id, $table->get_data() );
@@ -183,11 +184,16 @@ class TableRepository {
 		);
 
 		$args = wp_parse_args( $args, $defaults );
-		
+
 		// Map sort_by to orderby if provided
 		if ( ! empty( $args['sort_by'] ) ) {
 			$args['orderby'] = $args['sort_by'];
 		}
+
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'title', 'created_at', 'updated_at', 'status', 'row_count', 'column_count', 'data_source_type' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
 
 		// Build query.
 		$where = "WHERE 1=1";
@@ -195,13 +201,13 @@ class TableRepository {
 		if ( ! empty( $args['status'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND status = %s', $args['status'] );
 		}
-		
+
 		// Add search filter
 		if ( ! empty( $args['search'] ) ) {
 			$search_term = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
 			$where .= $this->wpdb->prepare( ' AND (title LIKE %s OR description LIKE %s)', $search_term, $search_term );
 		}
-		
+
 		// Add source type filter (case-insensitive)
 		if ( ! empty( $args['source_type'] ) ) {
 			$where .= $this->wpdb->prepare( ' AND UPPER(data_source_type) = UPPER(%s)', $args['source_type'] );
@@ -209,9 +215,9 @@ class TableRepository {
 
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
-				  {$where} 
-				  ORDER BY {$args['orderby']} {$args['order']} 
+		$query = "SELECT * FROM {$this->table_name}
+				  {$where}
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
@@ -341,11 +347,16 @@ class TableRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'title', 'created_at', 'updated_at', 'status', 'row_count', 'column_count', 'data_source_type' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
+		$query = "SELECT * FROM {$this->table_name}
 				  WHERE title LIKE %s OR description LIKE %s
-				  ORDER BY {$args['orderby']} {$args['order']} 
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
@@ -393,6 +404,9 @@ class TableRepository {
 	/**
 	 * Get table data rows with search, filter, and sort
 	 *
+	 * PERFORMANCE OPTIMIZED: Uses SQL pre-filtering to reduce dataset size
+	 * before PHP processing, significantly improving performance for large tables.
+	 *
 	 * @param int   $table_id Table ID.
 	 * @param array $args     Query arguments.
 	 * @return array Array containing data and total count
@@ -418,14 +432,55 @@ class TableRepository {
 		}
 
 		$headers = $table->get_headers();
+		$has_search = ! empty( $args['search'] );
+		$has_sort = ! empty( $args['sort_column'] );
 
-		// Get all data first (we'll filter in PHP since data is JSON)
-		$query = "SELECT row_data FROM {$this->data_table_name} 
-				  WHERE table_id = %d 
+		// OPTIMIZATION: Build SQL query with pre-filtering at database level
+		$where_clause = "WHERE table_id = %d";
+		$query_params = array( $table_id );
+
+		// Apply SQL-level search pre-filter if search term provided
+		if ( $has_search ) {
+			$search_term = '%' . $this->wpdb->esc_like( $args['search'] ) . '%';
+			$where_clause .= " AND row_data LIKE %s";
+			$query_params[] = $search_term;
+		}
+
+		// FAST PATH: If no search and no sort, use pure SQL pagination (most efficient)
+		if ( ! $has_search && ! $has_sort ) {
+			// Count total rows
+			$count_query = "SELECT COUNT(*) FROM {$this->data_table_name} {$where_clause}";
+			$total = (int) $this->wpdb->get_var( $this->wpdb->prepare( $count_query, $query_params ) );
+
+			// Get paginated data directly from SQL
+			$offset = ( $args['page'] - 1 ) * $args['per_page'];
+			$data_query = "SELECT row_data FROM {$this->data_table_name}
+						   {$where_clause}
+						   ORDER BY row_index ASC
+						   LIMIT %d OFFSET %d";
+
+			$results = $this->wpdb->get_results(
+				$this->wpdb->prepare( $data_query, array_merge( $query_params, array( $args['per_page'], $offset ) ) ),
+				ARRAY_A
+			);
+
+			// Decode only the paginated results (not all rows)
+			$all_data = $this->decode_and_map_rows( $results, $headers );
+
+			return array(
+				'data'  => $all_data,
+				'total' => $total,
+			);
+		}
+
+		// OPTIMIZED PATH: For search/sort, pre-filter at SQL level then process in PHP
+		// This reduces the dataset size before expensive JSON decoding and sorting
+		$query = "SELECT row_data FROM {$this->data_table_name}
+				  {$where_clause}
 				  ORDER BY row_index ASC";
 
 		$results = $this->wpdb->get_results(
-			$this->wpdb->prepare( $query, $table_id ),
+			$this->wpdb->prepare( $query, $query_params ),
 			ARRAY_A
 		);
 
@@ -437,23 +492,10 @@ class TableRepository {
 		}
 
 		// Decode JSON data and map headers to values
-		$all_data = array();
-		foreach ( $results as $row ) {
-			$row_data = json_decode( $row['row_data'], true );
-			
-			// Map numeric indices to header names
-			$mapped_row = array();
-			foreach ( $row_data as $index => $value ) {
-				if ( isset( $headers[ $index ] ) ) {
-					$mapped_row[ $headers[ $index ] ] = $value;
-				}
-			}
-			
-			$all_data[] = $mapped_row;
-		}
+		$all_data = $this->decode_and_map_rows( $results, $headers );
 
-		// Apply search filter
-		if ( ! empty( $args['search'] ) ) {
+		// Apply precise search filter in PHP (only on pre-filtered dataset)
+		if ( $has_search ) {
 			$search_term = strtolower( $args['search'] );
 			$all_data = array_filter(
 				$all_data,
@@ -471,8 +513,8 @@ class TableRepository {
 			$all_data = array_values( $all_data );
 		}
 
-		// Apply sorting
-		if ( ! empty( $args['sort_column'] ) && ! empty( $all_data ) ) {
+		// Apply sorting (on filtered dataset, which is smaller than original)
+		if ( $has_sort && ! empty( $all_data ) ) {
 			$sort_column = $args['sort_column'];
 			$sort_order = strtolower( $args['sort_order'] ) === 'desc' ? 'desc' : 'asc';
 
@@ -516,6 +558,35 @@ class TableRepository {
 			'data'  => $all_data,
 			'total' => $total,
 		);
+	}
+
+	/**
+	 * Decode JSON rows and map to header names
+	 *
+	 * Helper method to decode row_data JSON and map numeric indices to header names.
+	 *
+	 * @param array $results Database results with row_data.
+	 * @param array $headers Column headers.
+	 * @return array Decoded and mapped rows.
+	 */
+	private function decode_and_map_rows( $results, $headers ) {
+		$mapped_data = array();
+
+		foreach ( $results as $row ) {
+			$row_data = json_decode( $row['row_data'], true );
+
+			// Map numeric indices to header names
+			$mapped_row = array();
+			foreach ( $row_data as $index => $value ) {
+				if ( isset( $headers[ $index ] ) ) {
+					$mapped_row[ $headers[ $index ] ] = $value;
+				}
+			}
+
+			$mapped_data[] = $mapped_row;
+		}
+
+		return $mapped_data;
 	}
 
 	/**

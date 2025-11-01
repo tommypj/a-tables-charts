@@ -10,6 +10,8 @@
 
 namespace ATablesCharts\Database;
 
+use A_Tables_Charts\Database\DatabaseHelpers;
+
 /**
  * MySQLQueryService Class
  *
@@ -221,7 +223,7 @@ class MySQLQueryService {
 	 * @param string $table   Table name.
 	 * @param array  $columns Columns to select.
 	 * @param string $where   WHERE clause (optional).
-	 * @param string $order   ORDER BY clause (optional).
+	 * @param string $order   ORDER BY clause (optional) - format: "column_name" or "column_name DESC".
 	 * @param int    $limit   LIMIT (optional).
 	 * @return string Generated SQL query.
 	 */
@@ -243,9 +245,20 @@ class MySQLQueryService {
 			$query .= " WHERE {$where}";
 		}
 
-		// Add ORDER BY clause
+		// Add ORDER BY clause with validation to prevent SQL injection
 		if ( ! empty( $order ) ) {
-			$query .= " ORDER BY {$order}";
+			// Parse order parameter (expected format: "column" or "column ASC/DESC")
+			$order_parts = preg_split( '/\s+/', trim( $order ), 2 );
+			$order_column = sanitize_key( $order_parts[0] );
+			$order_direction = isset( $order_parts[1] ) ? strtoupper( trim( $order_parts[1] ) ) : 'ASC';
+
+			// Validate direction
+			$safe_direction = in_array( $order_direction, array( 'ASC', 'DESC' ), true ) ? $order_direction : 'ASC';
+
+			// Only add ORDER BY if column name is valid (contains only alphanumeric and underscore)
+			if ( ! empty( $order_column ) && preg_match( '/^[a-z0-9_]+$/i', $order_column ) ) {
+				$query .= " ORDER BY `{$order_column}` {$safe_direction}";
+			}
 		}
 
 		// Add LIMIT

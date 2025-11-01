@@ -223,6 +223,35 @@ class GoogleChartsRenderer {
 				);
 				$options['isStacked'] = false;
 				break;
+
+			case 'column':
+				$options['hAxis'] = array(
+					'title' => isset( $config['x_axis_label'] ) ? $config['x_axis_label'] : '',
+				);
+				$options['vAxis'] = array(
+					'title' => isset( $config['y_axis_label'] ) ? $config['y_axis_label'] : '',
+					'minValue' => 0,
+				);
+				break;
+
+			case 'scatter':
+				$options['hAxis'] = array(
+					'title' => isset( $config['x_axis_label'] ) ? $config['x_axis_label'] : '',
+				);
+				$options['vAxis'] = array(
+					'title' => isset( $config['y_axis_label'] ) ? $config['y_axis_label'] : '',
+				);
+				$options['pointSize'] = 5;
+				$options['trendlines'] = array(
+					0 => array(), // Optional trendline for first dataset
+				);
+				break;
+
+			case 'radar':
+				// Radar charts need special formatting
+				$options['chartArea']['width'] = '90%';
+				$options['chartArea']['height'] = '85%';
+				break;
 		}
 		
 		// Add colors if specified
@@ -254,8 +283,10 @@ class GoogleChartsRenderer {
 			'pie'       => 'PieChart',
 			'doughnut'  => 'PieChart',
 			'area'      => 'AreaChart',
+			'scatter'   => 'ScatterChart',
+			'radar'     => 'RadarChart',
 		);
-		
+
 		return isset( $map[ $type ] ) ? $map[ $type ] : 'ColumnChart';
 	}
 }

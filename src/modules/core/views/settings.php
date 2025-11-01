@@ -15,7 +15,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 // Get current settings with defaults.
 $settings = get_option( 'atables_settings', array() );
-error_log('DEBUG Settings enable_mysql_query value: ' . var_export($settings['enable_mysql_query'] ?? 'NOT SET', true));
 $defaults = array(
 	// General
 	'rows_per_page'          => 10,

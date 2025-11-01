@@ -12,6 +12,8 @@ namespace ATablesCharts\Filters\Repositories;
 
 use ATablesCharts\Filters\Types\FilterPreset;
 use ATablesCharts\Filters\Types\Filter;
+use ATablesCharts\Shared\Utils\Logger;
+use A_Tables_Charts\Database\DatabaseHelpers;
 
 /**
  * FilterPresetRepository Class
@@ -57,7 +59,7 @@ class FilterPresetRepository {
 		// Validate preset
 		$validation = $preset->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Filter preset validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Filter preset validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
@@ -65,7 +67,7 @@ class FilterPresetRepository {
 		$data = $preset->to_database();
 
 		// Debug log
-		error_log( 'Creating filter preset: ' . print_r( $data, true ) );
+		Logger::log_debug( 'Creating filter preset', array( 'data' => $data ) );
 
 		// Insert into database
 		$result = $this->wpdb->insert(
@@ -84,13 +86,12 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Database insert failed. Last error: ' . $this->wpdb->last_error );
-			error_log( 'Last query: ' . $this->wpdb->last_query );
+			Logger::log_db_error( 'Filter preset insert failed', $this->wpdb->last_error, $this->wpdb->last_query );
 			return false;
 		}
 
 		$preset_id = $this->wpdb->insert_id;
-		error_log( 'Filter preset created successfully with ID: ' . $preset_id );
+		Logger::log_info( 'Filter preset created successfully', array( 'preset_id' => $preset_id ) );
 
 		return $preset_id;
 	}
@@ -131,10 +132,15 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$query = $this->wpdb->prepare(
-			"SELECT * FROM {$this->table_name} 
-			WHERE table_id = %d 
-			ORDER BY {$args['orderby']} {$args['order']}",
+			"SELECT * FROM {$this->table_name}
+			WHERE table_id = %d
+			ORDER BY {$safe_orderby} {$safe_order}",
 			$table_id
 		);
 
@@ -192,11 +198,16 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
-				  WHERE created_by = %d 
-				  ORDER BY {$args['orderby']} {$args['order']} 
+		$query = "SELECT * FROM {$this->table_name}
+				  WHERE created_by = %d
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(
@@ -227,7 +238,7 @@ class FilterPresetRepository {
 		// Validate preset
 		$validation = $preset->validate();
 		if ( ! $validation['valid'] ) {
-			error_log( 'Filter preset validation failed: ' . print_r( $validation['errors'], true ) );
+			Logger::log_error( 'Filter preset validation failed', array( 'errors' => $validation['errors'] ) );
 			return false;
 		}
 
@@ -251,7 +262,7 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Filter preset update failed. Last error: ' . $this->wpdb->last_error );
+			Logger::log_db_error( 'Filter preset update failed', $this->wpdb->last_error );
 			return false;
 		}
 
@@ -272,7 +283,7 @@ class FilterPresetRepository {
 		);
 
 		if ( false === $result ) {
-			error_log( 'Filter preset deletion failed. Last error: ' . $this->wpdb->last_error );
+			Logger::log_db_error( 'Filter preset deletion failed', $this->wpdb->last_error );
 			return false;
 		}
 
@@ -332,7 +343,7 @@ class FilterPresetRepository {
 		} catch ( \Exception $e ) {
 			// Rollback on error
 			$this->wpdb->query( 'ROLLBACK' );
-			error_log( 'Failed to set default preset: ' . $e->getMessage() );
+			Logger::log_error( 'Failed to set default preset', array( 'error' => $e->getMessage() ) );
 			return false;
 		}
 	}
@@ -375,11 +386,16 @@ class FilterPresetRepository {
 
 		$args = wp_parse_args( $args, $defaults );
 
+		// Validate ORDER BY parameters to prevent SQL injection
+		$allowed_columns = array( 'id', 'table_id', 'name', 'created_at', 'updated_at', 'is_default' );
+		$safe_orderby = DatabaseHelpers::prepare_order_by( $args['orderby'], $allowed_columns, 'created_at' );
+		$safe_order = DatabaseHelpers::prepare_order_direction( $args['order'], 'DESC' );
+
 		$offset = ( $args['page'] - 1 ) * $args['per_page'];
 
-		$query = "SELECT * FROM {$this->table_name} 
+		$query = "SELECT * FROM {$this->table_name}
 				  WHERE name LIKE %s OR description LIKE %s
-				  ORDER BY {$args['orderby']} {$args['order']} 
+				  ORDER BY {$safe_orderby} {$safe_order}
 				  LIMIT %d OFFSET %d";
 
 		$results = $this->wpdb->get_results(

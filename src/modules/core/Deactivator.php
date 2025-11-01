@@ -43,9 +43,6 @@ class Deactivator {
 
 		// Set deactivation timestamp.
 		update_option( 'atables_deactivated_at', current_time( 'timestamp' ) );
-
-		// Log deactivation.
-		error_log( 'A-Tables and Charts plugin deactivated' );
 	}
 
 	/**

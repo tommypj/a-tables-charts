@@ -12,6 +12,7 @@ namespace ATablesCharts\Import\Controllers;
 
 use ATablesCharts\Import\Services\ExcelImportService;
 use ATablesCharts\Import\Services\XmlImportService;
+use ATablesCharts\Shared\Utils\Logger;
 
 /**
  * ImportController Class
@@ -102,7 +103,7 @@ class ImportController {
 		);
 		
 		// Log for debugging
-		error_log( 'Excel upload - File: ' . $file['name'] . ', MIME type: ' . $file_type );
+		Logger::log_debug( 'Excel upload', array( 'file' => $file['name'], 'mime_type' => $file_type ) );
 
 		// Get options
 		$options = array(

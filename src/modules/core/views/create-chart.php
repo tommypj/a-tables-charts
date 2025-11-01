@@ -75,6 +75,10 @@ $tables = $tables_result['tables'];
 							<option value="line"><?php esc_html_e( 'Line Chart', 'a-tables-charts' ); ?></option>
 							<option value="pie"><?php esc_html_e( 'Pie Chart', 'a-tables-charts' ); ?></option>
 							<option value="doughnut"><?php esc_html_e( 'Doughnut Chart', 'a-tables-charts' ); ?></option>
+							<option value="column"><?php esc_html_e( 'Column Chart', 'a-tables-charts' ); ?></option>
+							<option value="area"><?php esc_html_e( 'Area Chart', 'a-tables-charts' ); ?></option>
+							<option value="scatter"><?php esc_html_e( 'Scatter Chart', 'a-tables-charts' ); ?></option>
+							<option value="radar"><?php esc_html_e( 'Radar Chart', 'a-tables-charts' ); ?></option>
 						</select>
 					</div>
 					
