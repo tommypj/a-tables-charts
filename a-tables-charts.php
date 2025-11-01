@@ -4,8 +4,8 @@
  * Plugin URI: https://a-tables-charts.com
  * Description: Create responsive tables and charts from various data sources. Import from Excel, CSV, JSON, XML, MySQL, Google Sheets, and more.
  * Version: 1.0.0
- * Requires at least: 5.8
- * Requires PHP: 7.4
+ * Requires at least: 6.0
+ * Requires PHP: 8.1
  * Author: A-Tables Team
  * Author URI: https://a-tables-charts.com
  * License: GPL-2.0+
