@@ -174,6 +174,9 @@ class Plugin {
 
 		// Register shortcode hooks.
 		$this->register_shortcode_hooks();
+
+		// Register Gutenberg blocks.
+		$this->register_gutenberg_hooks();
 	}
 
 	/**
@@ -410,6 +413,24 @@ class Plugin {
 		
 		$this->logger->info( 'Shortcode hooks registered (simple version)', array(
 			'shortcodes' => array( 'atable', 'atable_cell', 'achart' ),
+		) );
+	}
+
+	/**
+	 * Register Gutenberg blocks
+	 *
+	 * @since 1.0.0
+	 */
+	private function register_gutenberg_hooks() {
+		// Load Gutenberg module.
+		require_once ATABLES_PLUGIN_DIR . 'src/modules/gutenberg/index.php';
+
+		// Register Gutenberg Controller.
+		$gutenberg_controller = new \ATablesCharts\Gutenberg\GutenbergController();
+		$gutenberg_controller->register_hooks();
+
+		$this->logger->info( 'Gutenberg blocks registered', array(
+			'blocks' => array( 'atables/table', 'atables/chart' ),
 		) );
 	}
 
