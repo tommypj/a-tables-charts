@@ -56,28 +56,37 @@ class TableRenderer {
 		ob_start();
 		?>
 		<div class="atables-frontend-wrapper <?php echo esc_attr( $responsive_class ); ?>" style="max-width: <?php echo esc_attr( $width ); ?>;">
+			<!-- Skip link for keyboard users -->
+			<a href="#atables-table-<?php echo esc_attr( $table_id ); ?>" class="atables-skip-link">
+				<?php esc_html_e( 'Skip to table content', 'a-tables-charts' ); ?>
+			</a>
+
 			<!-- Toolbar with Export Buttons -->
-			<div class="atables-toolbar">
+			<div class="atables-toolbar" role="toolbar" aria-label="<?php esc_attr_e( 'Table actions', 'a-tables-charts' ); ?>">
 				<div class="atables-toolbar-left">
 					<h3 class="atables-table-title"><?php echo esc_html( $table->title ); ?></h3>
 					<?php if ( ! empty( $table->description ) ) : ?>
-						<p class="atables-table-description"><?php echo esc_html( $table->description ); ?></p>
+						<p class="atables-table-description" id="table-desc-<?php echo esc_attr( $table_id ); ?>">
+							<?php echo esc_html( $table->description ); ?>
+						</p>
 					<?php endif; ?>
 				</div>
 				<div class="atables-toolbar-right">
 					<div class="atables-export-buttons">
-						<button type="button" 
-						        class="atables-export-btn" 
-						        onclick="copyTableToClipboard('atables-table-<?php echo esc_attr( $table_id ); ?>')"
-						        title="<?php esc_attr_e( 'Copy to Clipboard', 'a-tables-charts' ); ?>">
-							<span class="dashicons dashicons-admin-page"></span>
+						<button type="button"
+						        class="atables-export-btn atables-copy-btn"
+						        data-action="copy"
+						        data-table-id="<?php echo esc_attr( $table_id ); ?>"
+						        aria-label="<?php esc_attr_e( 'Copy table to clipboard', 'a-tables-charts' ); ?>">
+							<span class="dashicons dashicons-admin-page" aria-hidden="true"></span>
 							<span class="atables-btn-text"><?php esc_html_e( 'Copy', 'a-tables-charts' ); ?></span>
 						</button>
-						<button type="button" 
-						        class="atables-export-btn" 
-						        onclick="printTable('atables-table-<?php echo esc_attr( $table_id ); ?>')"
-						        title="<?php esc_attr_e( 'Print Table', 'a-tables-charts' ); ?>">
-							<span class="dashicons dashicons-printer"></span>
+						<button type="button"
+						        class="atables-export-btn atables-print-btn"
+						        data-action="print"
+						        data-table-id="<?php echo esc_attr( $table_id ); ?>"
+						        aria-label="<?php esc_attr_e( 'Print table', 'a-tables-charts' ); ?>">
+							<span class="dashicons dashicons-printer" aria-hidden="true"></span>
 							<span class="atables-btn-text"><?php esc_html_e( 'Print', 'a-tables-charts' ); ?></span>
 						</button>
 						<?php
@@ -109,40 +118,59 @@ class TableRenderer {
 							'nonce'    => $export_nonce,
 						), $export_base_url );
 						?>
-						<a href="<?php echo esc_url( $excel_url ); ?>" 
+						<a href="<?php echo esc_url( $excel_url ); ?>"
 						   class="atables-export-btn"
-						   title="<?php esc_attr_e( 'Export to Excel', 'a-tables-charts' ); ?>">
-							<span class="dashicons dashicons-media-spreadsheet"></span>
+						   download
+						   aria-label="<?php esc_attr_e( 'Download table as Excel file (.xlsx)', 'a-tables-charts' ); ?>">
+							<span class="dashicons dashicons-media-spreadsheet" aria-hidden="true"></span>
 							<span class="atables-btn-text"><?php esc_html_e( 'Excel', 'a-tables-charts' ); ?></span>
 						</a>
-						<a href="<?php echo esc_url( $csv_url ); ?>" 
+						<a href="<?php echo esc_url( $csv_url ); ?>"
 						   class="atables-export-btn"
-						   title="<?php esc_attr_e( 'Export to CSV', 'a-tables-charts' ); ?>">
-							<span class="dashicons dashicons-database-export"></span>
+						   download
+						   aria-label="<?php esc_attr_e( 'Download table as CSV file (.csv)', 'a-tables-charts' ); ?>">
+							<span class="dashicons dashicons-database-export" aria-hidden="true"></span>
 							<span class="atables-btn-text"><?php esc_html_e( 'CSV', 'a-tables-charts' ); ?></span>
 						</a>
-						<a href="<?php echo esc_url( $pdf_url ); ?>" 
+						<a href="<?php echo esc_url( $pdf_url ); ?>"
 						   class="atables-export-btn"
-						   title="<?php esc_attr_e( 'Export to PDF', 'a-tables-charts' ); ?>">
-							<span class="dashicons dashicons-pdf"></span>
+						   download
+						   aria-label="<?php esc_attr_e( 'Download table as PDF file (.pdf)', 'a-tables-charts' ); ?>">
+							<span class="dashicons dashicons-pdf" aria-hidden="true"></span>
 							<span class="atables-btn-text"><?php esc_html_e( 'PDF', 'a-tables-charts' ); ?></span>
 						</a>
 					</div>
 				</div>
 			</div>
-			
+
 			<div class="atables-frontend-table-wrapper">
-				<table id="atables-table-<?php echo esc_attr( $table_id ); ?>" 
+				<!-- ARIA live region for table status updates -->
+				<div aria-live="polite"
+				     aria-atomic="false"
+				     class="atables-sr-only"
+				     id="table-status-<?php echo esc_attr( $table_id ); ?>">
+				</div>
+
+				<table id="atables-table-<?php echo esc_attr( $table_id ); ?>"
 				       class="<?php echo esc_attr( implode( ' ', $table_classes ) ); ?> atables-interactive"
+				       <?php if ( ! empty( $table->description ) ) : ?>
+				       aria-describedby="table-desc-<?php echo esc_attr( $table_id ); ?>"
+				       <?php endif; ?>
 				       data-search="<?php echo esc_attr( $search ); ?>"
 				       data-pagination="<?php echo esc_attr( $pagination ); ?>"
 				       data-page-length="<?php echo esc_attr( $page_length ); ?>"
 				       data-sorting="<?php echo esc_attr( $sorting ); ?>"
 				       data-info="<?php echo esc_attr( $info ); ?>">
+					<caption class="atables-sr-only">
+						<?php echo esc_html( $table->title ); ?>
+						<?php if ( ! empty( $table->description ) ) : ?>
+							- <?php echo esc_html( $table->description ); ?>
+						<?php endif; ?>
+					</caption>
 					<thead>
 						<tr>
 							<?php foreach ( $headers as $header ) : ?>
-								<th><?php echo esc_html( $header ); ?></th>
+								<th scope="col"><?php echo esc_html( $header ); ?></th>
 							<?php endforeach; ?>
 						</tr>
 					</thead>
