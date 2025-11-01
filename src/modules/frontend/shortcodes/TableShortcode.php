@@ -47,19 +47,35 @@ class TableShortcode {
 		$table_id = isset( $atts['id'] ) ? (int) $atts['id'] : 0;
 		
 		if ( empty( $table_id ) ) {
-			return '<p><strong>A-Tables Error:</strong> Table ID is required. Usage: [atable id="123"]</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Tables Error:', 'a-tables-charts' ),
+				esc_html__( 'Table ID is required. Usage: [atable id="123"]', 'a-tables-charts' )
+			);
 		}
 
 		$table = $this->repository->find_by_id( $table_id );
-		
+
 		if ( ! $table ) {
 			// Log for debugging
 			Logger::log_error( 'Table not found in shortcode', array( 'table_id' => $table_id ) );
-			return '<p><strong>A-Tables Error:</strong> Table not found. (ID: ' . esc_html( $table_id ) . ')</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Tables Error:', 'a-tables-charts' ),
+				sprintf(
+					/* translators: %d: table ID */
+					esc_html__( 'Table not found. (ID: %d)', 'a-tables-charts' ),
+					(int) $table_id
+				)
+			);
 		}
 
 		if ( $table->status !== 'active' ) {
-			return '<p><strong>A-Tables Error:</strong> This table is not available.</p>';
+			return sprintf(
+				'<p><strong>%s</strong> %s</p>',
+				esc_html__( 'A-Tables Error:', 'a-tables-charts' ),
+				esc_html__( 'This table is not available.', 'a-tables-charts' )
+			);
 		}
 		
 		// 3. Apply per-table settings (higher priority than global)

@@ -125,12 +125,6 @@ function atables_deactivate() {
 register_deactivation_hook( __FILE__, 'atables_deactivate' );
 
 /**
- * TEMPORARY: Security Audit Admin Page
- * Remove this after completing security fixes
- */
-require_once ATABLES_PLUGIN_DIR . 'tools/audit-admin-page.php';
-
-/**
  * Begin plugin execution.
  *
  * Since everything within the plugin is registered via hooks,
