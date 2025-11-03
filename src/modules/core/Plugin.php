@@ -397,8 +397,15 @@ class Plugin {
 		$cron_controller = new \ATablesCharts\Cron\Controllers\CronController();
 		$cron_controller->register_hooks();
 
+		// Load Performance module.
+		require_once ATABLES_PLUGIN_DIR . 'src/modules/performance/index.php';
+
+		// Register Performance Controller.
+		$performance_controller = new \ATablesCharts\Performance\Controllers\PerformanceController();
+		$performance_controller->register_hooks();
+
 		$this->logger->info( 'AJAX hooks registered', array(
-			'controllers' => array( 'ImportController', 'TableController', 'ExportController', 'ExcelImportController', 'ChartController', 'CacheController', 'FilterController', 'BulkActionsController', 'GoogleSheetsController', 'ValidationController', 'CellMergingController', 'FormulaController', 'EnhancedTableController', 'CronController' ),
+			'controllers' => array( 'ImportController', 'TableController', 'ExportController', 'ExcelImportController', 'ChartController', 'CacheController', 'FilterController', 'BulkActionsController', 'GoogleSheetsController', 'ValidationController', 'CellMergingController', 'FormulaController', 'EnhancedTableController', 'CronController', 'PerformanceController' ),
 		) );
 	}
 
@@ -897,7 +904,16 @@ class Plugin {
 			$this->plugin_slug . '-scheduled-refresh',
 			array( $this, 'render_scheduled_refresh' )
 		);
-		
+
+		add_submenu_page(
+			$this->plugin_slug,
+			__( 'Performance', 'a-tables-charts' ),
+			__( 'Performance', 'a-tables-charts' ),
+			'manage_options',
+			$this->plugin_slug . '-performance',
+			array( $this, 'render_performance' )
+		);
+
 		// Hidden submenu for viewing single table.
 		add_submenu_page(
 			null, // No parent menu (hidden from sidebar).
@@ -1020,6 +1036,15 @@ class Plugin {
 	}
 
 	/**
+	 * Render performance page
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_performance() {
+		include ATABLES_PLUGIN_DIR . 'src/modules/performance/views/performance.php';
+	}
+
+	/**
 	 * Render settings page
 	 *
 	 * @since 1.0.0
@@ -1042,6 +1067,7 @@ class Plugin {
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-charts',
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-create-chart',
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-scheduled-refresh',
+			$this->plugin_slug . '_page_' . $this->plugin_slug . '-performance',
 			'admin_page_' . $this->plugin_slug . '-view',
 			'admin_page_' . $this->plugin_slug . '-edit',
 			'admin_page_' . $this->plugin_slug . '-manual',
