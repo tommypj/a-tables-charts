@@ -116,6 +116,11 @@ class Plugin {
 		$this->logger->info( 'A-Tables and Charts plugin initialized', array(
 			'version' => $this->version,
 		) );
+
+		// Load WP-CLI commands if WP-CLI is available.
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			require_once ATABLES_PLUGIN_DIR . 'src/modules/cli/index.php';
+		}
 	}
 
 	/**
