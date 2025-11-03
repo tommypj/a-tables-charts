@@ -71,8 +71,17 @@ class ImportService {
 	private function register_parsers() {
 		$this->parsers['csv']  = new CsvParser();
 		$this->parsers['json'] = new JsonParser();
-		
+
 		// XML and Excel parsers will be added when we create them.
+
+		/**
+		 * Filter to allow developers to register custom parsers
+		 *
+		 * @since 1.0.0
+		 * @param array $parsers Array of parser instances keyed by format
+		 */
+		$this->parsers = apply_filters( 'atables_register_parsers', $this->parsers );
+
 		$this->logger->info( 'Parsers registered', array(
 			'parsers' => array_keys( $this->parsers ),
 		) );
@@ -107,6 +116,26 @@ class ImportService {
 			);
 		}
 
+		/**
+		 * Allow developers to filter import options before processing
+		 *
+		 * @since 1.0.0
+		 * @param array  $options   Import options
+		 * @param string $extension File extension
+		 * @param array  $file      File data from $_FILES
+		 */
+		$options = apply_filters( 'atables_import_options', $options, $extension, $file );
+
+		/**
+		 * Action triggered before import begins
+		 *
+		 * @since 1.0.0
+		 * @param string $extension File extension
+		 * @param array  $options   Import options
+		 * @param array  $file      File data from $_FILES
+		 */
+		do_action( 'atables_before_import', $extension, $options, $file );
+
 		// Parse file using the temporary file path.
 		$this->logger->info( 'Starting import', array(
 			'filename'  => $file['name'],
@@ -118,15 +147,45 @@ class ImportService {
 		try {
 			// Read file content and parse as string to avoid extension check issues
 			$content = file_get_contents( $file['tmp_name'] );
-			
+
 			if ( false === $content ) {
 				throw new \Exception( __( 'Failed to read uploaded file.', 'a-tables-charts' ) );
 			}
-			
+
 			// Use parse_string instead of parse_file to bypass extension check
 			$result = $parser->parse_string( $content, $options );
 
 			if ( $result->success ) {
+				/**
+				 * Filter imported data after parsing
+				 *
+				 * @since 1.0.0
+				 * @param array  $data      Parsed data
+				 * @param string $extension File extension/source type
+				 * @param array  $options   Import options
+				 */
+				if ( isset( $result->data ) && is_array( $result->data ) ) {
+					$result->data = apply_filters( 'atables_parse_data', $result->data, $extension, $options );
+
+					// Update row count after filtering
+					$result->row_count = count( $result->data );
+				}
+
+				/**
+				 * Filter imported headers after parsing
+				 *
+				 * @since 1.0.0
+				 * @param array  $headers   Parsed headers
+				 * @param string $extension File extension/source type
+				 * @param array  $options   Import options
+				 */
+				if ( isset( $result->headers ) && is_array( $result->headers ) ) {
+					$result->headers = apply_filters( 'atables_import_headers', $result->headers, $extension, $options );
+
+					// Update column count after filtering
+					$result->column_count = count( $result->headers );
+				}
+
 				$this->logger->info( 'Import successful', array(
 					'rows'    => $result->row_count,
 					'columns' => $result->column_count,
@@ -136,6 +195,16 @@ class ImportService {
 					'error' => $result->message,
 				) );
 			}
+
+			/**
+			 * Action triggered after import completes
+			 *
+			 * @since 1.0.0
+			 * @param ImportResult $result    Import result object
+			 * @param string       $extension File extension
+			 * @param array        $options   Import options
+			 */
+			do_action( 'atables_after_import', $result, $extension, $options );
 
 			return $result;
 
@@ -298,18 +367,29 @@ class ImportService {
 		if ( null === $this->get_parser_for_extension( $extension ) ) {
 			return false;
 		}
-		
+
 		// Check if extension is allowed in settings
 		$settings = get_option( 'atables_settings', array() );
 		$allowed_types = isset( $settings['allowed_file_types'] ) && is_array( $settings['allowed_file_types'] )
 			? $settings['allowed_file_types']
 			: array( 'csv', 'json', 'xlsx', 'xls', 'xml' ); // Default allowed types
-		
+
+		/**
+		 * Filter supported extensions list
+		 *
+		 * Allows developers to add custom file extensions support
+		 *
+		 * @since 1.0.0
+		 * @param array  $allowed_types Array of allowed file extensions
+		 * @param string $extension     The extension being checked
+		 */
+		$allowed_types = apply_filters( 'atables_supported_extensions', $allowed_types, $extension );
+
 		$this->logger->info( 'Checking extension against settings', array(
 			'extension'     => $extension,
 			'allowed_types' => $allowed_types,
 		) );
-		
+
 		return in_array( $extension, $allowed_types, true );
 	}
 

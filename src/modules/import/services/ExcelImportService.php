@@ -74,8 +74,8 @@ class ExcelImportService {
 			$sheet_name = $parsed_data['sheet_name'];
 
 			// Generate table title
-			$title = ! empty( $options['title'] ) 
-				? $options['title'] 
+			$title = ! empty( $options['title'] )
+				? $options['title']
 				: $this->generate_title_from_filename( $file_path, $sheet_name );
 
 			// Create table using the same format as CSV/JSON imports
@@ -86,7 +86,17 @@ class ExcelImportService {
 				'row_count'    => $parsed_data['row_count'],
 				'column_count' => $parsed_data['column_count'],
 			);
-			
+
+			/**
+			 * Action triggered before creating table from import
+			 *
+			 * @since 1.0.0
+			 * @param string $title         Table title
+			 * @param object $import_result Import result data
+			 * @param string $source_type   Source type (excel)
+			 */
+			do_action( 'atables_before_table_create_from_import', $title, $import_result, 'excel' );
+
 			$result = $this->table_service->create_from_import(
 				$title,
 				$import_result,
@@ -95,6 +105,16 @@ class ExcelImportService {
 			);
 
 			if ( $result['success'] ) {
+				/**
+				 * Action triggered after table creation from import
+				 *
+				 * @since 1.0.0
+				 * @param int    $table_id      Created table ID
+				 * @param object $import_result Import result data
+				 * @param string $source_type   Source type (excel)
+				 */
+				do_action( 'atables_after_table_create_from_import', $result['table_id'], $import_result, 'excel' );
+
 				return array(
 					'success'  => true,
 					'message'  => sprintf(

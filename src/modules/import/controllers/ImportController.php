@@ -411,6 +411,16 @@ class ImportController {
 			// Import file.
 			$import_result = $this->xml_service->import( $file_path );
 
+			/**
+			 * Action triggered before creating table from import
+			 *
+			 * @since 1.0.0
+			 * @param string $title         Table title
+			 * @param array  $import_result Import result data
+			 * @param string $source_type   Source type (xml, excel, csv, etc.)
+			 */
+			do_action( 'atables_before_table_create_from_import', $title, $import_result, 'xml' );
+
 			// Create the table.
 			$table_service = new TableService();
 
@@ -421,6 +431,16 @@ class ImportController {
 			@unlink( $file_path );
 
 			if ( $result['success'] ) {
+				/**
+				 * Action triggered after table creation from import
+				 *
+				 * @since 1.0.0
+				 * @param int    $table_id      Created table ID
+				 * @param array  $import_result Import result data
+				 * @param string $source_type   Source type (xml, excel, csv, etc.)
+				 */
+				do_action( 'atables_after_table_create_from_import', $result['table_id'], $import_result, 'xml' );
+
 				wp_send_json_success(
 					array(
 						'table_id' => $result['table_id'],

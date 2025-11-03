@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>A-Tables & Charts - Automated Accessibility Test Suite</title>
+	<style>
+		* { margin: 0; padding: 0; box-sizing: border-box; }
+
+		body {
+			font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+			background: #f5f5f5;
+			padding: 20px;
+		}
+
+		.test-container {
+			max-width: 1200px;
+			margin: 0 auto;
+			background: white;
+			padding: 30px;
+			border-radius: 8px;
+			box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+		}
+
+		h1 {
+			color: #1e3a8a;
+			margin-bottom: 10px;
+		}
+
+		.subtitle {
+			color: #64748b;
+			margin-bottom: 30px;
+			font-size: 14px;
+		}
+
+		.test-section {
+			margin-bottom: 40px;
+		}
+
+		.test-section h2 {
+			color: #334155;
+			margin-bottom: 15px;
+			padding-bottom: 10px;
+			border-bottom: 2px solid #e2e8f0;
+		}
+
+		.test-controls {
+			display: flex;
+			gap: 10px;
+			margin-bottom: 20px;
+			flex-wrap: wrap;
+		}
+
+		button {
+			background: #3b82f6;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+			font-size: 14px;
+			font-weight: 500;
+			transition: background 0.2s;
+		}
+
+		button:hover {
+			background: #2563eb;
+		}
+
+		button:disabled {
+			background: #94a3b8;
+			cursor: not-allowed;
+		}
+
+		.results {
+			background: #f8fafc;
+			border: 1px solid #e2e8f0;
+			border-radius: 4px;
+			padding: 20px;
+			margin-top: 15px;
+		}
+
+		.result-item {
+			padding: 12px;
+			margin-bottom: 10px;
+			border-radius: 4px;
+			border-left: 4px solid;
+		}
+
+		.result-item.pass {
+			background: #f0fdf4;
+			border-left-color: #22c55e;
+		}
+
+		.result-item.fail {
+			background: #fef2f2;
+			border-left-color: #ef4444;
+		}
+
+		.result-item.warning {
+			background: #fffbeb;
+			border-left-color: #f59e0b;
+		}
+
+		.result-item.info {
+			background: #eff6ff;
+			border-left-color: #3b82f6;
+		}
+
+		.result-title {
+			font-weight: 600;
+			margin-bottom: 5px;
+		}
+
+		.result-description {
+			font-size: 14px;
+			color: #64748b;
+		}
+
+		.summary {
+			display: grid;
+			grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+			gap: 15px;
+			margin-bottom: 20px;
+		}
+
+		.summary-card {
+			background: white;
+			border: 2px solid;
+			border-radius: 8px;
+			padding: 20px;
+			text-align: center;
+		}
+
+		.summary-card.violations {
+			border-color: #ef4444;
+		}
+
+		.summary-card.passes {
+			border-color: #22c55e;
+		}
+
+		.summary-card.incomplete {
+			border-color: #f59e0b;
+		}
+
+		.summary-number {
+			font-size: 36px;
+			font-weight: 700;
+			margin-bottom: 5px;
+		}
+
+		.summary-label {
+			color: #64748b;
+			font-size: 14px;
+			text-transform: uppercase;
+			letter-spacing: 0.5px;
+		}
+
+		.spinner {
+			display: inline-block;
+			width: 16px;
+			height: 16px;
+			border: 2px solid #fff;
+			border-top-color: transparent;
+			border-radius: 50%;
+			animation: spin 0.8s linear infinite;
+		}
+
+		@keyframes spin {
+			to { transform: rotate(360deg); }
+		}
+
+		.code {
+			background: #1e293b;
+			color: #e2e8f0;
+			padding: 15px;
+			border-radius: 4px;
+			font-family: 'Courier New', monospace;
+			font-size: 13px;
+			overflow-x: auto;
+			margin-top: 10px;
+		}
+
+		.test-sample {
+			border: 2px dashed #cbd5e1;
+			padding: 20px;
+			border-radius: 4px;
+			margin-top: 15px;
+		}
+
+		pre {
+			white-space: pre-wrap;
+			word-wrap: break-word;
+		}
+	</style>
+</head>
+<body>
+	<div class="test-container">
+		<h1>A-Tables & Charts - Accessibility Test Suite</h1>
+		<p class="subtitle">Automated WCAG 2.2 Level AA Compliance Testing</p>
+
+		<!-- Test Controls -->
+		<div class="test-section">
+			<h2>Test Controls</h2>
+			<div class="test-controls">
+				<button id="runAxeTest">Run axe-core Test</button>
+				<button id="runKeyboardTest">Run Keyboard Test</button>
+				<button id="runAriaTest">Run ARIA Validation</button>
+				<button id="runContrastTest">Run Color Contrast Test</button>
+				<button id="runAllTests">Run All Tests</button>
+				<button id="exportResults">Export Results (JSON)</button>
+			</div>
+		</div>
+
+		<!-- Summary -->
+		<div class="test-section" id="summarySection" style="display: none;">
+			<h2>Test Summary</h2>
+			<div class="summary">
+				<div class="summary-card violations">
+					<div class="summary-number" id="violationsCount">0</div>
+					<div class="summary-label">Violations</div>
+				</div>
+				<div class="summary-card passes">
+					<div class="summary-number" id="passesCount">0</div>
+					<div class="summary-label">Passes</div>
+				</div>
+				<div class="summary-card incomplete">
+					<div class="summary-number" id="incompleteCount">0</div>
+					<div class="summary-label">Needs Review</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- Results Container -->
+		<div class="test-section">
+			<h2>Test Results</h2>
+			<div id="results" class="results">
+				<p style="color: #64748b;">Click a test button to begin...</p>
+			</div>
+		</div>
+
+		<!-- Sample Table for Testing -->
+		<div class="test-section">
+			<h2>Sample Table (Test Target)</h2>
+			<div class="test-sample" id="testTarget">
+				<!-- This is where we'll inject sample table HTML for testing -->
+				<p style="color: #64748b;">Sample table will be loaded here for testing...</p>
+			</div>
+		</div>
+	</div>
+
+	<!-- Load axe-core from CDN -->
+	<script src="https://cdn.jsdelivr.net/npm/axe-core@4.8.2/axe.min.js"></script>
+
+	<script>
+		// Test results storage
+		let allResults = {
+			timestamp: new Date().toISOString(),
+			tests: []
+		};
+
+		// Load sample table HTML
+		function loadSampleTable() {
+			const sampleHTML = `
+				<div class="atables-frontend-wrapper atables-responsive-scroll" style="max-width: 100%;">
+					<a href="#atables-table-1" class="atables-skip-link">Skip to table content</a>
+
+					<div class="atables-toolbar" role="toolbar" aria-label="Table actions">
+						<div class="atables-toolbar-left">
+							<h3 class="atables-table-title">Sample Products Table</h3>
+							<p class="atables-table-description" id="table-desc-1">Product inventory and pricing information</p>
+						</div>
+						<div class="atables-toolbar-right">
+							<button type="button" class="atables-export-btn" data-action="copy" data-table-id="1"
+							        aria-label="Copy table to clipboard">
+								<span aria-hidden="true">📋</span> Copy
+							</button>
+							<button type="button" class="atables-export-btn" data-action="print" data-table-id="1"
+							        aria-label="Print table">
+								<span aria-hidden="true">🖨</span> Print
+							</button>
+						</div>
+					</div>
+
+					<div aria-live="polite" aria-atomic="false" class="atables-sr-only" id="table-status-1"></div>
+
+					<table id="atables-table-1" class="atables-table" aria-describedby="table-desc-1">
+						<caption class="atables-sr-only">Sample Products Table - Product inventory and pricing information</caption>
+						<thead>
+							<tr>
+								<th scope="col" role="columnheader" aria-label="Product Name (sortable)" tabindex="0">Product Name</th>
+								<th scope="col" role="columnheader" aria-label="Price (sortable)" tabindex="0">Price</th>
+								<th scope="col" role="columnheader" aria-label="Stock (sortable)" tabindex="0">Stock</th>
+								<th scope="col" role="columnheader" aria-label="Category (sortable)" tabindex="0">Category</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td data-label="Product Name">Laptop Pro</td>
+								<td data-label="Price">$1,299.00</td>
+								<td data-label="Stock">45</td>
+								<td data-label="Category">Electronics</td>
+							</tr>
+							<tr>
+								<td data-label="Product Name">Wireless Mouse</td>
+								<td data-label="Price">$29.99</td>
+								<td data-label="Stock">120</td>
+								<td data-label="Category">Accessories</td>
+							</tr>
+							<tr>
+								<td data-label="Product Name">USB-C Cable</td>
+								<td data-label="Price">$12.99</td>
+								<td data-label="Stock">200</td>
+								<td data-label="Category">Cables</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<div class="atables-search-wrapper" style="margin-top: 15px;">
+						<label for="search-1">Search table:</label>
+						<input type="search" id="search-1" aria-label="Search table" placeholder="Search...">
+					</div>
+
+					<div class="atables-pagination" style="margin-top: 15px;">
+						<button aria-label="First page">First</button>
+						<button aria-label="Previous page">Previous</button>
+						<button aria-label="Current page, page 1" aria-current="page">1</button>
+						<button aria-label="Go to page 2">2</button>
+						<button aria-label="Next page">Next</button>
+						<button aria-label="Last page">Last</button>
+					</div>
+				</div>
+			`;
+
+			document.getElementById('testTarget').innerHTML = sampleHTML;
+		}
+
+		// Initialize
+		loadSampleTable();
+
+		// Helper: Display results
+		function displayResult(type, title, description, details = null) {
+			const results = document.getElementById('results');
+			const item = document.createElement('div');
+			item.className = `result-item ${type}`;
+
+			let icon = '';
+			switch(type) {
+				case 'pass': icon = '✅'; break;
+				case 'fail': icon = '❌'; break;
+				case 'warning': icon = '⚠️'; break;
+				case 'info': icon = 'ℹ️'; break;
+			}
+
+			item.innerHTML = `
+				<div class="result-title">${icon} ${title}</div>
+				<div class="result-description">${description}</div>
+				${details ? `<div class="code">${details}</div>` : ''}
+			`;
+
+			results.appendChild(item);
+		}
+
+		// Helper: Clear results
+		function clearResults() {
+			document.getElementById('results').innerHTML = '';
+			document.getElementById('summarySection').style.display = 'none';
+		}
+
+		// Helper: Update summary
+		function updateSummary(violations, passes, incomplete) {
+			document.getElementById('summarySection').style.display = 'block';
+			document.getElementById('violationsCount').textContent = violations;
+			document.getElementById('passesCount').textContent = passes;
+			document.getElementById('incompleteCount').textContent = incomplete;
+		}
+
+		// Test 1: Run axe-core accessibility test
+		async function runAxeTest() {
+			clearResults();
+			displayResult('info', 'Running axe-core Test', 'Analyzing page for WCAG 2.2 violations...');
+
+			try {
+				const results = await axe.run(document.getElementById('testTarget'), {
+					runOnly: {
+						type: 'tag',
+						values: ['wcag2a', 'wcag2aa', 'wcag22aa', 'best-practice']
+					}
+				});
+
+				// Store results
+				allResults.tests.push({
+					name: 'axe-core',
+					timestamp: new Date().toISOString(),
+					results: results
+				});
+
+				// Update summary
+				updateSummary(
+					results.violations.length,
+					results.passes.length,
+					results.incomplete.length
+				);
+
+				// Display violations
+				if (results.violations.length === 0) {
+					displayResult('pass', 'No Violations Found', `All ${results.passes.length} axe-core rules passed!`);
+				} else {
+					results.violations.forEach(violation => {
+						const nodes = violation.nodes.length;
+						const details = `
+<strong>Impact:</strong> ${violation.impact}
+<strong>WCAG:</strong> ${violation.tags.filter(t => t.includes('wcag')).join(', ')}
+<strong>Affected elements:</strong> ${nodes}
+<strong>Help:</strong> ${violation.help}
+<strong>Fix:</strong> ${violation.nodes[0].failureSummary}
+						`.trim();
+
+						displayResult('fail', violation.id, violation.description, details);
+					});
+				}
+
+				// Display incomplete (needs manual review)
+				if (results.incomplete.length > 0) {
+					results.incomplete.forEach(item => {
+						displayResult('warning', item.id + ' (Needs Review)', item.description);
+					});
+				}
+
+				// Display passes summary
+				displayResult('pass', `${results.passes.length} Rules Passed`, 'These accessibility checks passed successfully');
+
+			} catch (error) {
+				displayResult('fail', 'Test Error', error.message);
+			}
+		}
+
+		// Test 2: Keyboard navigation test
+		function runKeyboardTest() {
+			clearResults();
+			displayResult('info', 'Running Keyboard Navigation Test', 'Checking keyboard accessibility...');
+
+			const testTarget = document.getElementById('testTarget');
+			const results = {
+				pass: [],
+				fail: []
+			};
+
+			// Test 1: All interactive elements have tabindex or are naturally focusable
+			const interactiveElements = testTarget.querySelectorAll('button, a, input, select, textarea, [tabindex]');
+			if (interactiveElements.length > 0) {
+				results.pass.push(`Found ${interactiveElements.length} interactive elements`);
+			}
+
+			// Test 2: No positive tabindex values
+			const positiveTabindex = testTarget.querySelectorAll('[tabindex]:not([tabindex="-1"]):not([tabindex="0"])');
+			if (positiveTabindex.length === 0) {
+				results.pass.push('No positive tabindex values found (good!)');
+			} else {
+				results.fail.push(`Found ${positiveTabindex.length} elements with positive tabindex (avoid this)`);
+			}
+
+			// Test 3: Buttons have proper labels
+			const buttons = testTarget.querySelectorAll('button');
+			let buttonsWithoutLabels = 0;
+			buttons.forEach(btn => {
+				if (!btn.textContent.trim() && !btn.getAttribute('aria-label') && !btn.getAttribute('aria-labelledby')) {
+					buttonsWithoutLabels++;
+				}
+			});
+			if (buttonsWithoutLabels === 0) {
+				results.pass.push(`All ${buttons.length} buttons have proper labels`);
+			} else {
+				results.fail.push(`${buttonsWithoutLabels} buttons missing labels`);
+			}
+
+			// Test 4: Links have descriptive text
+			const links = testTarget.querySelectorAll('a');
+			let linksWithoutText = 0;
+			links.forEach(link => {
+				if (!link.textContent.trim() && !link.getAttribute('aria-label')) {
+					linksWithoutText++;
+				}
+			});
+			if (linksWithoutText === 0) {
+				results.pass.push(`All ${links.length} links have descriptive text`);
+			} else {
+				results.fail.push(`${linksWithoutText} links missing descriptive text`);
+			}
+
+			// Test 5: Form inputs have labels
+			const inputs = testTarget.querySelectorAll('input, select, textarea');
+			let inputsWithoutLabels = 0;
+			inputs.forEach(input => {
+				const id = input.getAttribute('id');
+				const hasLabel = id && testTarget.querySelector(`label[for="${id}"]`);
+				const hasAriaLabel = input.getAttribute('aria-label') || input.getAttribute('aria-labelledby');
+
+				if (!hasLabel && !hasAriaLabel) {
+					inputsWithoutLabels++;
+				}
+			});
+			if (inputsWithoutLabels === 0) {
+				results.pass.push(`All ${inputs.length} form inputs have proper labels`);
+			} else {
+				results.fail.push(`${inputsWithoutLabels} form inputs missing labels`);
+			}
+
+			// Display results
+			updateSummary(results.fail.length, results.pass.length, 0);
+
+			results.pass.forEach(msg => {
+				displayResult('pass', 'Keyboard Test Passed', msg);
+			});
+
+			results.fail.forEach(msg => {
+				displayResult('fail', 'Keyboard Test Failed', msg);
+			});
+
+			// Store results
+			allResults.tests.push({
+				name: 'keyboard-navigation',
+				timestamp: new Date().toISOString(),
+				results: results
+			});
+		}
+
+		// Test 3: ARIA validation
+		function runAriaTest() {
+			clearResults();
+			displayResult('info', 'Running ARIA Validation', 'Checking ARIA attributes...');
+
+			const testTarget = document.getElementById('testTarget');
+			const results = {
+				pass: [],
+				fail: [],
+				warning: []
+			};
+
+			// Test 1: aria-labelledby references exist
+			const labelledByElements = testTarget.querySelectorAll('[aria-labelledby]');
+			labelledByElements.forEach(el => {
+				const ids = el.getAttribute('aria-labelledby').split(' ');
+				ids.forEach(id => {
+					if (!document.getElementById(id)) {
+						results.fail.push(`aria-labelledby references non-existent ID: ${id}`);
+					}
+				});
+			});
+			if (labelledByElements.length > 0 && results.fail.length === 0) {
+				results.pass.push(`All aria-labelledby references are valid`);
+			}
+
+			// Test 2: aria-describedby references exist
+			const describedByElements = testTarget.querySelectorAll('[aria-describedby]');
+			describedByElements.forEach(el => {
+				const ids = el.getAttribute('aria-describedby').split(' ');
+				ids.forEach(id => {
+					if (!document.getElementById(id)) {
+						results.fail.push(`aria-describedby references non-existent ID: ${id}`);
+					}
+				});
+			});
+			if (describedByElements.length > 0 && results.fail.filter(f => f.includes('describedby')).length === 0) {
+				results.pass.push(`All aria-describedby references are valid`);
+			}
+
+			// Test 3: ARIA roles are valid
+			const validRoles = ['alert', 'alertdialog', 'application', 'article', 'banner', 'button', 'cell', 'checkbox', 'columnheader', 'combobox', 'complementary', 'contentinfo', 'definition', 'dialog', 'directory', 'document', 'feed', 'figure', 'form', 'grid', 'gridcell', 'group', 'heading', 'img', 'link', 'list', 'listbox', 'listitem', 'log', 'main', 'marquee', 'math', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio', 'navigation', 'none', 'note', 'option', 'presentation', 'progressbar', 'radio', 'radiogroup', 'region', 'row', 'rowgroup', 'rowheader', 'scrollbar', 'search', 'searchbox', 'separator', 'slider', 'spinbutton', 'status', 'switch', 'tab', 'table', 'tablist', 'tabpanel', 'term', 'textbox', 'timer', 'toolbar', 'tooltip', 'tree', 'treegrid', 'treeitem'];
+
+			const roleElements = testTarget.querySelectorAll('[role]');
+			roleElements.forEach(el => {
+				const role = el.getAttribute('role');
+				if (!validRoles.includes(role)) {
+					results.fail.push(`Invalid ARIA role: ${role}`);
+				}
+			});
+			if (roleElements.length > 0 && results.fail.filter(f => f.includes('Invalid ARIA role')).length === 0) {
+				results.pass.push(`All ${roleElements.length} ARIA roles are valid`);
+			}
+
+			// Test 4: aria-hidden on focusable elements
+			const hiddenFocusable = testTarget.querySelectorAll('[aria-hidden="true"]');
+			hiddenFocusable.forEach(el => {
+				const focusableDescendants = el.querySelectorAll('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])');
+				if (focusableDescendants.length > 0) {
+					results.warning.push(`aria-hidden="true" contains ${focusableDescendants.length} focusable elements`);
+				}
+			});
+
+			// Test 5: Live regions
+			const liveRegions = testTarget.querySelectorAll('[aria-live]');
+			if (liveRegions.length > 0) {
+				results.pass.push(`Found ${liveRegions.length} ARIA live region(s)`);
+			}
+
+			// Display results
+			updateSummary(results.fail.length, results.pass.length, results.warning.length);
+
+			results.pass.forEach(msg => {
+				displayResult('pass', 'ARIA Test Passed', msg);
+			});
+
+			results.fail.forEach(msg => {
+				displayResult('fail', 'ARIA Test Failed', msg);
+			});
+
+			results.warning.forEach(msg => {
+				displayResult('warning', 'ARIA Warning', msg);
+			});
+
+			// Store results
+			allResults.tests.push({
+				name: 'aria-validation',
+				timestamp: new Date().toISOString(),
+				results: results
+			});
+		}
+
+		// Test 4: Color contrast test
+		function runContrastTest() {
+			clearResults();
+			displayResult('info', 'Running Color Contrast Test', 'Checking WCAG AA contrast ratios...');
+
+			const testTarget = document.getElementById('testTarget');
+			const results = {
+				pass: [],
+				fail: []
+			};
+
+			// Helper function to get contrast ratio
+			function getContrastRatio(rgb1, rgb2) {
+				const l1 = getLuminance(rgb1);
+				const l2 = getLuminance(rgb2);
+				const lighter = Math.max(l1, l2);
+				const darker = Math.min(l1, l2);
+				return (lighter + 0.05) / (darker + 0.05);
+			}
+
+			function getLuminance(rgb) {
+				const [r, g, b] = rgb.match(/\d+/g).map(Number);
+				const [rs, gs, bs] = [r, g, b].map(c => {
+					c = c / 255;
+					return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4);
+				});
+				return 0.2126 * rs + 0.7152 * gs + 0.0722 * bs;
+			}
+
+			// Test text elements
+			const textElements = testTarget.querySelectorAll('p, h1, h2, h3, h4, h5, h6, td, th, button, a, label, span, div');
+			let tested = 0;
+			let passed = 0;
+
+			textElements.forEach(el => {
+				if (el.textContent.trim()) {
+					const color = window.getComputedStyle(el).color;
+					const backgroundColor = window.getComputedStyle(el).backgroundColor;
+
+					if (color && backgroundColor && backgroundColor !== 'rgba(0, 0, 0, 0)') {
+						const ratio = getContrastRatio(color, backgroundColor);
+						tested++;
+
+						// WCAG AA requires 4.5:1 for normal text, 3:1 for large text
+						const fontSize = parseFloat(window.getComputedStyle(el).fontSize);
+						const requiredRatio = fontSize >= 18 ? 3 : 4.5;
+
+						if (ratio >= requiredRatio) {
+							passed++;
+						} else {
+							results.fail.push(`Low contrast (${ratio.toFixed(2)}:1) on: ${el.tagName.toLowerCase()}`);
+						}
+					}
+				}
+			});
+
+			if (tested > 0) {
+				results.pass.push(`${passed}/${tested} elements have sufficient contrast`);
+			}
+
+			// Display results
+			updateSummary(results.fail.length, results.pass.length, 0);
+
+			results.pass.forEach(msg => {
+				displayResult('pass', 'Contrast Test Passed', msg);
+			});
+
+			results.fail.forEach(msg => {
+				displayResult('fail', 'Contrast Test Failed', msg);
+			});
+
+			// Store results
+			allResults.tests.push({
+				name: 'color-contrast',
+				timestamp: new Date().toISOString(),
+				results: results
+			});
+		}
+
+		// Run all tests
+		async function runAllTests() {
+			clearResults();
+			allResults.tests = []; // Reset
+
+			displayResult('info', 'Running All Tests', 'This may take a moment...');
+
+			await runAxeTest();
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			runKeyboardTest();
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			runAriaTest();
+			await new Promise(resolve => setTimeout(resolve, 500));
+
+			runContrastTest();
+
+			displayResult('pass', 'All Tests Complete', 'Review results above');
+		}
+
+		// Export results
+		function exportResults() {
+			const dataStr = JSON.stringify(allResults, null, 2);
+			const blob = new Blob([dataStr], { type: 'application/json' });
+			const url = URL.createObjectURL(blob);
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = `a11y-test-results-${new Date().toISOString().split('T')[0]}.json`;
+			a.click();
+			URL.revokeObjectURL(url);
+
+			displayResult('pass', 'Results Exported', `Downloaded as JSON file`);
+		}
+
+		// Event listeners
+		document.getElementById('runAxeTest').addEventListener('click', runAxeTest);
+		document.getElementById('runKeyboardTest').addEventListener('click', runKeyboardTest);
+		document.getElementById('runAriaTest').addEventListener('click', runAriaTest);
+		document.getElementById('runContrastTest').addEventListener('click', runContrastTest);
+		document.getElementById('runAllTests').addEventListener('click', runAllTests);
+		document.getElementById('exportResults').addEventListener('click', exportResults);
+
+		// Auto-run on load (optional)
+		// window.addEventListener('load', runAllTests);
+	</script>
+</body>
+</html>
