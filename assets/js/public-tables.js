@@ -9,19 +9,53 @@
 
 jQuery(document).ready(function($) {
 	'use strict';
-	
+
+	// Initialize button event listeners
+	initializeButtonHandlers();
+
 	// Wait a bit for everything to load
 	setTimeout(function() {
 		initializeTables();
 	}, 100);
-	
+
+	/**
+	 * Initialize keyboard-accessible button handlers
+	 * WCAG 2.2 Level AA - Keyboard Accessible (2.1.1)
+	 */
+	function initializeButtonHandlers() {
+		// Copy button handler
+		$(document).on('click keydown', '.atables-copy-btn', function(e) {
+			// Handle both click and Enter/Space key
+			if (e.type === 'click' || e.which === 13 || e.which === 32) {
+				e.preventDefault();
+				const tableId = $(this).data('table-id');
+				const fullTableId = 'atables-table-' + tableId;
+				copyTableToClipboard(fullTableId);
+
+				// Announce success to screen readers
+				announceToScreenReader(fullTableId, 'Table copied to clipboard');
+			}
+		});
+
+		// Print button handler
+		$(document).on('click keydown', '.atables-print-btn', function(e) {
+			// Handle both click and Enter/Space key
+			if (e.type === 'click' || e.which === 13 || e.which === 32) {
+				e.preventDefault();
+				const tableId = $(this).data('table-id');
+				const fullTableId = 'atables-table-' + tableId;
+				printTable(fullTableId);
+			}
+		});
+	}
+
 	function initializeTables() {
 		$('.atables-interactive').each(function() {
 			const $table = $(this);
 			const tableId = $table.attr('id');
-			
+
 			console.log('Initializing table:', tableId);
-			
+
 			// Destroy if already initialized
 			if ($.fn.DataTable.isDataTable($table)) {
 				console.log('Table already initialized, skipping');
@@ -84,7 +118,13 @@ jQuery(document).ready(function($) {
 			// Initialize with configuration from data attributes
 			try {
 				const dt = $table.DataTable(config);
-				
+
+				// ACCESSIBILITY: Add ARIA labels to DataTables controls
+				addDataTablesAccessibility($table, tableId);
+
+				// ACCESSIBILITY: Add sort state announcements
+				addSortStateAnnouncements(dt, tableId);
+
 				// CRITICAL: Force Bootstrap theme styles after DataTables loads
 				if ($table.hasClass('atables-theme-classic')) {
 					// Bootstrap Primary (Blue)
@@ -160,92 +200,323 @@ jQuery(document).ready(function($) {
 	}
 	
 	/**
+	 * Add ARIA labels and accessibility attributes to DataTables controls
+	 * WCAG 2.2 Level AA - Labels or Instructions (3.3.2), Name, Role, Value (4.1.2)
+	 */
+	function addDataTablesAccessibility($table, tableId) {
+		const $wrapper = $table.closest('.atables-frontend-wrapper');
+
+		// Add label to search input
+		const $searchInput = $wrapper.find('.dataTables_filter input[type="search"]');
+		if ($searchInput.length) {
+			$searchInput.attr({
+				'aria-label': 'Search table',
+				'placeholder': 'Search...',
+				'id': 'search-' + tableId
+			});
+
+			// Add proper label element
+			const $searchLabel = $wrapper.find('.dataTables_filter label');
+			if ($searchLabel.length) {
+				$searchLabel.attr('for', 'search-' + tableId);
+			}
+		}
+
+		// Add label to length selector
+		const $lengthSelect = $wrapper.find('.dataTables_length select');
+		if ($lengthSelect.length) {
+			$lengthSelect.attr({
+				'aria-label': 'Number of rows to display',
+				'id': 'length-' + tableId
+			});
+
+			// Add proper label element
+			const $lengthLabel = $wrapper.find('.dataTables_length label');
+			if ($lengthLabel.length) {
+				$lengthLabel.attr('for', 'length-' + tableId);
+			}
+		}
+
+		// Add ARIA labels to pagination buttons
+		$wrapper.find('.dataTables_paginate .paginate_button').each(function() {
+			const $btn = $(this);
+			const text = $btn.text().trim();
+
+			if ($btn.hasClass('first')) {
+				$btn.attr('aria-label', 'First page');
+			} else if ($btn.hasClass('previous')) {
+				$btn.attr('aria-label', 'Previous page');
+			} else if ($btn.hasClass('next')) {
+				$btn.attr('aria-label', 'Next page');
+			} else if ($btn.hasClass('last')) {
+				$btn.attr('aria-label', 'Last page');
+			} else if ($btn.hasClass('current')) {
+				$btn.attr({
+					'aria-label': 'Current page, page ' + text,
+					'aria-current': 'page'
+				});
+			} else {
+				$btn.attr('aria-label', 'Go to page ' + text);
+			}
+		});
+
+		// Make pagination keyboard accessible
+		$wrapper.find('.dataTables_paginate .paginate_button').on('keydown', function(e) {
+			if (e.which === 13 || e.which === 32) { // Enter or Space
+				e.preventDefault();
+				$(this).click();
+			}
+		});
+
+		// Add ARIA labels to sortable column headers
+		$table.find('thead th').each(function() {
+			const $th = $(this);
+			const columnName = $th.text().trim();
+
+			if (columnName) {
+				$th.attr({
+					'role': 'columnheader',
+					'aria-label': columnName + ' (sortable)',
+					'tabindex': '0'
+				});
+
+				// Keyboard support for sorting
+				$th.on('keydown', function(e) {
+					if (e.which === 13 || e.which === 32) { // Enter or Space
+						e.preventDefault();
+						$(this).click();
+					}
+				});
+			}
+		});
+
+		// Update pagination ARIA on page changes
+		$table.on('draw.dt', function() {
+			$wrapper.find('.dataTables_paginate .paginate_button').each(function() {
+				const $btn = $(this);
+				const text = $btn.text().trim();
+
+				if ($btn.hasClass('current')) {
+					$btn.attr({
+						'aria-label': 'Current page, page ' + text,
+						'aria-current': 'page'
+					});
+				} else if (!$btn.hasClass('first') && !$btn.hasClass('previous') && !$btn.hasClass('next') && !$btn.hasClass('last')) {
+					$btn.attr('aria-label', 'Go to page ' + text);
+					$btn.removeAttr('aria-current');
+				}
+			});
+		});
+	}
+
+	/**
+	 * Add sort state announcements for screen readers
+	 * WCAG 2.2 Level AA - Status Messages (4.1.3)
+	 */
+	function addSortStateAnnouncements(dataTable, tableId) {
+		dataTable.on('order.dt', function() {
+			const order = dataTable.order();
+			if (order.length > 0) {
+				const columnIndex = order[0][0];
+				const direction = order[0][1]; // 'asc' or 'desc'
+				const columnName = $(dataTable.column(columnIndex).header()).text().trim();
+
+				const message = 'Table sorted by ' + columnName + ', ' +
+				                (direction === 'asc' ? 'ascending' : 'descending') + ' order';
+
+				// Announce to screen readers
+				announceToScreenReader(tableId, message);
+
+				// Update column header ARIA labels
+				dataTable.columns().every(function(index) {
+					const $header = $(this.header());
+					const name = $header.text().trim();
+
+					if (index === columnIndex) {
+						$header.attr('aria-sort', direction === 'asc' ? 'ascending' : 'descending');
+						$header.attr('aria-label', name + ' (sorted ' + (direction === 'asc' ? 'ascending' : 'descending') + ')');
+					} else {
+						$header.removeAttr('aria-sort');
+						$header.attr('aria-label', name + ' (sortable)');
+					}
+				});
+			}
+		});
+
+		// Announce pagination changes
+		dataTable.on('page.dt', function() {
+			const info = dataTable.page.info();
+			const message = 'Showing page ' + (info.page + 1) + ' of ' + info.pages;
+			announceToScreenReader(tableId, message);
+		});
+
+		// Announce search results
+		dataTable.on('search.dt', function() {
+			// Use setTimeout to announce after table redraws
+			setTimeout(function() {
+				const info = dataTable.page.info();
+				const message = info.recordsDisplay + ' results found';
+				announceToScreenReader(tableId, message);
+			}, 100);
+		});
+	}
+
+	/**
+	 * Announce messages to screen readers via ARIA live region
+	 * WCAG 2.2 Level AA - Status Messages (4.1.3)
+	 */
+	function announceToScreenReader(tableId, message) {
+		const $liveRegion = $('#table-status-' + tableId.replace('atables-table-', ''));
+		if ($liveRegion.length) {
+			// Clear previous message
+			$liveRegion.text('');
+
+			// Set new message with slight delay to ensure it's announced
+			setTimeout(function() {
+				$liveRegion.text(message);
+			}, 100);
+
+			// Clear message after announcement
+			setTimeout(function() {
+				$liveRegion.text('');
+			}, 3000);
+		}
+	}
+
+	/**
 	 * Add column visibility toggle
+	 * Enhanced with keyboard accessibility
 	 */
 	function addColumnToggle(dataTable, $table) {
 		const $wrapper = $table.closest('.atables-frontend-wrapper');
-		
+
 		// Create column toggle button
 		const $toggleBtn = $('<button>', {
 			class: 'atables-column-toggle-btn',
-			html: '<span class="dashicons dashicons-visibility"></span> Columns',
-			type: 'button'
+			html: '<span class="dashicons dashicons-visibility" aria-hidden="true"></span> Columns',
+			type: 'button',
+			'aria-label': 'Toggle column visibility',
+			'aria-expanded': 'false',
+			'aria-haspopup': 'true'
 		});
-		
+
 		// Create dropdown
 		const $dropdown = $('<div>', {
 			class: 'atables-column-dropdown',
+			role: 'menu',
+			'aria-label': 'Column visibility options',
 			css: { display: 'none' }
 		});
-		
+
 		// Add checkboxes for each column
 		dataTable.columns().every(function(index) {
 			const column = this;
 			const $header = $(column.header());
 			const columnName = $header.text().trim();
-			
+
 			if (columnName) {
+				const checkboxId = 'col-toggle-' + $table.attr('id') + '-' + index;
 				const $checkbox = $('<label>', {
-					class: 'atables-column-checkbox'
+					class: 'atables-column-checkbox',
+					role: 'menuitemcheckbox',
+					'aria-checked': column.visible() ? 'true' : 'false',
+					tabindex: '0'
 				}).append(
 					$('<input>', {
 						type: 'checkbox',
 						checked: column.visible(),
-						'data-column': index
+						'data-column': index,
+						id: checkboxId,
+						'aria-hidden': 'true' // Hide from screen readers, use label's aria-checked
 					}),
 					$('<span>').text(columnName)
 				);
-				
+
+				// Keyboard support for checkboxes
+				$checkbox.on('keydown', function(e) {
+					if (e.which === 13 || e.which === 32) { // Enter or Space
+						e.preventDefault();
+						const $input = $(this).find('input');
+						$input.prop('checked', !$input.prop('checked')).trigger('change');
+					} else if (e.which === 27) { // Escape
+						$dropdown.hide();
+						$toggleBtn.attr('aria-expanded', 'false');
+						$toggleBtn.focus();
+					}
+				});
+
 				$dropdown.append($checkbox);
 			}
 		});
-		
+
 		// Toggle dropdown on button click
 		$toggleBtn.on('click', function(e) {
 			e.stopPropagation();
+			const isExpanded = $dropdown.is(':visible');
 			$dropdown.toggle();
+			$(this).attr('aria-expanded', !isExpanded);
+
+			// Focus first checkbox when opening
+			if (!isExpanded) {
+				$dropdown.find('.atables-column-checkbox').first().focus();
+			}
 		});
-		
+
+		// Keyboard support for toggle button
+		$toggleBtn.on('keydown', function(e) {
+			if (e.which === 13 || e.which === 32) { // Enter or Space
+				e.preventDefault();
+				$(this).click();
+			}
+		});
+
 		// Hide dropdown when clicking outside
 		$(document).on('click', function(e) {
 			if (!$(e.target).closest('.atables-column-toggle').length) {
 				$dropdown.hide();
+				$toggleBtn.attr('aria-expanded', 'false');
 			}
 		});
-		
+
 		// Handle checkbox changes
 		$dropdown.on('change', 'input[type="checkbox"]', function() {
 			const columnIndex = $(this).data('column');
 			const column = dataTable.column(columnIndex);
-			column.visible($(this).is(':checked'));
+			const isVisible = $(this).is(':checked');
+
+			column.visible(isVisible);
+
+			// Update ARIA
+			$(this).closest('.atables-column-checkbox').attr('aria-checked', isVisible ? 'true' : 'false');
 		});
-		
+
 		// Add toggle container
 		const $toggleContainer = $('<div>', {
 			class: 'atables-column-toggle'
 		}).append($toggleBtn, $dropdown);
-		
+
 		// Insert before the table
 		$wrapper.find('.atables-controls-right').append($toggleContainer);
 	}
 	
 	/**
 	 * Add copy to clipboard functionality
+	 * Enhanced with proper announcements
 	 */
-	window.copyTableToClipboard = function(tableId) {
+	function copyTableToClipboard(tableId) {
 		const $table = $('#' + tableId);
 		const dt = $table.DataTable();
-		
+
 		// Get all data (including hidden by pagination)
 		const data = dt.rows({ search: 'applied' }).data().toArray();
 		const columns = dt.columns().header().toArray().map(th => $(th).text());
-		
+
 		// Build CSV-like string
 		let text = columns.join('\t') + '\n';
 		data.forEach(function(row) {
 			text += row.join('\t') + '\n';
 		});
-		
+
 		// Copy to clipboard
 		if (navigator.clipboard) {
 			navigator.clipboard.writeText(text).then(function() {
@@ -257,7 +528,7 @@ jQuery(document).ready(function($) {
 		} else {
 			fallbackCopy(text);
 		}
-	};
+	}
 	
 	/**
 	 * Fallback copy method
@@ -275,20 +546,23 @@ jQuery(document).ready(function($) {
 	
 	/**
 	 * Print table
+	 * Opens print dialog with clean table view
 	 */
-	window.printTable = function(tableId) {
+	function printTable(tableId) {
 		const $table = $('#' + tableId);
 		const dt = $table.DataTable();
-		
+
 		// Get table HTML
 		const tableHtml = $table.closest('.atables-frontend-wrapper').html();
-		
+
 		// Create print window
 		const printWindow = window.open('', '_blank');
 		printWindow.document.write(`
 			<!DOCTYPE html>
-			<html>
+			<html lang="en">
 			<head>
+				<meta charset="UTF-8">
+				<meta name="viewport" content="width=device-width, initial-scale=1.0">
 				<title>Print Table</title>
 				<style>
 					body { font-family: Arial, sans-serif; padding: 20px; }
@@ -298,6 +572,9 @@ jQuery(document).ready(function($) {
 					.atables-controls-wrapper,
 					.atables-controls-bottom,
 					.atables-column-toggle,
+					.atables-skip-link,
+					.atables-toolbar,
+					.atables-sr-only,
 					button { display: none !important; }
 				</style>
 			</head>
@@ -307,12 +584,12 @@ jQuery(document).ready(function($) {
 			</html>
 		`);
 		printWindow.document.close();
-		
+
 		// Wait for content to load then print
 		printWindow.onload = function() {
 			printWindow.print();
 		};
-	};
+	}
 	
 	/**
 	 * Show notification
