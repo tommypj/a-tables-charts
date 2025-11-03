@@ -351,4 +351,59 @@ class TableService {
 			'total_rows' => $table->row_count,
 		);
 	}
+
+	/**
+	 * Update table data (for scheduled refresh)
+	 *
+	 * Replaces table data with new data from external source.
+	 *
+	 * @param int   $table_id Table ID.
+	 * @param array $data     New table data (array of arrays).
+	 * @param array $headers  Column headers.
+	 * @return array Result with 'success' and 'message'
+	 */
+	public function update_table_data( $table_id, $data, $headers ) {
+		// Get existing table
+		$table = $this->repository->find_by_id( $table_id );
+
+		if ( ! $table ) {
+			return array(
+				'success' => false,
+				'message' => __( 'Table not found.', 'a-tables-charts' ),
+			);
+		}
+
+		$this->logger->info( 'Updating table data', array(
+			'table_id' => $table_id,
+			'rows'     => count( $data ),
+			'columns'  => count( $headers ),
+		) );
+
+		// Format source_data structure
+		$source_data = array(
+			'headers' => $headers,
+			'data'    => $data,
+		);
+
+		// Update table using existing update method
+		$result = $this->update_table( $table_id, array(
+			'source_data'   => $source_data,
+			'row_count'     => count( $data ),
+			'column_count'  => count( $headers ),
+		) );
+
+		if ( $result['success'] ) {
+			/**
+			 * Action triggered after table data is updated
+			 *
+			 * @since 1.0.0
+			 * @param int   $table_id Table ID
+			 * @param array $data     New data
+			 * @param array $headers  New headers
+			 */
+			do_action( 'atables_after_table_data_updated', $table_id, $data, $headers );
+		}
+
+		return $result;
+	}
 }

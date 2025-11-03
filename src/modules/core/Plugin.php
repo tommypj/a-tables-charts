@@ -384,9 +384,16 @@ class Plugin {
 		require_once ATABLES_PLUGIN_DIR . 'src/modules/core/controllers/EnhancedTableController.php';
 		$enhanced_controller = new \ATablesCharts\Core\Controllers\EnhancedTableController();
 		$enhanced_controller->register_hooks();
-		
+
+		// Load Cron module (scheduled data refresh).
+		require_once ATABLES_PLUGIN_DIR . 'src/modules/cron/index.php';
+
+		// Register Cron Controller.
+		$cron_controller = new \ATablesCharts\Cron\Controllers\CronController();
+		$cron_controller->register_hooks();
+
 		$this->logger->info( 'AJAX hooks registered', array(
-			'controllers' => array( 'ImportController', 'TableController', 'ExportController', 'ExcelImportController', 'ChartController', 'CacheController', 'FilterController', 'BulkActionsController', 'GoogleSheetsController', 'ValidationController', 'CellMergingController', 'FormulaController', 'EnhancedTableController' ),
+			'controllers' => array( 'ImportController', 'TableController', 'ExportController', 'ExcelImportController', 'ChartController', 'CacheController', 'FilterController', 'BulkActionsController', 'GoogleSheetsController', 'ValidationController', 'CellMergingController', 'FormulaController', 'EnhancedTableController', 'CronController' ),
 		) );
 	}
 
@@ -876,6 +883,15 @@ class Plugin {
 			$this->plugin_slug . '-create-chart',
 			array( $this, 'render_create_chart' )
 		);
+
+		add_submenu_page(
+			$this->plugin_slug,
+			__( 'Scheduled Refresh', 'a-tables-charts' ),
+			__( 'Scheduled Refresh', 'a-tables-charts' ),
+			'manage_options',
+			$this->plugin_slug . '-scheduled-refresh',
+			array( $this, 'render_scheduled_refresh' )
+		);
 		
 		// Hidden submenu for viewing single table.
 		add_submenu_page(
@@ -990,6 +1006,15 @@ class Plugin {
 	}
 
 	/**
+	 * Render scheduled refresh page
+	 *
+	 * @since 1.0.0
+	 */
+	public function render_scheduled_refresh() {
+		include ATABLES_PLUGIN_DIR . 'src/modules/core/views/scheduled-refresh.php';
+	}
+
+	/**
 	 * Render settings page
 	 *
 	 * @since 1.0.0
@@ -1011,6 +1036,7 @@ class Plugin {
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-create',
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-charts',
 			$this->plugin_slug . '_page_' . $this->plugin_slug . '-create-chart',
+			$this->plugin_slug . '_page_' . $this->plugin_slug . '-scheduled-refresh',
 			'admin_page_' . $this->plugin_slug . '-view',
 			'admin_page_' . $this->plugin_slug . '-edit',
 			'admin_page_' . $this->plugin_slug . '-manual',
