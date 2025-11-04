@@ -100,6 +100,19 @@ class Deactivator {
 				wp_unschedule_event( $timestamp, $event );
 			}
 		}
+
+		// Clear all atables_scheduled_refresh events
+		// These are scheduled per-table, so we need to clear all instances
+		$cron_array = _get_cron_array();
+		if ( ! empty( $cron_array ) ) {
+			foreach ( $cron_array as $timestamp => $cron ) {
+				if ( isset( $cron['atables_scheduled_refresh'] ) ) {
+					foreach ( $cron['atables_scheduled_refresh'] as $key => $event ) {
+						wp_unschedule_event( $timestamp, 'atables_scheduled_refresh', $event['args'] );
+					}
+				}
+			}
+		}
 	}
 
 	/**
