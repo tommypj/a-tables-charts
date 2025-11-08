@@ -74,7 +74,7 @@ class CronController {
 		add_action( 'wp_ajax_atables_get_schedules', array( $this, 'ajax_get_schedules' ) );
 
 		// Cleanup on plugin deactivation
-		register_deactivation_hook( ATABLES_PLUGIN_FILE, array( $this, 'clear_all_schedules' ) );
+		register_deactivation_hook( \ATABLES_PLUGIN_FILE, array( $this, 'clear_all_schedules' ) );
 	}
 
 	/**

@@ -90,7 +90,7 @@ class EnhancedTableController {
 			$table_id = intval( $_POST['table_id'] );
 			$template_id = sanitize_text_field( $_POST['template_id'] );
 
-			require_once ATABLES_PLUGIN_DIR . 'src/modules/templates/TemplateService.php';
+			require_once \ATABLES_PLUGIN_DIR . 'src/modules/templates/TemplateService.php';
 			$service = new \ATablesCharts\Templates\Services\TemplateService();
 			$templates = $service->get_templates();
 			
