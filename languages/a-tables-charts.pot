@@ -1,0 +1,1283 @@
+# Copyright (C) 2025 A-Tables Team
+# This file is distributed under the GPL-2.0+.
+msgid ""
+msgstr ""
+"Project-Id-Version: A-Tables and Charts for WordPress 1.0.4\n"
+"Report-Msgid-Bugs-To: https://a-tables-charts.com/support\n"
+"POT-Creation-Date: 2025-11-08 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Manual\n"
+"X-Domain: a-tables-charts\n"
+
+#: a-tables-charts.php:74
+#, php-format
+msgid "A-Tables and Charts requires PHP version %2$s or higher. You are running version %1$s."
+msgstr ""
+
+#: a-tables-charts.php:83
+#, php-format
+msgid "A-Tables and Charts requires WordPress version %2$s or higher. You are running version %1$s."
+msgstr ""
+
+#: a-tables-charts.php:93
+msgid "Plugin Activation Failed"
+msgstr ""
+
+#: a-tables-charts.php:96
+msgid "&larr; Return to Plugins"
+msgstr ""
+
+# Common Plugin Strings
+msgid "A-Tables and Charts"
+msgstr ""
+
+msgid "Tables"
+msgstr ""
+
+msgid "Charts"
+msgstr ""
+
+msgid "Settings"
+msgstr ""
+
+msgid "Add New"
+msgstr ""
+
+msgid "Add New Table"
+msgstr ""
+
+msgid "Add New Chart"
+msgstr ""
+
+msgid "Edit Table"
+msgstr ""
+
+msgid "Edit Chart"
+msgstr ""
+
+msgid "View Table"
+msgstr ""
+
+msgid "View Chart"
+msgstr ""
+
+msgid "Delete"
+msgstr ""
+
+msgid "Duplicate"
+msgstr ""
+
+msgid "Export"
+msgstr ""
+
+msgid "Import"
+msgstr ""
+
+msgid "Search"
+msgstr ""
+
+msgid "Filter"
+msgstr ""
+
+msgid "Sort"
+msgstr ""
+
+msgid "Save"
+msgstr ""
+
+msgid "Cancel"
+msgstr ""
+
+msgid "Close"
+msgstr ""
+
+msgid "Back"
+msgstr ""
+
+msgid "Next"
+msgstr ""
+
+msgid "Previous"
+msgstr ""
+
+msgid "Submit"
+msgstr ""
+
+msgid "Update"
+msgstr ""
+
+msgid "Create"
+msgstr ""
+
+msgid "Loading..."
+msgstr ""
+
+msgid "Please wait..."
+msgstr ""
+
+msgid "Success!"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Info"
+msgstr ""
+
+# Table Management
+msgid "All Tables"
+msgstr ""
+
+msgid "Create Table"
+msgstr ""
+
+msgid "Table Title"
+msgstr ""
+
+msgid "Table Description"
+msgstr ""
+
+msgid "Table created successfully!"
+msgstr ""
+
+msgid "Table updated successfully!"
+msgstr ""
+
+msgid "Table deleted successfully!"
+msgstr ""
+
+msgid "Failed to create table."
+msgstr ""
+
+msgid "Failed to update table."
+msgstr ""
+
+msgid "Failed to delete table."
+msgstr ""
+
+msgid "Table not found."
+msgstr ""
+
+msgid "No tables found."
+msgstr ""
+
+msgid "Row Count"
+msgstr ""
+
+msgid "Column Count"
+msgstr ""
+
+msgid "Created"
+msgstr ""
+
+msgid "Modified"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Active"
+msgstr ""
+
+msgid "Inactive"
+msgstr ""
+
+msgid "Draft"
+msgstr ""
+
+msgid "Published"
+msgstr ""
+
+# Import/Export
+msgid "Import Data"
+msgstr ""
+
+msgid "Export Data"
+msgstr ""
+
+msgid "Import from Excel"
+msgstr ""
+
+msgid "Import from CSV"
+msgstr ""
+
+msgid "Import from JSON"
+msgstr ""
+
+msgid "Import from XML"
+msgstr ""
+
+msgid "Import from Google Sheets"
+msgstr ""
+
+msgid "Import from MySQL"
+msgstr ""
+
+msgid "Export to CSV"
+msgstr ""
+
+msgid "Export to Excel"
+msgstr ""
+
+msgid "Export to JSON"
+msgstr ""
+
+msgid "Export to PDF"
+msgstr ""
+
+msgid "Export to XML"
+msgstr ""
+
+msgid "Select File"
+msgstr ""
+
+msgid "Upload File"
+msgstr ""
+
+msgid "File uploaded successfully!"
+msgstr ""
+
+msgid "Failed to upload file."
+msgstr ""
+
+msgid "Invalid file format."
+msgstr ""
+
+msgid "File is too large."
+msgstr ""
+
+msgid "Maximum file size: %s"
+msgstr ""
+
+# Chart Management
+msgid "All Charts"
+msgstr ""
+
+msgid "Create Chart"
+msgstr ""
+
+msgid "Chart Title"
+msgstr ""
+
+msgid "Chart Type"
+msgstr ""
+
+msgid "Bar Chart"
+msgstr ""
+
+msgid "Line Chart"
+msgstr ""
+
+msgid "Pie Chart"
+msgstr ""
+
+msgid "Doughnut Chart"
+msgstr ""
+
+msgid "Radar Chart"
+msgstr ""
+
+msgid "Polar Area Chart"
+msgstr ""
+
+msgid "Chart created successfully!"
+msgstr ""
+
+msgid "Chart updated successfully!"
+msgstr ""
+
+msgid "Chart deleted successfully!"
+msgstr ""
+
+msgid "Failed to create chart."
+msgstr ""
+
+msgid "Failed to update chart."
+msgstr ""
+
+msgid "Failed to delete chart."
+msgstr ""
+
+msgid "Chart not found."
+msgstr ""
+
+msgid "No charts found."
+msgstr ""
+
+msgid "Select Table"
+msgstr ""
+
+msgid "X-Axis Column"
+msgstr ""
+
+msgid "Y-Axis Column"
+msgstr ""
+
+msgid "Chart Width"
+msgstr ""
+
+msgid "Chart Height"
+msgstr ""
+
+msgid "Show Legend"
+msgstr ""
+
+msgid "Show Grid"
+msgstr ""
+
+msgid "Show Tooltips"
+msgstr ""
+
+msgid "Animation"
+msgstr ""
+
+msgid "Colors"
+msgstr ""
+
+msgid "Background Color"
+msgstr ""
+
+msgid "Border Color"
+msgstr ""
+
+# Display Settings
+msgid "Display Settings"
+msgstr ""
+
+msgid "Responsive"
+msgstr ""
+
+msgid "Pagination"
+msgstr ""
+
+msgid "Rows per page"
+msgstr ""
+
+msgid "Search Box"
+msgstr ""
+
+msgid "Show Search"
+msgstr ""
+
+msgid "Sortable Columns"
+msgstr ""
+
+msgid "Striped Rows"
+msgstr ""
+
+msgid "Bordered Table"
+msgstr ""
+
+msgid "Hover Effect"
+msgstr ""
+
+msgid "Compact Table"
+msgstr ""
+
+msgid "Table Style"
+msgstr ""
+
+msgid "Default"
+msgstr ""
+
+msgid "Minimal"
+msgstr ""
+
+msgid "Modern"
+msgstr ""
+
+msgid "Classic"
+msgstr ""
+
+msgid "Business"
+msgstr ""
+
+# Filtering
+msgid "Add Filter"
+msgstr ""
+
+msgid "Remove Filter"
+msgstr ""
+
+msgid "Apply Filters"
+msgstr ""
+
+msgid "Clear Filters"
+msgstr ""
+
+msgid "Column"
+msgstr ""
+
+msgid "Operator"
+msgstr ""
+
+msgid "Value"
+msgstr ""
+
+msgid "Equals"
+msgstr ""
+
+msgid "Not Equals"
+msgstr ""
+
+msgid "Contains"
+msgstr ""
+
+msgid "Not Contains"
+msgstr ""
+
+msgid "Starts With"
+msgstr ""
+
+msgid "Ends With"
+msgstr ""
+
+msgid "Greater Than"
+msgstr ""
+
+msgid "Less Than"
+msgstr ""
+
+msgid "Greater Than or Equal"
+msgstr ""
+
+msgid "Less Than or Equal"
+msgstr ""
+
+msgid "Between"
+msgstr ""
+
+msgid "Is Empty"
+msgstr ""
+
+msgid "Is Not Empty"
+msgstr ""
+
+msgid "Filters applied successfully!"
+msgstr ""
+
+msgid "Failed to apply filters."
+msgstr ""
+
+msgid "No filters applied."
+msgstr ""
+
+# Sorting
+msgid "Sort By"
+msgstr ""
+
+msgid "Sort Order"
+msgstr ""
+
+msgid "Ascending"
+msgstr ""
+
+msgid "Descending"
+msgstr ""
+
+msgid "Sort ascending"
+msgstr ""
+
+msgid "Sort descending"
+msgstr ""
+
+msgid "Remove sort"
+msgstr ""
+
+# Validation
+msgid "%s is required."
+msgstr ""
+
+msgid "%s must be a valid email address."
+msgstr ""
+
+msgid "%s must be a valid URL."
+msgstr ""
+
+msgid "%s must be a number."
+msgstr ""
+
+msgid "%s must be at least %d characters long."
+msgstr ""
+
+msgid "%s must not exceed %d characters."
+msgstr ""
+
+msgid "Email address is required."
+msgstr ""
+
+msgid "Please provide a valid email address."
+msgstr ""
+
+msgid "URL is required."
+msgstr ""
+
+msgid "Please provide a valid URL."
+msgstr ""
+
+msgid "All data is valid!"
+msgstr ""
+
+msgid "Validation errors found. Please correct them and try again."
+msgstr ""
+
+# MySQL Query
+msgid "MySQL Query"
+msgstr ""
+
+msgid "Execute Query"
+msgstr ""
+
+msgid "Query"
+msgstr ""
+
+msgid "Query executed successfully!"
+msgstr ""
+
+msgid "Failed to execute query."
+msgstr ""
+
+msgid "Only SELECT queries are allowed."
+msgstr ""
+
+msgid "Query returned no results."
+msgstr ""
+
+msgid "Query returned too many rows. Maximum allowed: %d. Please add a LIMIT clause."
+msgstr ""
+
+msgid "Query returned too many columns. Maximum allowed: %d"
+msgstr ""
+
+msgid "Database error: "
+msgstr ""
+
+msgid "Error executing query: "
+msgstr ""
+
+msgid "Keyword not allowed: %s"
+msgstr ""
+
+msgid "All Posts"
+msgstr ""
+
+msgid "Get all published posts with title and date"
+msgstr ""
+
+msgid "All Users"
+msgstr ""
+
+msgid "Get all users with email and registration date"
+msgstr ""
+
+msgid "Post Count by Author"
+msgstr ""
+
+msgid "Count posts grouped by author"
+msgstr ""
+
+msgid "Recent Comments"
+msgstr ""
+
+msgid "Get recent approved comments"
+msgstr ""
+
+msgid "Custom Query"
+msgstr ""
+
+msgid "Write your own SELECT query"
+msgstr ""
+
+# Google Sheets
+msgid "Google Sheets URL"
+msgstr ""
+
+msgid "Google Sheets integration"
+msgstr ""
+
+msgid "Import from Google Sheets"
+msgstr ""
+
+msgid "Sheet imported successfully!"
+msgstr ""
+
+msgid "Failed to import sheet."
+msgstr ""
+
+msgid "Invalid Google Sheets URL."
+msgstr ""
+
+msgid "Access denied. Please check sharing settings."
+msgstr ""
+
+msgid "Access denied. Please make sure the Google Sheet is set to \"Anyone with the link can view\" or use a published sheet URL."
+msgstr ""
+
+# Scheduled Refresh
+msgid "Scheduled Refresh"
+msgstr ""
+
+msgid "Add Schedule"
+msgstr ""
+
+msgid "Edit Schedule"
+msgstr ""
+
+msgid "Delete Schedule"
+msgstr ""
+
+msgid "Frequency"
+msgstr ""
+
+msgid "Every 15 Minutes"
+msgstr ""
+
+msgid "Every 30 Minutes"
+msgstr ""
+
+msgid "Hourly"
+msgstr ""
+
+msgid "Every 2 Hours"
+msgstr ""
+
+msgid "Every 6 Hours"
+msgstr ""
+
+msgid "Every 12 Hours"
+msgstr ""
+
+msgid "Daily"
+msgstr ""
+
+msgid "Last Run"
+msgstr ""
+
+msgid "Next Run"
+msgstr ""
+
+msgid "Schedule created successfully!"
+msgstr ""
+
+msgid "Schedule updated successfully!"
+msgstr ""
+
+msgid "Schedule deleted successfully!"
+msgstr ""
+
+msgid "Failed to create schedule."
+msgstr ""
+
+msgid "Failed to update schedule."
+msgstr ""
+
+msgid "Failed to delete schedule."
+msgstr ""
+
+msgid "Data refreshed successfully!"
+msgstr ""
+
+msgid "Failed to refresh data."
+msgstr ""
+
+msgid "Refreshed %d rows"
+msgstr ""
+
+# Performance Monitor
+msgid "Performance"
+msgstr ""
+
+msgid "Performance Monitor"
+msgstr ""
+
+msgid "Statistics"
+msgstr ""
+
+msgid "Slow Operations"
+msgstr ""
+
+msgid "Recommendations"
+msgstr ""
+
+msgid "Average Duration"
+msgstr ""
+
+msgid "Total Operations"
+msgstr ""
+
+msgid "Memory Usage"
+msgstr ""
+
+msgid "Database Queries"
+msgstr ""
+
+msgid "Clear Metrics"
+msgstr ""
+
+msgid "Metrics cleared successfully!"
+msgstr ""
+
+msgid "No performance data available."
+msgstr ""
+
+# Conditional Formatting
+msgid "Conditional Formatting"
+msgstr ""
+
+msgid "Add Rule"
+msgstr ""
+
+msgid "Remove Rule"
+msgstr ""
+
+msgid "Condition"
+msgstr ""
+
+msgid "Format"
+msgstr ""
+
+msgid "Text Color"
+msgstr ""
+
+msgid "Bold"
+msgstr ""
+
+msgid "Italic"
+msgstr ""
+
+msgid "Underline"
+msgstr ""
+
+msgid "Rules applied successfully!"
+msgstr ""
+
+msgid "Failed to apply rules."
+msgstr ""
+
+# Cell Merging
+msgid "Cell Merging"
+msgstr ""
+
+msgid "Merge Cells"
+msgstr ""
+
+msgid "Unmerge Cells"
+msgstr ""
+
+msgid "Start Row"
+msgstr ""
+
+msgid "End Row"
+msgstr ""
+
+msgid "Start Column"
+msgstr ""
+
+msgid "End Column"
+msgstr ""
+
+msgid "Cells merged successfully!"
+msgstr ""
+
+msgid "Cells unmerged successfully!"
+msgstr ""
+
+msgid "Failed to merge cells."
+msgstr ""
+
+msgid "Failed to unmerge cells."
+msgstr ""
+
+msgid "%d cell merges created."
+msgstr ""
+
+# Formulas
+msgid "Formulas"
+msgstr ""
+
+msgid "Add Formula"
+msgstr ""
+
+msgid "Edit Formula"
+msgstr ""
+
+msgid "Delete Formula"
+msgstr ""
+
+msgid "Formula"
+msgstr ""
+
+msgid "Target Column"
+msgstr ""
+
+msgid "Formula applied successfully!"
+msgstr ""
+
+msgid "Failed to apply formula."
+msgstr ""
+
+msgid "Invalid formula syntax."
+msgstr ""
+
+msgid "Sum of column"
+msgstr ""
+
+msgid "Average of column"
+msgstr ""
+
+msgid "Count of column"
+msgstr ""
+
+msgid "Minimum value"
+msgstr ""
+
+msgid "Maximum value"
+msgstr ""
+
+# Cache
+msgid "Cache"
+msgstr ""
+
+msgid "Clear Cache"
+msgstr ""
+
+msgid "Clear All Cache"
+msgstr ""
+
+msgid "Cache cleared successfully!"
+msgstr ""
+
+msgid "Failed to clear cache."
+msgstr ""
+
+msgid "Cache size"
+msgstr ""
+
+msgid "Cache entries"
+msgstr ""
+
+msgid "Cache hit rate"
+msgstr ""
+
+# Bulk Actions
+msgid "Bulk Actions"
+msgstr ""
+
+msgid "Select All"
+msgstr ""
+
+msgid "Deselect All"
+msgstr ""
+
+msgid "Delete Selected"
+msgstr ""
+
+msgid "Export Selected"
+msgstr ""
+
+msgid "Apply"
+msgstr ""
+
+msgid "%d items selected"
+msgstr ""
+
+msgid "Bulk action completed successfully!"
+msgstr ""
+
+msgid "Failed to complete bulk action."
+msgstr ""
+
+# Accessibility
+msgid "Skip to content"
+msgstr ""
+
+msgid "Screen reader text"
+msgstr ""
+
+msgid "Accessible table"
+msgstr ""
+
+msgid "Row %d of %d"
+msgstr ""
+
+msgid "Column %d of %d"
+msgstr ""
+
+msgid "Sort column %s"
+msgstr ""
+
+msgid "Filter column %s"
+msgstr ""
+
+msgid "Open menu"
+msgstr ""
+
+msgid "Close menu"
+msgstr ""
+
+msgid "Press Enter to open"
+msgstr ""
+
+msgid "Press Escape to close"
+msgstr ""
+
+# Error Messages
+msgid "An error occurred"
+msgstr ""
+
+msgid "An unexpected error occurred."
+msgstr ""
+
+msgid "Please try again."
+msgstr ""
+
+msgid "If the problem persists, please contact support."
+msgstr ""
+
+msgid "Access denied."
+msgstr ""
+
+msgid "You do not have permission to perform this action."
+msgstr ""
+
+msgid "Invalid request."
+msgstr ""
+
+msgid "Invalid nonce. Please refresh the page and try again."
+msgstr ""
+
+msgid "Session expired. Please refresh the page."
+msgstr ""
+
+# Success Messages
+msgid "Success!"
+msgstr ""
+
+msgid "Operation completed successfully!"
+msgstr ""
+
+msgid "Changes saved successfully!"
+msgstr ""
+
+msgid "Data imported successfully!"
+msgstr ""
+
+msgid "Data exported successfully!"
+msgstr ""
+
+# Settings
+msgid "General Settings"
+msgstr ""
+
+msgid "Advanced Settings"
+msgstr ""
+
+msgid "Enable caching"
+msgstr ""
+
+msgid "Cache duration"
+msgstr ""
+
+msgid "Default rows per page"
+msgstr ""
+
+msgid "Maximum file upload size"
+msgstr ""
+
+msgid "Enable debug mode"
+msgstr ""
+
+msgid "Settings saved successfully!"
+msgstr ""
+
+msgid "Failed to save settings."
+msgstr ""
+
+# Premium/Upgrade
+msgid "Upgrade to PRO"
+msgstr ""
+
+msgid "Unlock This Feature"
+msgstr ""
+
+msgid "Upgrade to Import"
+msgstr ""
+
+msgid "Upgrade to Export"
+msgstr ""
+
+msgid "Create Charts with PRO"
+msgstr ""
+
+msgid "Personal"
+msgstr ""
+
+msgid "/year"
+msgstr ""
+
+msgid "Perfect for personal projects"
+msgstr ""
+
+msgid "1 Site License"
+msgstr ""
+
+msgid "All PRO Features"
+msgstr ""
+
+msgid "Priority Support"
+msgstr ""
+
+msgid "1 Year Updates"
+msgstr ""
+
+msgid "5 Site Licenses"
+msgstr ""
+
+msgid "Best for agencies and businesses"
+msgstr ""
+
+msgid "Agency"
+msgstr ""
+
+msgid "Unlimited sites for agencies"
+msgstr ""
+
+msgid "Unlimited Sites"
+msgstr ""
+
+# Shortcodes
+msgid "Shortcode copied to clipboard!"
+msgstr ""
+
+msgid "Failed to copy shortcode."
+msgstr ""
+
+msgid "Copy Shortcode"
+msgstr ""
+
+msgid "Shortcode:"
+msgstr ""
+
+# Miscellaneous
+msgid "Documentation"
+msgstr ""
+
+msgid "Support"
+msgstr ""
+
+msgid "Rate Plugin"
+msgstr ""
+
+msgid "Version"
+msgstr ""
+
+msgid "Author"
+msgstr ""
+
+msgid "License"
+msgstr ""
+
+msgid "Yes"
+msgstr ""
+
+msgid "No"
+msgstr ""
+
+msgid "N/A"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "All"
+msgstr ""
+
+msgid "Any"
+msgstr ""
+
+msgid "Other"
+msgstr ""
+
+msgid "Custom"
+msgstr ""
+
+msgid "Auto"
+msgstr ""
+
+msgid "Manual"
+msgstr ""
+
+msgid "Automatic"
+msgstr ""
+
+msgid "Enable"
+msgstr ""
+
+msgid "Disable"
+msgstr ""
+
+msgid "Enabled"
+msgstr ""
+
+msgid "Disabled"
+msgstr ""
+
+msgid "Show"
+msgstr ""
+
+msgid "Hide"
+msgstr ""
+
+msgid "Visible"
+msgstr ""
+
+msgid "Hidden"
+msgstr ""
+
+msgid "Public"
+msgstr ""
+
+msgid "Private"
+msgstr ""
+
+msgid "Name"
+msgstr ""
+
+msgid "Description"
+msgstr ""
+
+msgid "Type"
+msgstr ""
+
+msgid "Date"
+msgstr ""
+
+msgid "Time"
+msgstr ""
+
+msgid "Actions"
+msgstr ""
+
+msgid "Options"
+msgstr ""
+
+msgid "Details"
+msgstr ""
+
+msgid "Preview"
+msgstr ""
+
+msgid "Refresh"
+msgstr ""
+
+msgid "Reset"
+msgstr ""
+
+msgid "Restore"
+msgstr ""
+
+msgid "Confirm"
+msgstr ""
+
+msgid "Are you sure?"
+msgstr ""
+
+msgid "This action cannot be undone."
+msgstr ""
+
+msgid "Continue"
+msgstr ""
+
+msgid "Go Back"
+msgstr ""
+
+msgid "Help"
+msgstr ""
+
+msgid "Learn More"
+msgstr ""
+
+msgid "View All"
+msgstr ""
+
+msgid "See More"
+msgstr ""
+
+msgid "Collapse"
+msgstr ""
+
+msgid "Expand"
+msgstr ""
+
+msgid "Maximize"
+msgstr ""
+
+msgid "Minimize"
+msgstr ""
+
+msgid "Full Screen"
+msgstr ""
+
+msgid "Exit Full Screen"
+msgstr ""
+
+msgid "Zoom In"
+msgstr ""
+
+msgid "Zoom Out"
+msgstr ""
+
+msgid "Fit to Screen"
+msgstr ""
+
+msgid "Download"
+msgstr ""
+
+msgid "Upload"
+msgstr ""
+
+msgid "Browse"
+msgstr ""
+
+msgid "Select"
+msgstr ""
+
+msgid "Choose"
+msgstr ""
+
+msgid "Pick"
+msgstr ""
+
+msgid "Add"
+msgstr ""
+
+msgid "Remove"
+msgstr ""
+
+msgid "Clear"
+msgstr ""
+
+msgid "Reset to Default"
+msgstr ""
+
+msgid "Save Changes"
+msgstr ""
+
+msgid "Discard Changes"
+msgstr ""
+
+msgid "Unsaved Changes"
+msgstr ""
+
+msgid "You have unsaved changes. Are you sure you want to leave?"
+msgstr ""
