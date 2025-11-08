@@ -10,7 +10,7 @@
 
 namespace ATablesCharts\Cron\Services;
 
-use ATablesCharts\Database\Services\MySQLQueryService;
+use ATablesCharts\Database\MySQLQueryService;
 use ATablesCharts\DataSources\Services\ImportService;
 use ATablesCharts\Tables\Services\TableService;
 use ATablesCharts\Shared\Utils\Logger;

@@ -46,7 +46,7 @@ class FilterPresetService {
 	 * @param FilterPresetRepository $repository     Filter preset repository.
 	 * @param FilterService          $filter_service Filter service.
 	 */
-	public function __construct( FilterPresetRepository $repository = null, FilterService $filter_service = null ) {
+	public function __construct( ?FilterPresetRepository $repository = null, ?FilterService $filter_service = null ) {
 		$this->repository     = $repository ?? new FilterPresetRepository();
 		$this->filter_service = $filter_service ?? new FilterService();
 	}
@@ -361,7 +361,7 @@ class FilterPresetService {
 	 * @param string $new_name  Optional new name for duplicate.
 	 * @return array Result with 'success', 'data', and 'errors' keys
 	 */
-	public function duplicate_preset( int $preset_id, string $new_name = null ) {
+	public function duplicate_preset( int $preset_id, ?string $new_name = null ) {
 		try {
 			$new_preset_id = $this->repository->duplicate( $preset_id, $new_name );
 
