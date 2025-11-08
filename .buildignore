@@ -1,0 +1,120 @@
+# Build Ignore File
+# Files and directories to exclude from release package
+
+# Version Control
+.git
+.gitignore
+.gitattributes
+.github
+
+# Development Documentation (exclude all .md except in specific allowed locations)
+*.md
+!readme.md
+!languages/README.md
+
+# Development Tools
+.buildignore
+build-release.sh
+composer.json
+composer.lock
+package.json
+package-lock.json
+webpack.config.js
+.babelrc
+.eslintrc
+.prettierrc
+phpunit.xml
+phpunit.xml.dist
+.phpunit.result.cache
+
+# Tests
+tests/
+phpunit/
+spec/
+
+# Documentation (project specific)
+docs/
+documentation/
+audits/
+examples/
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn.lock
+yarn-error.log
+
+# Build artifacts
+build/
+dist/
+release/
+*.zip
+*.tar.gz
+
+# IDE and Editor files
+.idea/
+.vscode/
+.vs/
+*.sublime-project
+*.sublime-workspace
+.phpintel/
+*.swp
+*.swo
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.cache
+
+# Vendor development files
+vendor/bin/
+vendor/**/.git
+vendor/**/tests/
+vendor/**/test/
+vendor/**/docs/
+vendor/**/doc/
+vendor/**/examples/
+vendor/**/*.md
+vendor/**/composer.json
+vendor/**/composer.lock
+vendor/**/.gitignore
+
+# Assets source files (keep compiled only)
+assets/src/
+assets/**/*.scss
+assets/**/*.sass
+assets/**/*.less
+assets/**/*.map
+
+# Screenshots (for development reference, but submitted separately to WordPress.org)
+screenshots/
+.wordpress-org/
+
+# Deployment scripts
+deploy.sh
+deploy/
+
+# CI/CD
+.travis.yml
+.gitlab-ci.yml
+.circleci/
+.jenkinsfile
+
+# Other
+coverage/
+.coverage
+.nyc_output
+*.spec.js
+*.test.js
