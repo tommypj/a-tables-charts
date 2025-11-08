@@ -369,7 +369,7 @@ class CacheService {
 	 */
 	public function warm_cache( $table_id ) {
 		// Load Tables module.
-		require_once ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
+		require_once \ATABLES_PLUGIN_DIR . 'src/modules/tables/index.php';
 		
 		$table_service = new \ATablesCharts\Tables\Services\TableService();
 		$table = $table_service->get_table( $table_id );

@@ -39,8 +39,8 @@ class ExcelImportService {
 	 */
 	public function __construct() {
 		// Load parser
-		if ( file_exists( ATABLES_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-			require_once ATABLES_PLUGIN_DIR . 'vendor/autoload.php';
+		if ( file_exists( \ATABLES_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+			require_once \ATABLES_PLUGIN_DIR . 'vendor/autoload.php';
 		}
 		
 		$this->parser = new ExcelParser();

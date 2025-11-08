@@ -115,7 +115,7 @@ class TableShortcode {
 		if ( ! empty( $atts['template'] ) ) {
 			// Load template class
 			if ( ! class_exists( 'ATablesCharts\\Templates\\Types\\TableTemplate' ) ) {
-				require_once ATABLES_PLUGIN_DIR . 'src/modules/templates/types/TableTemplate.php';
+				require_once \ATABLES_PLUGIN_DIR . 'src/modules/templates/types/TableTemplate.php';
 			}
 			
 			$template = \ATablesCharts\Templates\Types\TableTemplate::create_from_builtin( $atts['template'] );
@@ -165,7 +165,7 @@ class TableShortcode {
 		if ( ! empty( $display_settings['formulas'] ) ) {
 			// Load FormulaService
 			if ( ! class_exists( 'ATablesCharts\\Formulas\\Services\\FormulaService' ) ) {
-				require_once ATABLES_PLUGIN_DIR . 'src/modules/formulas/FormulaService.php';
+				require_once \ATABLES_PLUGIN_DIR . 'src/modules/formulas/FormulaService.php';
 			}
 			
 			$formula_service = new \ATablesCharts\Formulas\Services\FormulaService();

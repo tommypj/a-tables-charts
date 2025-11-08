@@ -35,8 +35,8 @@ class ExcelExportService {
 	 */
 	public function __construct() {
 		// Load exporter only if PhpSpreadsheet is available
-		if ( file_exists( ATABLES_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
-			require_once ATABLES_PLUGIN_DIR . 'vendor/autoload.php';
+		if ( file_exists( \ATABLES_PLUGIN_DIR . 'vendor/autoload.php' ) ) {
+			require_once \ATABLES_PLUGIN_DIR . 'vendor/autoload.php';
 		}
 		
 		$this->exporter = new ExcelExporter();
