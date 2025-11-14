@@ -45,6 +45,7 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         ),
         'A' => 
         array (
+            'A_Tables_Charts\\' => 16,
             'ATablesCharts\\Tests\\' => 20,
             'ATablesCharts\\' => 14,
         ),
@@ -99,6 +100,10 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
+        ),
+        'A_Tables_Charts\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/includes',
         ),
         'ATablesCharts\\Tests\\' => 
         array (
