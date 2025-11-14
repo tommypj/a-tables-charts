@@ -15,7 +15,8 @@
   },
   "autoload": {
     "psr-4": {
-      "ATablesCharts\\": "src/"
+      "ATablesCharts\\": "src/",
+      "A_Tables_Charts\\": "includes/"
     }
   },
   "autoload-dev": {
