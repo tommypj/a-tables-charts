@@ -21,6 +21,7 @@ class EnhancedTableController {
 	public function register_hooks() {
 		add_action( 'wp_ajax_atables_save_enhanced_table', array( $this, 'save_enhanced_table' ) );
 		add_action( 'wp_ajax_atables_apply_template', array( $this, 'apply_template' ) );
+		add_action( 'wp_ajax_atables_get_table_settings', array( $this, 'get_table_settings' ) );
 	}
 
 	public function save_enhanced_table() {
@@ -86,23 +87,50 @@ class EnhancedTableController {
 	public function apply_template() {
 		try {
 			check_ajax_referer( 'atables_admin_nonce', 'nonce' );
-			
+
 			$table_id = intval( $_POST['table_id'] );
 			$template_id = sanitize_text_field( $_POST['template_id'] );
 
 			require_once \ATABLES_PLUGIN_DIR . 'src/modules/templates/TemplateService.php';
 			$service = new \ATablesCharts\Templates\Services\TemplateService();
 			$templates = $service->get_templates();
-			
+
 			if ( isset( $templates[ $template_id ] ) ) {
 				$this->repository->save_display_settings( $table_id, $templates[ $template_id ]['config'] );
 				wp_send_json_success( array( 'message' => 'Template applied successfully!' ) );
 			}
-			
+
 			wp_send_json_error( array( 'message' => 'Template not found' ) );
-			
+
 		} catch ( \Exception $e ) {
 			Logger::log_error( 'Template apply error', array( 'error' => $e->getMessage() ) );
+			wp_send_json_error( array( 'message' => 'Error: ' . $e->getMessage() ) );
+		}
+	}
+
+	public function get_table_settings() {
+		try {
+			// Verify nonce
+			check_ajax_referer( 'atables_admin_nonce', 'nonce' );
+
+			// Validate required fields
+			if ( ! isset( $_POST['table_id'] ) ) {
+				wp_send_json_error( array( 'message' => 'Table ID is required' ) );
+			}
+
+			$table_id = intval( $_POST['table_id'] );
+
+			// Get table display settings
+			$settings = $this->repository->get_display_settings( $table_id );
+
+			if ( ! $settings ) {
+				$settings = array();
+			}
+
+			wp_send_json_success( $settings );
+
+		} catch ( \Exception $e ) {
+			Logger::log_error( 'Get table settings error', array( 'error' => $e->getMessage() ) );
 			wp_send_json_error( array( 'message' => 'Error: ' . $e->getMessage() ) );
 		}
 	}
