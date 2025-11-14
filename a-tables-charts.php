@@ -28,6 +28,11 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'ATABLES_VERSION', '1.0.4' );
 
 /**
+ * Plugin file path
+ */
+define( 'ATABLES_PLUGIN_FILE', __FILE__ );
+
+/**
  * Plugin directory path
  */
 define( 'ATABLES_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
