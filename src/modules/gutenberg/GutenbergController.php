@@ -117,7 +117,8 @@ class GutenbergController {
 	 * @return array Tables list
 	 */
 	private function get_tables_for_editor() {
-		$tables = $this->table_service->get_all_tables();
+		$result = $this->table_service->get_all_tables();
+		$tables = $result['tables'] ?? array();
 		$options = array();
 
 		foreach ( $tables as $table ) {
@@ -136,7 +137,8 @@ class GutenbergController {
 	 * @return array Charts list
 	 */
 	private function get_charts_for_editor() {
-		$charts = $this->chart_service->get_all_charts();
+		$result = $this->chart_service->get_all_charts();
+		$charts = $result['charts'] ?? array();
 		$options = array();
 
 		foreach ( $charts as $chart ) {
