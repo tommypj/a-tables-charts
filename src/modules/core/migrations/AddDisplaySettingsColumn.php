@@ -38,8 +38,8 @@ class AddDisplaySettingsColumn {
         }
         
         // Add the column
-        $sql = "ALTER TABLE {$table_name} 
-                ADD COLUMN display_settings TEXT DEFAULT NULL 
+        $sql = "ALTER TABLE {$table_name}
+                ADD COLUMN display_settings LONGTEXT DEFAULT NULL
                 AFTER description";
         
         $result = $wpdb->query($sql);
