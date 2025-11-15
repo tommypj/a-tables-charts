@@ -26,7 +26,7 @@ class DatabaseSchema {
 	 *
 	 * @var string
 	 */
-	const SCHEMA_VERSION = '1.0.0';
+	const SCHEMA_VERSION = '1.0.1';
 
 	/**
 	 * WordPress database object
@@ -92,6 +92,7 @@ class DatabaseSchema {
 			id bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 			title varchar(255) NOT NULL,
 			description text,
+			display_settings longtext DEFAULT NULL,
 			data_source_type varchar(50) NOT NULL,
 			data_source_config longtext,
 			row_count int(11) DEFAULT 0,
