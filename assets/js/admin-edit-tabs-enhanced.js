@@ -273,7 +273,7 @@
             $('#cf-column').val(rule.column);
             $('#cf-operator').val(rule.operator);
             $('#cf-value').val(rule.value);
-            $('#cf-background-color').val(rule.background_color || '');
+            $('#cf-bg-color').val(rule.background_color || '');
             $('#cf-text-color').val(rule.text_color || '');
             $('#cf-font-weight').val(rule.font_weight || 'normal');
         },
@@ -296,7 +296,7 @@
             $('#cf-column').val('');
             $('#cf-operator').val('equals');
             $('#cf-value').val('');
-            $('#cf-background-color').val('');
+            $('#cf-bg-color').val('');
             $('#cf-text-color').val('');
             $('#cf-font-weight').val('normal');
         },
@@ -356,9 +356,9 @@
 
             $('#atables-formula-modal').show();
             $('#formula-index').val(index);
-            $('#formula-target-row').val(formula.target_row);
-            $('#formula-target-col').val(formula.target_col);
-            $('#formula-expression').val(formula.formula);
+            $('#formula-row').val(formula.target_row);
+            $('#formula-col').val(formula.target_col);
+            $('#formula-input').val(formula.formula);
         },
 
         deleteFormula: function(index) {
@@ -394,9 +394,9 @@
         },
 
         clearFormulaModal: function() {
-            $('#formula-target-row').val('');
-            $('#formula-target-col').val('');
-            $('#formula-expression').val('');
+            $('#formula-row').val('');
+            $('#formula-col').val('');
+            $('#formula-input').val('');
         },
 
         // ============================================================
