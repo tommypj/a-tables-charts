@@ -11,15 +11,16 @@
 namespace ATablesCharts\Bulk\Controllers;
 
 use ATablesCharts\Tables\Repositories\TableRepository;
+use ATablesCharts\Bulk\Services\BulkActionsService;
 
 /**
  * BulkActionsController Class
  *
  * Responsibilities:
- * - Handle bulk delete
- * - Handle bulk duplicate
- * - Handle bulk edit
- * - Validate bulk operations
+ * - Handle AJAX requests for bulk operations
+ * - Validate input and permissions
+ * - Delegate business logic to BulkActionsService
+ * - Send JSON responses
  */
 class BulkActionsController {
 
@@ -31,10 +32,18 @@ class BulkActionsController {
 	private $repository;
 
 	/**
+	 * Bulk actions service
+	 *
+	 * @var BulkActionsService
+	 */
+	private $service;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->repository = new TableRepository();
+		$this->service = new BulkActionsService();
 	}
 
 	/**
@@ -119,49 +128,26 @@ class BulkActionsController {
 	private function bulk_delete( $table, $data ) {
 		$row_indices = isset( $data['rows'] ) ? array_map( 'intval', $data['rows'] ) : array();
 
-		if ( empty( $row_indices ) ) {
-			return array(
-				'success' => false,
-				'message' => __( 'No rows selected.', 'a-tables-charts' ),
-			);
-		}
-
 		// Get current table data
 		$table_data = $table->get_data();
 
-		// Sort indices in descending order to avoid index shifting
-		rsort( $row_indices );
+		// Use service to perform bulk delete
+		$result = $this->service->bulk_delete( $table_data, $row_indices );
 
-		// Remove rows
-		$deleted_count = 0;
-		foreach ( $row_indices as $index ) {
-			if ( isset( $table_data[ $index ] ) ) {
-				unset( $table_data[ $index ] );
-				$deleted_count++;
-			}
+		if ( ! $result['success'] ) {
+			return $result;
 		}
 
-		// Reindex array
-		$table_data = array_values( $table_data );
-
-		// Update table
-		$table->source_data['data'] = $table_data;
-		$table->row_count = count( $table_data );
+		// Update table with new data
+		$table->source_data['data'] = $result['data'];
+		$table->row_count = count( $result['data'] );
 
 		$updated = $this->repository->update( $table );
 
 		if ( $updated ) {
 			return array(
 				'success' => true,
-				'message' => sprintf(
-					_n(
-						'%d row deleted successfully.',
-						'%d rows deleted successfully.',
-						$deleted_count,
-						'a-tables-charts'
-					),
-					$deleted_count
-				),
+				'message' => $result['message'],
 			);
 		}
 
@@ -181,43 +167,26 @@ class BulkActionsController {
 	private function bulk_duplicate( $table, $data ) {
 		$row_indices = isset( $data['rows'] ) ? array_map( 'intval', $data['rows'] ) : array();
 
-		if ( empty( $row_indices ) ) {
-			return array(
-				'success' => false,
-				'message' => __( 'No rows selected.', 'a-tables-charts' ),
-			);
-		}
-
 		// Get current table data
 		$table_data = $table->get_data();
 
-		// Duplicate rows (add copies at the end)
-		$duplicated_count = 0;
-		foreach ( $row_indices as $index ) {
-			if ( isset( $table_data[ $index ] ) ) {
-				$table_data[] = $table_data[ $index ];
-				$duplicated_count++;
-			}
+		// Use service to perform bulk duplicate
+		$result = $this->service->bulk_duplicate( $table_data, $row_indices );
+
+		if ( ! $result['success'] ) {
+			return $result;
 		}
 
-		// Update table
-		$table->source_data['data'] = $table_data;
-		$table->row_count = count( $table_data );
+		// Update table with new data
+		$table->source_data['data'] = $result['data'];
+		$table->row_count = count( $result['data'] );
 
 		$updated = $this->repository->update( $table );
 
 		if ( $updated ) {
 			return array(
 				'success' => true,
-				'message' => sprintf(
-					_n(
-						'%d row duplicated successfully.',
-						'%d rows duplicated successfully.',
-						$duplicated_count,
-						'a-tables-charts'
-					),
-					$duplicated_count
-				),
+				'message' => $result['message'],
 			);
 		}
 
@@ -239,58 +208,26 @@ class BulkActionsController {
 		$column = isset( $data['column'] ) ? sanitize_text_field( $data['column'] ) : '';
 		$value = isset( $data['value'] ) ? sanitize_text_field( $data['value'] ) : '';
 
-		if ( empty( $row_indices ) ) {
-			return array(
-				'success' => false,
-				'message' => __( 'No rows selected.', 'a-tables-charts' ),
-			);
-		}
-
-		if ( empty( $column ) ) {
-			return array(
-				'success' => false,
-				'message' => __( 'No column selected.', 'a-tables-charts' ),
-			);
-		}
-
-		// Get current table data
+		// Get current table data and headers
 		$table_data = $table->get_data();
 		$headers = $table->get_headers();
 
-		// Verify column exists
-		if ( ! in_array( $column, $headers, true ) ) {
-			return array(
-				'success' => false,
-				'message' => __( 'Invalid column selected.', 'a-tables-charts' ),
-			);
+		// Use service to perform bulk edit
+		$result = $this->service->bulk_edit( $table_data, $headers, $row_indices, $column, $value );
+
+		if ( ! $result['success'] ) {
+			return $result;
 		}
 
-		// Update rows
-		$updated_count = 0;
-		foreach ( $row_indices as $index ) {
-			if ( isset( $table_data[ $index ] ) ) {
-				$table_data[ $index ][ $column ] = $value;
-				$updated_count++;
-			}
-		}
-
-		// Update table
-		$table->source_data['data'] = $table_data;
+		// Update table with new data
+		$table->source_data['data'] = $result['data'];
 
 		$updated = $this->repository->update( $table );
 
 		if ( $updated ) {
 			return array(
 				'success' => true,
-				'message' => sprintf(
-					_n(
-						'%d row updated successfully.',
-						'%d rows updated successfully.',
-						$updated_count,
-						'a-tables-charts'
-					),
-					$updated_count
-				),
+				'message' => $result['message'],
 			);
 		}
 
