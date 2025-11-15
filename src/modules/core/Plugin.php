@@ -615,12 +615,21 @@ class Plugin {
 			// Color picker for conditional formatting
 			wp_enqueue_style( 'wp-color-picker' );
 			wp_enqueue_script( 'wp-color-picker' );
-			
+
+			// Enhanced tabs functionality (formulas, validation, conditional formatting, etc.)
+			wp_enqueue_script(
+				$this->plugin_slug . '-edit-tabs-enhanced',
+				ATABLES_PLUGIN_URL . 'assets/js/admin-edit-tabs-enhanced.js',
+				array( 'jquery', 'wp-color-picker' ),
+				$this->version,
+				true
+			);
+
 			// Save handler (coordinates all tabs)
 			wp_enqueue_script(
 				$this->plugin_slug . '-save-handler',
 				ATABLES_PLUGIN_URL . 'assets/js/admin-save-handler.js',
-				array( 'jquery', 'wp-color-picker' ),
+				array( 'jquery', 'wp-color-picker', $this->plugin_slug . '-edit-tabs-enhanced' ),
 				$this->version,
 				true
 			);
