@@ -797,7 +797,7 @@ class TableRepository {
 		// Store new rows
 		$this->store_table_rows( $table_id, $data );
 
-		// Update table metadata with headers
+		// Update table metadata with headers in data_source_config
 		$source_data = array(
 			'headers' => $headers,
 		);
@@ -805,7 +805,7 @@ class TableRepository {
 		$result = $this->wpdb->update(
 			$this->table_name,
 			array(
-				'source_data' => wp_json_encode( $source_data ),
+				'data_source_config' => wp_json_encode( $source_data ),
 				'updated_at' => current_time( 'mysql' ),
 			),
 			array( 'id' => $table_id ),
