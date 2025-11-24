@@ -42,9 +42,17 @@ class EnhancedTableController {
 			$data = isset( $_POST['data'] ) && is_array( $_POST['data'] ) ? $_POST['data'] : array();
 			$settings_json = isset( $_POST['display_settings'] ) ? stripslashes( $_POST['display_settings'] ) : '{}';
 			$settings = json_decode( $settings_json, true );
-			
+
 			if ( ! is_array( $settings ) ) {
 				$settings = array();
+			}
+
+			// Debug: Log what we're receiving
+			error_log( 'Saving display_settings: ' . print_r( $settings, true ) );
+			if ( isset( $settings['validation_rules'] ) ) {
+				error_log( 'Validation rules: ' . print_r( $settings['validation_rules'], true ) );
+			} else {
+				error_log( 'No validation_rules in settings!' );
 			}
 
 			// Sanitize data rows
