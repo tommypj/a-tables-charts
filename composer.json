@@ -14,8 +14,11 @@
     "mockery/mockery": "^1.5"
   },
   "autoload": {
+    "psr-4": {
+      "ATables\\": "src/",
+      "ATablesCharts\\": "src/modules/"
+    },
     "classmap": [
-      "src/modules/",
       "src/shared/",
       "includes/"
     ]

@@ -18,5 +18,7 @@ return array(
     'DeepCopy\\' => array($vendorDir . '/myclabs/deep-copy/src/DeepCopy'),
     'Composer\\Pcre\\' => array($vendorDir . '/composer/pcre/src'),
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
+    'ATables\\' => array($baseDir . '/src'),
     'ATablesCharts\\Tests\\' => array($baseDir . '/tests'),
+    'ATablesCharts\\' => array($baseDir . '/src/modules'),
 );
