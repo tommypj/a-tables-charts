@@ -47,7 +47,6 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         array (
             'ATables\\' => 8,
             'ATablesCharts\\Tests\\' => 20,
-            'ATablesCharts\\' => 14,
         ),
     );
 
@@ -109,10 +108,6 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         array (
             0 => __DIR__ . '/../..' . '/tests',
         ),
-        'ATablesCharts\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src/modules',
-        ),
     );
 
     public static $prefixesPsr0 = array (
@@ -126,29 +121,15 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
     );
 
     public static $classMap = array (
-        'ATablesCharts\\Shared\\Utils\\ColumnFormatter' => __DIR__ . '/../..' . '/src/shared/utils/ColumnFormatter.php',
-        'ATablesCharts\\Shared\\Utils\\ColumnTypeFormatter' => __DIR__ . '/../..' . '/src/shared/utils/ColumnTypeFormatter.php',
-        'ATablesCharts\\Shared\\Utils\\ConditionalFormatter' => __DIR__ . '/../..' . '/src/shared/utils/ConditionalFormatter.php',
-        'ATablesCharts\\Shared\\Utils\\ContentFormatter' => __DIR__ . '/../..' . '/src/shared/utils/ContentFormatter.php',
-        'ATablesCharts\\Shared\\Utils\\Features' => __DIR__ . '/../..' . '/src/shared/utils/Features.php',
-        'ATablesCharts\\Shared\\Utils\\Helpers' => __DIR__ . '/../..' . '/src/shared/utils/Helpers.php',
-        'ATablesCharts\\Shared\\Utils\\Logger' => __DIR__ . '/../..' . '/src/shared/utils/Logger.php',
-        'ATablesCharts\\Shared\\Utils\\Sanitizer' => __DIR__ . '/../..' . '/src/shared/utils/Sanitizer.php',
-        'ATablesCharts\\Shared\\Utils\\Validator' => __DIR__ . '/../..' . '/src/shared/utils/Validator.php',
+        'ATables\\Admin\\Settings' => __DIR__ . '/../..' . '/src/Admin/Settings.php',
+        'ATables\\Admin\\TableEditor' => __DIR__ . '/../..' . '/src/Admin/TableEditor.php',
+        'ATables\\Admin\\TableList' => __DIR__ . '/../..' . '/src/Admin/TableList.php',
         'ATables\\Core\\Activator' => __DIR__ . '/../..' . '/src/Core/Activator.php',
         'ATables\\Core\\Database' => __DIR__ . '/../..' . '/src/Core/Database.php',
         'ATables\\Core\\Loader' => __DIR__ . '/../..' . '/src/Core/Loader.php',
         'ATables\\Core\\Plugin' => __DIR__ . '/../..' . '/src/Core/Plugin.php',
-        'ATables\\Features\\Display\\ShortcodeHandler' => __DIR__ . '/../..' . '/src/Features/Display/ShortcodeHandler.php',
-        'ATables\\Features\\Tables\\TableController' => __DIR__ . '/../..' . '/src/Features/Tables/TableController.php',
-        'ATables\\Features\\Tables\\TableRepository' => __DIR__ . '/../..' . '/src/Features/Tables/TableRepository.php',
-        'ATables\\Features\\Tables\\TableService' => __DIR__ . '/../..' . '/src/Features/Tables/TableService.php',
-        'ATables\\Features\\Upload\\CSVParser' => __DIR__ . '/../..' . '/src/Features/Upload/CSVParser.php',
-        'ATables\\Features\\Upload\\ExcelParser' => __DIR__ . '/../..' . '/src/Features/Upload/ExcelParser.php',
-        'ATables\\Features\\Upload\\UploadController' => __DIR__ . '/../..' . '/src/Features/Upload/UploadController.php',
-        'ATables\\Licensing\\LicenseManager' => __DIR__ . '/../..' . '/src/Licensing/LicenseManager.php',
-        'ATables\\Licensing\\UpgradePrompts' => __DIR__ . '/../..' . '/src/Licensing/UpgradePrompts.php',
-        'A_Tables_Charts\\Database\\DatabaseHelpers' => __DIR__ . '/../..' . '/includes/database/DatabaseHelpers.php',
+        'ATables\\Features\\FeatureManager' => __DIR__ . '/../..' . '/src/Features/FeatureManager.php',
+        'ATables\\Frontend\\Shortcode' => __DIR__ . '/../..' . '/src/Frontend/Shortcode.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',
         'Complex\\Functions' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Functions.php',

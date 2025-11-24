@@ -2,82 +2,43 @@
  * Admin Styles
  *
  * @package ATables
- * @since 2.0.0
+ * @since 3.0.0
  */
 
-/* General */
-.atables-wrapper {
-    margin: 20px 0;
-}
-
-/* Empty State */
-.atables-empty-state {
+.atables-empty {
+    padding: 40px 20px;
     text-align: center;
-    padding: 60px 20px;
     background: #fff;
     border: 1px solid #ddd;
     border-radius: 4px;
 }
 
-.atables-empty-state .dashicons {
-    font-size: 64px;
-    width: 64px;
-    height: 64px;
-    color: #ccc;
-    margin-bottom: 20px;
-}
-
-.atables-empty-state h2 {
-    margin: 0 0 10px 0;
-    color: #333;
-}
-
-.atables-empty-state p {
+.atables-empty p {
+    font-size: 16px;
     color: #666;
-    font-size: 14px;
-    margin-bottom: 20px;
 }
 
-/* Forms */
-.required {
-    color: #d63638;
+/* Table editor */
+#table-container {
+    margin: 20px 0;
 }
 
-.code {
-    font-family: Consolas, Monaco, monospace;
-    background: #f5f5f5;
+#data-table th[contenteditable]:focus,
+#data-table td[contenteditable]:focus {
+    outline: 2px solid #2271b1;
+    outline-offset: -2px;
+    background: #fff9e6;
+}
+
+.delete-row {
+    font-size: 20px;
+    line-height: 1;
     cursor: pointer;
+    border: none;
+    background: none;
+    padding: 0;
 }
 
-.code:focus {
-    background: #fff;
-}
-
-/* Upload Progress */
-#upload-progress .dashicons-spin {
-    animation: rotation 2s infinite linear;
-}
-
-@keyframes rotation {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(359deg);
-    }
-}
-
-/* Table Edit */
-.atables-edit-container {
-    max-width: 1200px;
-}
-
-.atables-table-container {
-    overflow-x: auto;
-    margin-top: 20px;
-}
-
-/* Buttons */
-.button .dashicons {
-    margin-top: 4px;
+.delete-row:hover {
+    color: #a00 !important;
 }

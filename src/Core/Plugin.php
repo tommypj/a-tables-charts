@@ -3,7 +3,7 @@
  * Core Plugin Class
  *
  * @package ATables\Core
- * @since 2.0.0
+ * @since 3.0.0
  */
 
 namespace ATables\Core;
@@ -44,15 +44,7 @@ class Plugin {
      */
     private function __construct() {
         $this->loader = new Loader();
-        $this->load_dependencies();
         $this->register_hooks();
-    }
-
-    /**
-     * Load required dependencies
-     */
-    private function load_dependencies() {
-        // Core classes are autoloaded
     }
 
     /**
@@ -67,23 +59,12 @@ class Plugin {
 
         // Frontend hooks
         $this->loader->add_action( 'wp_enqueue_scripts', $this, 'enqueue_frontend_assets' );
-        $this->loader->add_action( 'init', $this, 'register_shortcodes' );
+        $this->loader->add_action( 'init', $this, 'register_shortcode' );
 
         // AJAX hooks
-        $this->register_ajax_hooks();
-    }
-
-    /**
-     * Register AJAX hooks
-     */
-    private function register_ajax_hooks() {
-        // Table operations
-        $this->loader->add_action( 'wp_ajax_atables_get_tables', 'ATables\Features\Tables\TableController', 'get_tables' );
-        $this->loader->add_action( 'wp_ajax_atables_save_table', 'ATables\Features\Tables\TableController', 'save_table' );
-        $this->loader->add_action( 'wp_ajax_atables_delete_table', 'ATables\Features\Tables\TableController', 'delete_table' );
-
-        // Upload operations
-        $this->loader->add_action( 'wp_ajax_atables_upload_file', 'ATables\Features\Upload\UploadController', 'upload_file' );
+        $this->loader->add_action( 'wp_ajax_atables_save_table', 'ATables\Admin\TableEditor', 'save_table' );
+        $this->loader->add_action( 'wp_ajax_atables_delete_table', 'ATables\Admin\TableList', 'delete_table' );
+        $this->loader->add_action( 'wp_ajax_atables_toggle_feature', 'ATables\Admin\Settings', 'toggle_feature' );
     }
 
     /**
@@ -91,96 +72,60 @@ class Plugin {
      */
     public function register_admin_menu() {
         add_menu_page(
-            __( 'A-Tables & Charts', 'a-tables-charts' ),
             __( 'Tables & Charts', 'a-tables-charts' ),
+            __( 'Tables', 'a-tables-charts' ),
             'manage_options',
-            'a-tables-charts',
-            array( $this, 'render_admin_page' ),
+            'atables',
+            array( 'ATables\Admin\TableList', 'render' ),
             'dashicons-grid-view',
             30
         );
 
-        // Submenu: All Tables
         add_submenu_page(
-            'a-tables-charts',
+            'atables',
             __( 'All Tables', 'a-tables-charts' ),
             __( 'All Tables', 'a-tables-charts' ),
             'manage_options',
-            'a-tables-charts',
-            array( $this, 'render_admin_page' )
+            'atables',
+            array( 'ATables\Admin\TableList', 'render' )
         );
 
-        // Submenu: Add New
         add_submenu_page(
-            'a-tables-charts',
-            __( 'Add New Table', 'a-tables-charts' ),
+            'atables',
+            __( 'Add New', 'a-tables-charts' ),
             __( 'Add New', 'a-tables-charts' ),
             'manage_options',
-            'a-tables-charts-new',
-            array( $this, 'render_new_table_page' )
+            'atables-new',
+            array( 'ATables\Admin\TableEditor', 'render_new' )
         );
 
-        // Submenu: Edit (hidden from menu, accessible via URL)
         add_submenu_page(
-            null, // No parent = hidden from menu
+            null,
             __( 'Edit Table', 'a-tables-charts' ),
             __( 'Edit Table', 'a-tables-charts' ),
             'manage_options',
-            'a-tables-charts-edit',
-            array( $this, 'render_edit_table_page' )
+            'atables-edit',
+            array( 'ATables\Admin\TableEditor', 'render_edit' )
         );
 
-        // Submenu: License (Pro version)
-        if ( \ATables\Licensing\LicenseManager::is_pro_version() ) {
-            add_submenu_page(
-                'a-tables-charts',
-                __( 'License', 'a-tables-charts' ),
-                __( 'License', 'a-tables-charts' ),
-                'manage_options',
-                'a-tables-charts-license',
-                array( $this, 'render_license_page' )
-            );
-        }
-    }
-
-    /**
-     * Render admin page
-     */
-    public function render_admin_page() {
-        require_once ATABLES_PLUGIN_DIR . 'templates/admin/tables-list.php';
-    }
-
-    /**
-     * Render new table page
-     */
-    public function render_new_table_page() {
-        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-new.php';
-    }
-
-    /**
-     * Render edit table page
-     */
-    public function render_edit_table_page() {
-        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-edit.php';
-    }
-
-    /**
-     * Render license page
-     */
-    public function render_license_page() {
-        require_once ATABLES_PLUGIN_DIR . 'templates/admin/license.php';
+        add_submenu_page(
+            'atables',
+            __( 'Features', 'a-tables-charts' ),
+            __( 'Features', 'a-tables-charts' ),
+            'manage_options',
+            'atables-features',
+            array( 'ATables\Admin\Settings', 'render' )
+        );
     }
 
     /**
      * Enqueue admin assets
      */
     public function enqueue_admin_assets( $hook ) {
-        // Only load on our plugin pages
-        if ( strpos( $hook, 'a-tables-charts' ) === false ) {
+        if ( strpos( $hook, 'atables' ) === false ) {
             return;
         }
 
-        // CSS
         wp_enqueue_style(
             'atables-admin',
             ATABLES_PLUGIN_URL . 'assets/css/admin.css',
@@ -188,7 +133,6 @@ class Plugin {
             ATABLES_VERSION
         );
 
-        // JS
         wp_enqueue_script(
             'atables-admin',
             ATABLES_PLUGIN_URL . 'assets/js/admin.js',
@@ -197,14 +141,12 @@ class Plugin {
             true
         );
 
-        // Localize script
         wp_localize_script(
             'atables-admin',
             'atablesAdmin',
             array(
                 'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-                'nonce'   => wp_create_nonce( 'atables_nonce' ),
-                'isPro'   => \ATables\Licensing\LicenseManager::is_pro_active(),
+                'nonce' => wp_create_nonce( 'atables_nonce' ),
             )
         );
     }
@@ -213,7 +155,6 @@ class Plugin {
      * Enqueue frontend assets
      */
     public function enqueue_frontend_assets() {
-        // CSS
         wp_enqueue_style(
             'atables-frontend',
             ATABLES_PLUGIN_URL . 'assets/css/frontend.css',
@@ -221,7 +162,6 @@ class Plugin {
             ATABLES_VERSION
         );
 
-        // JS
         wp_enqueue_script(
             'atables-frontend',
             ATABLES_PLUGIN_URL . 'assets/js/frontend.js',
@@ -232,11 +172,10 @@ class Plugin {
     }
 
     /**
-     * Register shortcodes
+     * Register shortcode
      */
-    public function register_shortcodes() {
-        add_shortcode( 'atables', array( 'ATables\Features\Display\ShortcodeHandler', 'render' ) );
-        add_shortcode( 'atables_chart', array( 'ATables\Features\Charts\ChartShortcode', 'render' ) );
+    public function register_shortcode() {
+        add_shortcode( 'atables', array( 'ATables\Frontend\Shortcode', 'render' ) );
     }
 
     /**
