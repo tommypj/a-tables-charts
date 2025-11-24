@@ -293,4 +293,85 @@ class TableController {
             ) );
         }
     }
+
+    /**
+     * Create manual table via AJAX
+     */
+    public function create_manual_table() {
+        check_ajax_referer( 'atables_nonce', 'nonce' );
+
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_send_json_error( array( 'message' => __( 'Permission denied.', 'a-tables-charts' ) ) );
+        }
+
+        $title = isset( $_POST['title'] ) ? sanitize_text_field( $_POST['title'] ) : '';
+        $description = isset( $_POST['description'] ) ? sanitize_textarea_field( $_POST['description'] ) : '';
+        $columns = isset( $_POST['columns'] ) ? $_POST['columns'] : array();
+        $initial_rows = isset( $_POST['initial_rows'] ) ? intval( $_POST['initial_rows'] ) : 0;
+
+        // Validate
+        if ( empty( $title ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'Table title is required.', 'a-tables-charts' ),
+            ) );
+        }
+
+        if ( empty( $columns ) || ! is_array( $columns ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'At least one column is required.', 'a-tables-charts' ),
+            ) );
+        }
+
+        // Sanitize columns
+        $sanitized_columns = array();
+        foreach ( $columns as $column_name ) {
+            $name = sanitize_text_field( $column_name );
+            if ( ! empty( $name ) ) {
+                $sanitized_columns[] = $name;
+            }
+        }
+
+        if ( empty( $sanitized_columns ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'At least one valid column is required.', 'a-tables-charts' ),
+            ) );
+        }
+
+        // Check for duplicate columns
+        if ( count( $sanitized_columns ) !== count( array_unique( $sanitized_columns ) ) ) {
+            wp_send_json_error( array(
+                'message' => __( 'Column names must be unique.', 'a-tables-charts' ),
+            ) );
+        }
+
+        // Create empty rows
+        $rows = array();
+        for ( $i = 0; $i < $initial_rows; $i++ ) {
+            $row = array();
+            foreach ( $sanitized_columns as $column ) {
+                $row[ $column ] = '';
+            }
+            $rows[] = $row;
+        }
+
+        // Create table
+        try {
+            $table_id = $this->service->create_from_data( $title, $sanitized_columns, $rows, $description );
+
+            if ( $table_id ) {
+                wp_send_json_success( array(
+                    'message' => __( 'Table created successfully!', 'a-tables-charts' ),
+                    'table_id' => $table_id,
+                ) );
+            } else {
+                wp_send_json_error( array(
+                    'message' => __( 'Failed to create table.', 'a-tables-charts' ),
+                ) );
+            }
+        } catch ( Exception $e ) {
+            wp_send_json_error( array(
+                'message' => __( 'Error creating table: ', 'a-tables-charts' ) . $e->getMessage(),
+            ) );
+        }
+    }
 }

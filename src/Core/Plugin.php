@@ -82,6 +82,7 @@ class Plugin {
         $this->loader->add_action( 'wp_ajax_atables_save_table', 'ATables\Features\Tables\TableController', 'save_table' );
         $this->loader->add_action( 'wp_ajax_atables_delete_table', 'ATables\Features\Tables\TableController', 'delete_table' );
         $this->loader->add_action( 'wp_ajax_atables_save_table_data', 'ATables\Features\Tables\TableController', 'save_table_data' );
+        $this->loader->add_action( 'wp_ajax_atables_create_manual_table', 'ATables\Features\Tables\TableController', 'create_manual_table' );
 
         // Upload operations
         $this->loader->add_action( 'wp_ajax_atables_upload_file', 'ATables\Features\Upload\UploadController', 'upload_file' );
@@ -134,6 +135,16 @@ class Plugin {
             array( $this, 'render_edit_table_page' )
         );
 
+        // Submenu: Create Manual (hidden from menu, accessible via URL)
+        add_submenu_page(
+            null, // No parent = hidden from menu
+            __( 'Create Table Manually', 'a-tables-charts' ),
+            __( 'Create Manually', 'a-tables-charts' ),
+            'manage_options',
+            'a-tables-charts-create-manual',
+            array( $this, 'render_create_manual_page' )
+        );
+
         // Submenu: License (Pro version)
         if ( \ATables\Licensing\LicenseManager::is_pro_version() ) {
             add_submenu_page(
@@ -166,6 +177,13 @@ class Plugin {
      */
     public function render_edit_table_page() {
         require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-edit-enhanced.php';
+    }
+
+    /**
+     * Render create manual page
+     */
+    public function render_create_manual_page() {
+        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-create-manual.php';
     }
 
     /**

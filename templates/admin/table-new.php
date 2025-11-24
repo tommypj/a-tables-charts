@@ -81,10 +81,10 @@ if ( ! defined( 'ABSPATH' ) ) {
                 <?php esc_html_e( 'Create an empty table and add data manually.', 'a-tables-charts' ); ?>
             </p>
             <p>
-                <button class="button button-secondary" disabled>
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=a-tables-charts-create-manual' ) ); ?>" class="button button-secondary button-large">
+                    <span class="dashicons dashicons-plus-alt" style="margin-top: 4px;"></span>
                     <?php esc_html_e( 'Create Empty Table', 'a-tables-charts' ); ?>
-                </button>
-                <span class="description"><?php esc_html_e( '(Coming soon)', 'a-tables-charts' ); ?></span>
+                </a>
             </p>
         </div>
     </div>
