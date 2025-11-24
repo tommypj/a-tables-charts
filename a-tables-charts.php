@@ -12,6 +12,8 @@
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
  * Text Domain: a-tables-charts
  * Domain Path: /languages
+ * * GitHub Plugin URI: tommypj/a-tables-charts
+ * Primary Branch: claude/work-in-progress-01DhJt5pyrXXc9uywJ4CDCbd
  *
  * @package ATablesCharts
  */
