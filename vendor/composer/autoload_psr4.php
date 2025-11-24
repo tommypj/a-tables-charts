@@ -20,5 +20,4 @@ return array(
     'Complex\\' => array($vendorDir . '/markbaker/complex/classes/src'),
     'ATables\\' => array($baseDir . '/src'),
     'ATablesCharts\\Tests\\' => array($baseDir . '/tests'),
-    'ATablesCharts\\' => array($baseDir . '/src/modules'),
 );

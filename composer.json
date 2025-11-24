@@ -15,13 +15,8 @@
   },
   "autoload": {
     "psr-4": {
-      "ATables\\": "src/",
-      "ATablesCharts\\": "src/modules/"
-    },
-    "classmap": [
-      "src/shared/",
-      "includes/"
-    ]
+      "ATables\\": "src/"
+    }
   },
   "autoload-dev": {
     "psr-4": {

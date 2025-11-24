@@ -3,7 +3,7 @@
  * Hooks Loader
  *
  * @package ATables\Core
- * @since 2.0.0
+ * @since 3.0.0
  */
 
 namespace ATables\Core;
@@ -11,98 +11,81 @@ namespace ATables\Core;
 /**
  * Loader Class
  *
- * Registers all hooks for the plugin.
+ * Registers all actions and filters
  */
 class Loader {
 
     /**
-     * Array of actions
+     * The array of actions registered
      *
      * @var array
      */
-    protected $actions = array();
+    protected $actions;
 
     /**
-     * Array of filters
+     * The array of filters registered
      *
      * @var array
      */
-    protected $filters = array();
+    protected $filters;
 
     /**
-     * Add action hook
-     *
-     * @param string $hook          Hook name.
-     * @param object|string $component Component object or class name.
-     * @param string $callback      Callback method.
-     * @param int    $priority      Priority.
-     * @param int    $accepted_args Number of arguments.
+     * Initialize collections
+     */
+    public function __construct() {
+        $this->actions = array();
+        $this->filters = array();
+    }
+
+    /**
+     * Add a new action
      */
     public function add_action( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-        $this->actions[] = array(
-            'hook'          => $hook,
-            'component'     => $component,
-            'callback'      => $callback,
-            'priority'      => $priority,
-            'accepted_args' => $accepted_args,
-        );
+        $this->actions = $this->add( $this->actions, $hook, $component, $callback, $priority, $accepted_args );
     }
 
     /**
-     * Add filter hook
-     *
-     * @param string $hook          Hook name.
-     * @param object|string $component Component object or class name.
-     * @param string $callback      Callback method.
-     * @param int    $priority      Priority.
-     * @param int    $accepted_args Number of arguments.
+     * Add a new filter
      */
     public function add_filter( $hook, $component, $callback, $priority = 10, $accepted_args = 1 ) {
-        $this->filters[] = array(
+        $this->filters = $this->add( $this->filters, $hook, $component, $callback, $priority, $accepted_args );
+    }
+
+    /**
+     * Add hook to collection
+     */
+    private function add( $hooks, $hook, $component, $callback, $priority, $accepted_args ) {
+        $hooks[] = array(
             'hook'          => $hook,
             'component'     => $component,
             'callback'      => $callback,
             'priority'      => $priority,
             'accepted_args' => $accepted_args,
         );
+
+        return $hooks;
     }
 
     /**
-     * Register hooks with WordPress
+     * Register all hooks
      */
     public function run() {
-        foreach ( $this->actions as $hook ) {
-            add_action(
-                $hook['hook'],
-                $this->get_callback( $hook['component'], $hook['callback'] ),
-                $hook['priority'],
-                $hook['accepted_args']
-            );
-        }
-
         foreach ( $this->filters as $hook ) {
             add_filter(
                 $hook['hook'],
-                $this->get_callback( $hook['component'], $hook['callback'] ),
+                array( $hook['component'], $hook['callback'] ),
                 $hook['priority'],
                 $hook['accepted_args']
             );
         }
-    }
 
-    /**
-     * Get callback for hook
-     *
-     * @param object|string $component Component.
-     * @param string        $callback  Callback method.
-     * @return array|callable
-     */
-    private function get_callback( $component, $callback ) {
-        // If component is a string (class name), instantiate it
-        if ( is_string( $component ) && class_exists( $component ) ) {
-            $component = new $component();
+        foreach ( $this->actions as $hook ) {
+            add_action(
+                $hook['hook'],
+                array( $hook['component'], $hook['callback'] ),
+                $hook['priority'],
+                $hook['accepted_args']
+            );
         }
-
-        return array( $component, $callback );
     }
 }
