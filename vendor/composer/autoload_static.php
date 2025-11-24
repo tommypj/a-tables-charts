@@ -45,7 +45,6 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         ),
         'A' => 
         array (
-            'A_Tables_Charts\\' => 16,
             'ATablesCharts\\Tests\\' => 20,
         ),
     );
@@ -99,10 +98,6 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'Complex\\' => 
         array (
             0 => __DIR__ . '/..' . '/markbaker/complex/classes/src',
-        ),
-        'A_Tables_Charts\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/includes',
         ),
         'ATablesCharts\\Tests\\' => 
         array (
@@ -213,6 +208,7 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'ATablesCharts\\Templates\\Types\\TableTemplate' => __DIR__ . '/../..' . '/src/modules/templates/types/TableTemplate.php',
         'ATablesCharts\\Validation\\Controllers\\ValidationController' => __DIR__ . '/../..' . '/src/modules/validation/ValidationController.php',
         'ATablesCharts\\Validation\\Services\\ValidationService' => __DIR__ . '/../..' . '/src/modules/validation/ValidationService.php',
+        'A_Tables_Charts\\Database\\DatabaseHelpers' => __DIR__ . '/../..' . '/includes/database/DatabaseHelpers.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',
         'Complex\\Functions' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Functions.php',

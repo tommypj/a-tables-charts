@@ -98,6 +98,7 @@ return array(
     'ATablesCharts\\Templates\\Types\\TableTemplate' => $baseDir . '/src/modules/templates/types/TableTemplate.php',
     'ATablesCharts\\Validation\\Controllers\\ValidationController' => $baseDir . '/src/modules/validation/ValidationController.php',
     'ATablesCharts\\Validation\\Services\\ValidationService' => $baseDir . '/src/modules/validation/ValidationService.php',
+    'A_Tables_Charts\\Database\\DatabaseHelpers' => $baseDir . '/includes/database/DatabaseHelpers.php',
     'Complex\\Complex' => $vendorDir . '/markbaker/complex/classes/src/Complex.php',
     'Complex\\Exception' => $vendorDir . '/markbaker/complex/classes/src/Exception.php',
     'Complex\\Functions' => $vendorDir . '/markbaker/complex/classes/src/Functions.php',
