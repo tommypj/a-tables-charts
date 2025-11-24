@@ -93,12 +93,7 @@
             // Get validation rules from global variable (set by validation tab)
             if (window.aTablesValidationRules) {
                 this.settings.validation = window.aTablesValidationRules;
-                console.log('Validation rules from global:', window.aTablesValidationRules);
-            } else {
-                console.warn('window.aTablesValidationRules is not set!');
             }
-
-            console.log('All settings being saved:', this.settings);
 
             return this.settings;
         },

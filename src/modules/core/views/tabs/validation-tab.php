@@ -20,11 +20,18 @@ $presets = $validation_service->get_presets();
 </div>
 
 <div class="atables-validation-toolbar">
-	<button type="button" class="button button-primary" id="atables-add-validation">
-		<span class="dashicons dashicons-plus-alt"></span>
-		<?php esc_html_e( 'Add Validation Rule', 'a-tables-charts' ); ?>
-	</button>
-	
+	<div class="atables-validation-toolbar-left">
+		<button type="button" class="button button-primary" id="atables-add-validation">
+			<span class="dashicons dashicons-plus-alt"></span>
+			<?php esc_html_e( 'Add Validation Rule', 'a-tables-charts' ); ?>
+		</button>
+
+		<button type="button" class="button button-primary" id="atables-save-validation">
+			<span class="dashicons dashicons-saved"></span>
+			<?php esc_html_e( 'Save Validation Rules', 'a-tables-charts' ); ?>
+		</button>
+	</div>
+
 	<div class="atables-validation-presets">
 		<label><?php esc_html_e( 'Quick Presets:', 'a-tables-charts' ); ?></label>
 		<?php foreach ( array_slice( $presets, 0, 3 ) as $preset_id => $preset ) : ?>
@@ -202,6 +209,28 @@ $presets = $validation_service->get_presets();
 	border-radius: 4px;
 }
 
+.atables-validation-toolbar-left {
+	display: flex;
+	gap: 10px;
+}
+
+#atables-save-validation {
+	background: #00a32a;
+	border-color: #00a32a;
+	color: #fff;
+}
+
+#atables-save-validation:hover {
+	background: #008a20;
+	border-color: #008a20;
+}
+
+#atables-save-validation:disabled {
+	background: #cccccc;
+	border-color: #cccccc;
+	cursor: not-allowed;
+}
+
 .atables-validation-presets {
 	display: flex;
 	align-items: center;
@@ -302,8 +331,34 @@ $presets = $validation_service->get_presets();
 
 <script>
 jQuery(document).ready(function($) {
-	let validationRules = <?php echo wp_json_encode( $validation_rules ); ?> || {};
-	
+	let validationRules = {};
+	const tableId = $('#atables-table-id').val();
+
+	// Load validation rules from database on page load
+	loadValidationRules();
+
+	function loadValidationRules() {
+		$.ajax({
+			url: aTablesAdmin.ajaxUrl,
+			type: 'POST',
+			data: {
+				action: 'atables_get_validation_rules',
+				nonce: aTablesAdmin.nonce,
+				table_id: tableId
+			},
+			success: function(response) {
+				if (response.success && response.data.rules) {
+					validationRules = response.data.rules;
+					window.aTablesValidationRules = validationRules;
+					renderValidation();
+				}
+			},
+			error: function() {
+				console.error('Failed to load validation rules');
+			}
+		});
+	}
+
 	// Show/hide rule configs
 	$('.atables-validation-rule-option input[type="checkbox"]').on('change', function() {
 		const ruleName = $(this).attr('name');
@@ -314,45 +369,95 @@ jQuery(document).ready(function($) {
 			configDiv.slideUp();
 		}
 	});
-	
+
 	// Add Validation
 	$('#atables-add-validation').on('click', function() {
 		openValidationModal();
 	});
-	
+
+	// Independent Save - Save validation rules directly to database
+	$('#atables-save-validation').on('click', function() {
+		saveValidationToDatabase();
+	});
+
 	// Edit Validation
 	$(document).on('click', '.atables-edit-validation', function() {
 		const column = $(this).data('column');
 		const rules = validationRules[column];
 		openValidationModal(column, rules);
 	});
-	
+
 	// Delete Validation
 	$(document).on('click', '.atables-delete-validation', function() {
 		if (confirm('<?php esc_html_e( 'Delete validation rules for this column?', 'a-tables-charts' ); ?>')) {
 			const column = $(this).data('column');
 			delete validationRules[column];
-			// Update global variable for save handler
 			window.aTablesValidationRules = validationRules;
 			renderValidation();
 		}
 	});
-	
-	// Save Validation
+
+	// Save Validation (modal save button)
 	$('#atables-validation-save').on('click', function() {
 		saveValidation();
 	});
-	
+
 	// Cancel
 	$('#atables-validation-cancel, .atables-modal-close').on('click', function() {
 		closeValidationModal();
 	});
-	
+
 	// Apply Preset
 	$('.atables-validation-preset-btn').on('click', function() {
 		const presetId = $(this).data('preset');
 		applyValidationPreset(presetId);
 	});
+
+	// Independent save function - saves directly to the database
+	function saveValidationToDatabase() {
+		const $btn = $('#atables-save-validation');
+		const originalText = $btn.html();
+
+		// Show loading state
+		$btn.prop('disabled', true).html('<span class="dashicons dashicons-update dashicons-spin"></span> Saving...');
+
+		$.ajax({
+			url: aTablesAdmin.ajaxUrl,
+			type: 'POST',
+			data: {
+				action: 'atables_save_validation_rules',
+				nonce: aTablesAdmin.nonce,
+				table_id: tableId,
+				rules: JSON.stringify(validationRules)
+			},
+			success: function(response) {
+				if (response.success) {
+					if (window.ATablesNotifications) {
+						window.ATablesNotifications.show(response.data.message || 'Validation rules saved successfully!', 'success');
+					} else {
+						alert('Validation rules saved successfully!');
+					}
+				} else {
+					if (window.ATablesNotifications) {
+						window.ATablesNotifications.show(response.data.message || 'Failed to save validation rules.', 'error');
+					} else {
+						alert('Failed to save validation rules: ' + (response.data.message || 'Unknown error'));
+					}
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Save error:', error);
+				if (window.ATablesNotifications) {
+					window.ATablesNotifications.show('Failed to save validation rules. Please try again.', 'error');
+				} else {
+					alert('Failed to save validation rules. Please try again.');
+				}
+			},
+			complete: function() {
+				$btn.prop('disabled', false).html(originalText);
+			}
+		});
+	}
 	
 	function openValidationModal(column = null, rules = null) {
 		// Reset form
@@ -425,7 +530,7 @@ jQuery(document).ready(function($) {
 		closeValidationModal();
 
 		if (window.ATablesNotifications) {
-			window.ATablesNotifications.show('Validation rules saved! Don\'t forget to save the table.', 'success');
+			window.ATablesNotifications.show('Validation rule added. Click "Save Validation Rules" to save to database.', 'info');
 		}
 	}
 	

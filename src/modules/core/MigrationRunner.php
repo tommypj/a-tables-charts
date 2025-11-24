@@ -14,20 +14,22 @@ class MigrationRunner {
     
     /**
      * Run all pending migrations
-     * 
+     *
      * @return array Results of all migrations
      */
     public static function run_all() {
         $results = array();
-        
+
         // Load migration classes
         require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddDisplaySettingsColumn.php';
         require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddFilterPresetsTable.php';
-        
+        require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddModularSettingsTables.php';
+
         // Run migrations
         $migrations = array(
             'AddDisplaySettingsColumn' => '\ATablesCharts\Core\Migrations\AddDisplaySettingsColumn',
             'AddFilterPresetsTable' => '\ATablesCharts\Core\Migrations\AddFilterPresetsTable',
+            'AddModularSettingsTables' => '\ATablesCharts\Core\Migrations\AddModularSettingsTables',
         );
         
         foreach ($migrations as $name => $class) {
@@ -66,16 +68,18 @@ class MigrationRunner {
     
     /**
      * Check if any migrations need to run
-     * 
+     *
      * @return bool
      */
     public static function has_pending() {
         require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddDisplaySettingsColumn.php';
         require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddFilterPresetsTable.php';
-        
+        require_once ATABLES_PLUGIN_DIR . 'src/modules/core/migrations/AddModularSettingsTables.php';
+
         $migrations = array(
             '\ATablesCharts\Core\Migrations\AddDisplaySettingsColumn',
             '\ATablesCharts\Core\Migrations\AddFilterPresetsTable',
+            '\ATablesCharts\Core\Migrations\AddModularSettingsTables',
         );
         
         foreach ($migrations as $class) {

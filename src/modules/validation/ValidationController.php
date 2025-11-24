@@ -2,7 +2,7 @@
 /**
  * Validation Controller
  *
- * Handles validation operations via AJAX
+ * Handles validation operations via AJAX with independent save functionality.
  *
  * @package ATablesCharts\Validation\Controllers
  * @since 1.0.0
@@ -11,6 +11,7 @@
 namespace ATablesCharts\Validation\Controllers;
 
 use ATablesCharts\Validation\Services\ValidationService;
+use ATablesCharts\Validation\Repositories\ValidationRepository;
 use ATablesCharts\Tables\Repositories\TableRepository;
 
 /**
@@ -26,18 +27,26 @@ class ValidationController {
 	private $service;
 
 	/**
-	 * Table repository
+	 * Validation repository (new modular storage)
+	 *
+	 * @var ValidationRepository
+	 */
+	private $validation_repository;
+
+	/**
+	 * Table repository (for backward compatibility)
 	 *
 	 * @var TableRepository
 	 */
-	private $repository;
+	private $table_repository;
 
 	/**
 	 * Constructor
 	 */
 	public function __construct() {
 		$this->service = new ValidationService();
-		$this->repository = new TableRepository();
+		$this->validation_repository = new ValidationRepository();
+		$this->table_repository = new TableRepository();
 	}
 
 	/**
@@ -77,7 +86,7 @@ class ValidationController {
 		}
 
 		// Get table data
-		$table = $this->repository->find_by_id( $table_id );
+		$table = $this->table_repository->find_by_id( $table_id );
 		if ( ! $table ) {
 			wp_send_json_error( array(
 				'message' => __( 'Table not found.', 'a-tables-charts' ),
@@ -137,8 +146,13 @@ class ValidationController {
 			) );
 		}
 
-		// Save rules to table display settings
-		$success = $this->repository->update_display_setting( $table_id, 'validation_rules', $rules );
+		// Use new modular repository if table exists, otherwise fall back to old method
+		if ( $this->validation_repository->table_exists() ) {
+			$success = $this->validation_repository->save_rules( $table_id, $rules );
+		} else {
+			// Fallback to old method for backward compatibility
+			$success = $this->table_repository->update_display_setting( $table_id, 'validation_rules', $rules );
+		}
 
 		if ( $success ) {
 			wp_send_json_success( array(
@@ -177,8 +191,14 @@ class ValidationController {
 			) );
 		}
 
-		$settings = $this->repository->get_display_settings( $table_id );
-		$rules = isset( $settings['validation_rules'] ) ? $settings['validation_rules'] : array();
+		// Use new modular repository if table exists, otherwise fall back to old method
+		if ( $this->validation_repository->table_exists() ) {
+			$rules = $this->validation_repository->get_rules( $table_id );
+		} else {
+			// Fallback to old method for backward compatibility
+			$settings = $this->table_repository->get_display_settings( $table_id );
+			$rules = isset( $settings['validation_rules'] ) ? $settings['validation_rules'] : array();
+		}
 
 		wp_send_json_success( array(
 			'rules' => $rules,
