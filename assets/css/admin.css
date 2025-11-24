@@ -1,0 +1,83 @@
+/**
+ * Admin Styles
+ *
+ * @package ATables
+ * @since 2.0.0
+ */
+
+/* General */
+.atables-wrapper {
+    margin: 20px 0;
+}
+
+/* Empty State */
+.atables-empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.atables-empty-state .dashicons {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: #ccc;
+    margin-bottom: 20px;
+}
+
+.atables-empty-state h2 {
+    margin: 0 0 10px 0;
+    color: #333;
+}
+
+.atables-empty-state p {
+    color: #666;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+/* Forms */
+.required {
+    color: #d63638;
+}
+
+.code {
+    font-family: Consolas, Monaco, monospace;
+    background: #f5f5f5;
+    cursor: pointer;
+}
+
+.code:focus {
+    background: #fff;
+}
+
+/* Upload Progress */
+#upload-progress .dashicons-spin {
+    animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(359deg);
+    }
+}
+
+/* Table Edit */
+.atables-edit-container {
+    max-width: 1200px;
+}
+
+.atables-table-container {
+    overflow-x: auto;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.button .dashicons {
+    margin-top: 4px;
+}

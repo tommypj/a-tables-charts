@@ -120,6 +120,16 @@ class Plugin {
             array( $this, 'render_new_table_page' )
         );
 
+        // Submenu: Edit (hidden from menu, accessible via URL)
+        add_submenu_page(
+            null, // No parent = hidden from menu
+            __( 'Edit Table', 'a-tables-charts' ),
+            __( 'Edit Table', 'a-tables-charts' ),
+            'manage_options',
+            'a-tables-charts-edit',
+            array( $this, 'render_edit_table_page' )
+        );
+
         // Submenu: License (Pro version)
         if ( \ATables\Licensing\LicenseManager::is_pro_version() ) {
             add_submenu_page(
@@ -145,6 +155,13 @@ class Plugin {
      */
     public function render_new_table_page() {
         require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-new.php';
+    }
+
+    /**
+     * Render edit table page
+     */
+    public function render_edit_table_page() {
+        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-edit.php';
     }
 
     /**
