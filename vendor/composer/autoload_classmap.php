@@ -27,6 +27,7 @@ return array(
     'ATables\\Features\\Upload\\CSVParser' => $baseDir . '/src/Features/Upload/CSVParser.php',
     'ATables\\Features\\Upload\\ExcelParser' => $baseDir . '/src/Features/Upload/ExcelParser.php',
     'ATables\\Features\\Upload\\UploadController' => $baseDir . '/src/Features/Upload/UploadController.php',
+    'ATables\\Licensing\\LicenseController' => $baseDir . '/src/Licensing/LicenseController.php',
     'ATables\\Licensing\\LicenseManager' => $baseDir . '/src/Licensing/LicenseManager.php',
     'ATables\\Licensing\\UpgradePrompts' => $baseDir . '/src/Licensing/UpgradePrompts.php',
     'A_Tables_Charts\\Database\\DatabaseHelpers' => $baseDir . '/includes/database/DatabaseHelpers.php',

@@ -147,6 +147,7 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'ATables\\Features\\Upload\\CSVParser' => __DIR__ . '/../..' . '/src/Features/Upload/CSVParser.php',
         'ATables\\Features\\Upload\\ExcelParser' => __DIR__ . '/../..' . '/src/Features/Upload/ExcelParser.php',
         'ATables\\Features\\Upload\\UploadController' => __DIR__ . '/../..' . '/src/Features/Upload/UploadController.php',
+        'ATables\\Licensing\\LicenseController' => __DIR__ . '/../..' . '/src/Licensing/LicenseController.php',
         'ATables\\Licensing\\LicenseManager' => __DIR__ . '/../..' . '/src/Licensing/LicenseManager.php',
         'ATables\\Licensing\\UpgradePrompts' => __DIR__ . '/../..' . '/src/Licensing/UpgradePrompts.php',
         'A_Tables_Charts\\Database\\DatabaseHelpers' => __DIR__ . '/../..' . '/includes/database/DatabaseHelpers.php',

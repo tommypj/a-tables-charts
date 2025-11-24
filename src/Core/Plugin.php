@@ -89,6 +89,11 @@ class Plugin {
 
         // Display settings
         $this->loader->add_action( 'wp_ajax_atables_save_display_settings', 'ATables\Features\Display\DisplayController', 'save_display_settings' );
+
+        // License operations
+        $this->loader->add_action( 'wp_ajax_atables_activate_license', 'ATables\Licensing\LicenseController', 'activate_license' );
+        $this->loader->add_action( 'wp_ajax_atables_deactivate_license', 'ATables\Licensing\LicenseController', 'deactivate_license' );
+        $this->loader->add_action( 'wp_ajax_atables_refresh_license', 'ATables\Licensing\LicenseController', 'refresh_license' );
     }
 
     /**
@@ -145,17 +150,15 @@ class Plugin {
             array( $this, 'render_create_manual_page' )
         );
 
-        // Submenu: License (Pro version)
-        if ( \ATables\Licensing\LicenseManager::is_pro_version() ) {
-            add_submenu_page(
-                'a-tables-charts',
-                __( 'License', 'a-tables-charts' ),
-                __( 'License', 'a-tables-charts' ),
-                'manage_options',
-                'a-tables-charts-license',
-                array( $this, 'render_license_page' )
-            );
-        }
+        // Submenu: License
+        add_submenu_page(
+            'a-tables-charts',
+            __( 'License', 'a-tables-charts' ),
+            __( 'License', 'a-tables-charts' ),
+            'manage_options',
+            'a-tables-charts-license',
+            array( $this, 'render_license_page' )
+        );
     }
 
     /**
