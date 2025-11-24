@@ -14,12 +14,10 @@
     "mockery/mockery": "^1.5"
   },
   "autoload": {
-    "psr-4": {
-      "A_Tables_Charts\\": "includes/"
-    },
     "classmap": [
       "src/modules/",
-      "src/shared/"
+      "src/shared/",
+      "includes/"
     ]
   },
   "autoload-dev": {
