@@ -1,6 +1,7 @@
 # Dependencies
-vendor/
 node_modules/
+
+# Keep vendor/ for distribution (contains autoloader)
 
 # Environment & Config
 .env

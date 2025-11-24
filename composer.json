@@ -15,9 +15,12 @@
   },
   "autoload": {
     "psr-4": {
-      "ATablesCharts\\": "src/",
       "A_Tables_Charts\\": "includes/"
-    }
+    },
+    "classmap": [
+      "src/modules/",
+      "src/shared/"
+    ]
   },
   "autoload-dev": {
     "psr-4": {
