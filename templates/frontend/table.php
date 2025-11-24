@@ -11,7 +11,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 ?>
 
-<div class="atables-wrapper" data-table-id="<?php echo esc_attr( $table['id'] ); ?>">
+<?php
+// Allow modules to add classes
+$wrapper_classes = array( 'atables-wrapper' );
+$wrapper_classes = apply_filters( 'atables_table_classes', $wrapper_classes, $table['id'] );
+?>
+<div class="<?php echo esc_attr( implode( ' ', $wrapper_classes ) ); ?>" data-table-id="<?php echo esc_attr( $table['id'] ); ?>">
     <?php if ( ! empty( $table['title'] ) ) : ?>
         <h3 class="atables-title"><?php echo esc_html( $table['title'] ); ?></h3>
     <?php endif; ?>

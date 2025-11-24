@@ -14,6 +14,7 @@ return array(
     'ATables\\Core\\Loader' => $baseDir . '/src/Core/Loader.php',
     'ATables\\Core\\Plugin' => $baseDir . '/src/Core/Plugin.php',
     'ATables\\Features\\FeatureManager' => $baseDir . '/src/Features/FeatureManager.php',
+    'ATables\\Features\\Themes\\ThemeModule' => $baseDir . '/src/Features/Themes/ThemeModule.php',
     'ATables\\Frontend\\Shortcode' => $baseDir . '/src/Frontend/Shortcode.php',
     'Complex\\Complex' => $vendorDir . '/markbaker/complex/classes/src/Complex.php',
     'Complex\\Exception' => $vendorDir . '/markbaker/complex/classes/src/Exception.php',

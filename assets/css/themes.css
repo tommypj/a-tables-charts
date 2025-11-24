@@ -1,0 +1,178 @@
+/**
+ * Table Themes
+ *
+ * @package ATables
+ * @since 3.0.0
+ */
+
+/* ==========================================================================
+   DEFAULT THEME
+   ========================================================================== */
+
+.atables-theme-default .atables-table {
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.atables-theme-default .atables-table th,
+.atables-theme-default .atables-table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+.atables-theme-default .atables-table thead {
+    background: linear-gradient(to bottom, #f9f9f9, #f0f0f0);
+}
+
+.atables-theme-default .atables-table thead th {
+    font-weight: 600;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.atables-theme-default .atables-table tbody tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+.atables-theme-default .atables-table tbody tr:hover {
+    background: #f0f8ff;
+    transition: background-color 0.2s;
+}
+
+/* ==========================================================================
+   MINIMAL THEME
+   ========================================================================== */
+
+.atables-theme-minimal .atables-table {
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.atables-theme-minimal .atables-table th,
+.atables-theme-minimal .atables-table td {
+    padding: 10px 12px;
+    border: none;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.atables-theme-minimal .atables-table thead {
+    background: transparent;
+}
+
+.atables-theme-minimal .atables-table thead th {
+    font-weight: 500;
+    color: #666;
+    font-size: 13px;
+    border-bottom: 2px solid #333;
+}
+
+.atables-theme-minimal .atables-table tbody tr:hover {
+    background: #fafafa;
+}
+
+.atables-theme-minimal .atables-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* ==========================================================================
+   DARK THEME
+   ========================================================================== */
+
+.atables-theme-dark .atables-table {
+    border-collapse: collapse;
+    background: #2d2d2d;
+    color: #e0e0e0;
+}
+
+.atables-theme-dark .atables-table th,
+.atables-theme-dark .atables-table td {
+    padding: 12px 15px;
+    border: 1px solid #404040;
+}
+
+.atables-theme-dark .atables-table thead {
+    background: #1a1a1a;
+}
+
+.atables-theme-dark .atables-table thead th {
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 12px;
+    letter-spacing: 0.5px;
+}
+
+.atables-theme-dark .atables-table tbody tr:nth-child(even) {
+    background: #333;
+}
+
+.atables-theme-dark .atables-table tbody tr:hover {
+    background: #3a3a3a;
+    transition: background-color 0.2s;
+}
+
+.atables-theme-dark .atables-title {
+    color: #e0e0e0;
+}
+
+.atables-theme-dark .atables-description {
+    color: #b0b0b0;
+}
+
+/* ==========================================================================
+   STRIPED THEME
+   ========================================================================== */
+
+.atables-theme-striped .atables-table {
+    border-collapse: collapse;
+    background: #fff;
+    border: 2px solid #2271b1;
+}
+
+.atables-theme-striped .atables-table th,
+.atables-theme-striped .atables-table td {
+    padding: 12px 15px;
+    border: none;
+}
+
+.atables-theme-striped .atables-table thead {
+    background: #2271b1;
+}
+
+.atables-theme-striped .atables-table thead th {
+    font-weight: 600;
+    color: #fff;
+    font-size: 13px;
+}
+
+.atables-theme-striped .atables-table tbody tr:nth-child(odd) {
+    background: #f0f6fc;
+}
+
+.atables-theme-striped .atables-table tbody tr:nth-child(even) {
+    background: #fff;
+}
+
+.atables-theme-striped .atables-table tbody tr:hover {
+    background: #e5f2ff;
+    transition: background-color 0.2s;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media screen and (max-width: 768px) {
+    .atables-table th,
+    .atables-table td {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .atables-table thead th {
+        font-size: 11px;
+    }
+}
