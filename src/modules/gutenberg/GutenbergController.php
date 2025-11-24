@@ -123,8 +123,8 @@ class GutenbergController {
 
 		foreach ( $tables as $table ) {
 			$options[] = array(
-				'value' => $table->get_id(),
-				'label' => $table->get_title(),
+				'value' => $table->id,
+				'label' => $table->title,
 			);
 		}
 
@@ -143,8 +143,8 @@ class GutenbergController {
 
 		foreach ( $charts as $chart ) {
 			$options[] = array(
-				'value' => $chart->get_id(),
-				'label' => $chart->get_title(),
+				'value' => $chart->id,
+				'label' => $chart->title,
 			);
 		}
 
