@@ -129,6 +129,7 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'ATables\\Core\\Loader' => __DIR__ . '/../..' . '/src/Core/Loader.php',
         'ATables\\Core\\Plugin' => __DIR__ . '/../..' . '/src/Core/Plugin.php',
         'ATables\\Features\\FeatureManager' => __DIR__ . '/../..' . '/src/Features/FeatureManager.php',
+        'ATables\\Features\\Themes\\ThemeModule' => __DIR__ . '/../..' . '/src/Features/Themes/ThemeModule.php',
         'ATables\\Frontend\\Shortcode' => __DIR__ . '/../..' . '/src/Frontend/Shortcode.php',
         'Complex\\Complex' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Complex.php',
         'Complex\\Exception' => __DIR__ . '/..' . '/markbaker/complex/classes/src/Exception.php',

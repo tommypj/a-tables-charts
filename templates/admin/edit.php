@@ -32,6 +32,10 @@ $is_new = empty( $table );
                     <textarea id="description" name="description" class="large-text" rows="3"><?php echo $is_new ? '' : esc_textarea( $table['description'] ); ?></textarea>
                 </td>
             </tr>
+            <?php
+            // Hook for feature modules to add settings
+            do_action( 'atables_after_table_meta', $table );
+            ?>
         </table>
 
         <h2><?php esc_html_e( 'Table Data', 'a-tables-charts' ); ?></h2>

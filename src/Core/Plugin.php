@@ -44,7 +44,22 @@ class Plugin {
      */
     private function __construct() {
         $this->loader = new Loader();
+        $this->init_feature_modules();
         $this->register_hooks();
+    }
+
+    /**
+     * Initialize feature modules
+     * Each module checks if it's enabled before loading
+     */
+    private function init_feature_modules() {
+        // Theme Module
+        \ATables\Features\Themes\ThemeModule::init();
+
+        // Future modules will be added here:
+        // \ATables\Features\Search\SearchModule::init();
+        // \ATables\Features\Sorting\SortingModule::init();
+        // \ATables\Features\Pagination\PaginationModule::init();
     }
 
     /**
