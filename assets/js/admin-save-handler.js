@@ -88,9 +88,13 @@
             // Trigger events to collect from other tabs
             $(document).trigger('atables:cf:getRules');
             $(document).trigger('atables:formulas:getFormulas');
-            $(document).trigger('atables:validation:getRules');
             $(document).trigger('atables:merging:getMerges');
-            
+
+            // Get validation rules from global variable (set by validation tab)
+            if (window.aTablesValidationRules) {
+                this.settings.validation = window.aTablesValidationRules;
+            }
+
             return this.settings;
         },
         

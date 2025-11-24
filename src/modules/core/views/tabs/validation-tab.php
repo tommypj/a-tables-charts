@@ -332,6 +332,8 @@ jQuery(document).ready(function($) {
 		if (confirm('<?php esc_html_e( 'Delete validation rules for this column?', 'a-tables-charts' ); ?>')) {
 			const column = $(this).data('column');
 			delete validationRules[column];
+			// Update global variable for save handler
+			window.aTablesValidationRules = validationRules;
 			renderValidation();
 		}
 	});
@@ -415,9 +417,13 @@ jQuery(document).ready(function($) {
 		}
 		
 		validationRules[column] = rules;
+
+		// Update global variable for save handler
+		window.aTablesValidationRules = validationRules;
+
 		renderValidation();
 		closeValidationModal();
-		
+
 		if (window.ATablesNotifications) {
 			window.ATablesNotifications.show('Validation rules saved! Don\'t forget to save the table.', 'success');
 		}
@@ -474,9 +480,24 @@ jQuery(document).ready(function($) {
 		// This would load preset configuration
 	}
 	
-	// Expose rules for saving
-	$(document).on('atables:saveAll', function() {
-		$(document).trigger('atables:validation:getRules', [validationRules]);
+	// Expose rules for saving - respond to save handler's request
+	// The save handler calls collectAllData() which triggers this event
+	// We pass the rules back as the second argument
+	$(document).on('atables:validation:getRules', function(e, callback) {
+		// If callback is provided, it's the save handler asking for rules
+		if (typeof callback === 'function') {
+			callback(validationRules);
+		}
 	});
+
+	// Also respond to saveAll by passing rules to the event data
+	$(document).on('atables:saveAll', function(e, data) {
+		if (data && data.collectValidation) {
+			data.validation = validationRules;
+		}
+	});
+
+	// Make validationRules accessible globally for the save handler
+	window.aTablesValidationRules = validationRules;
 });
 </script>
