@@ -139,6 +139,7 @@ class ComposerStaticInit2ed219839c717be8c30f1fead5bb960d
         'ATables\\Core\\Database' => __DIR__ . '/../..' . '/src/Core/Database.php',
         'ATables\\Core\\Loader' => __DIR__ . '/../..' . '/src/Core/Loader.php',
         'ATables\\Core\\Plugin' => __DIR__ . '/../..' . '/src/Core/Plugin.php',
+        'ATables\\Features\\Display\\DisplayController' => __DIR__ . '/../..' . '/src/Features/Display/DisplayController.php',
         'ATables\\Features\\Display\\ShortcodeHandler' => __DIR__ . '/../..' . '/src/Features/Display/ShortcodeHandler.php',
         'ATables\\Features\\Tables\\TableController' => __DIR__ . '/../..' . '/src/Features/Tables/TableController.php',
         'ATables\\Features\\Tables\\TableRepository' => __DIR__ . '/../..' . '/src/Features/Tables/TableRepository.php',

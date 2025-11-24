@@ -81,3 +81,261 @@
 .button .dashicons {
     margin-top: 4px;
 }
+
+/* Enhanced Table Editor - Tabs */
+.atables-tab-wrapper {
+    margin: 20px 0 0 0;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.atables-tab-wrapper .nav-tab {
+    position: relative;
+    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.atables-tab-wrapper .nav-tab .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+.atables-tab-wrapper .nav-tab-locked {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.atables-tab-wrapper .nav-tab-locked:hover {
+    background: transparent;
+    border-color: #c3c4c7;
+}
+
+.atables-pro-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-left: 4px;
+}
+
+/* Tab Content */
+.atables-tab-content {
+    margin-top: 20px;
+}
+
+.atables-tab-pane {
+    display: none;
+}
+
+.atables-tab-pane.active {
+    display: block;
+}
+
+.atables-card {
+    background: #fff;
+    padding: 20px;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    margin-bottom: 20px;
+}
+
+.atables-card h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+/* Data Tab - Editable Table */
+.atables-data-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.atables-data-header h2 {
+    margin: 0;
+    border: none;
+}
+
+.atables-data-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.atables-data-table-wrapper {
+    overflow-x: auto;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+}
+
+.atables-editable-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+}
+
+.atables-editable-table thead {
+    background: #f6f7f7;
+}
+
+.atables-editable-table th,
+.atables-editable-table td {
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+    min-width: 120px;
+}
+
+.atables-editable-table th.row-number,
+.atables-editable-table td.row-number {
+    min-width: 60px;
+    text-align: center;
+    background: #f9f9f9;
+    font-weight: 600;
+    position: relative;
+}
+
+.atables-editable-table td.row-number {
+    background: #fafafa;
+}
+
+.atables-editable-table td[contenteditable="true"] {
+    cursor: text;
+    transition: background-color 0.2s;
+}
+
+.atables-editable-table td[contenteditable="true"]:hover {
+    background: #f9f9f9;
+}
+
+.atables-editable-table td[contenteditable="true"]:focus {
+    background: #fff9e6;
+    outline: 2px solid #2271b1;
+    outline-offset: -2px;
+}
+
+/* Column Header */
+.column-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.column-name {
+    flex: 1;
+    cursor: text;
+    padding: 2px 4px;
+    border-radius: 2px;
+}
+
+.column-name:hover {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+.column-name:focus {
+    background: #fff;
+    outline: 1px solid #2271b1;
+}
+
+.column-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: #d63638;
+}
+
+.column-header:hover .column-delete {
+    opacity: 1;
+}
+
+.column-delete:hover {
+    color: #a00;
+}
+
+.column-delete .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Row Actions */
+.row-number {
+    position: relative;
+}
+
+.row-delete {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 2px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    color: #d63638;
+    position: absolute;
+    right: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.atables-editable-table tr:hover .row-delete {
+    opacity: 1;
+}
+
+.row-delete:hover {
+    color: #a00;
+}
+
+.row-delete .dashicons {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+}
+
+/* Display Settings */
+.form-table label {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin: 8px 0;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .atables-data-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .atables-data-actions {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+
+    .atables-data-actions .button {
+        flex: 1;
+        text-align: center;
+    }
+
+    .atables-tab-wrapper .nav-tab {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+
+    .atables-tab-wrapper .nav-tab .dashicons {
+        display: none;
+    }
+}

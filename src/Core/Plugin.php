@@ -81,9 +81,13 @@ class Plugin {
         $this->loader->add_action( 'wp_ajax_atables_get_tables', 'ATables\Features\Tables\TableController', 'get_tables' );
         $this->loader->add_action( 'wp_ajax_atables_save_table', 'ATables\Features\Tables\TableController', 'save_table' );
         $this->loader->add_action( 'wp_ajax_atables_delete_table', 'ATables\Features\Tables\TableController', 'delete_table' );
+        $this->loader->add_action( 'wp_ajax_atables_save_table_data', 'ATables\Features\Tables\TableController', 'save_table_data' );
 
         // Upload operations
         $this->loader->add_action( 'wp_ajax_atables_upload_file', 'ATables\Features\Upload\UploadController', 'upload_file' );
+
+        // Display settings
+        $this->loader->add_action( 'wp_ajax_atables_save_display_settings', 'ATables\Features\Display\DisplayController', 'save_display_settings' );
     }
 
     /**
@@ -161,7 +165,7 @@ class Plugin {
      * Render edit table page
      */
     public function render_edit_table_page() {
-        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-edit.php';
+        require_once ATABLES_PLUGIN_DIR . 'templates/admin/table-edit-enhanced.php';
     }
 
     /**

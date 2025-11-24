@@ -19,6 +19,7 @@ return array(
     'ATables\\Core\\Database' => $baseDir . '/src/Core/Database.php',
     'ATables\\Core\\Loader' => $baseDir . '/src/Core/Loader.php',
     'ATables\\Core\\Plugin' => $baseDir . '/src/Core/Plugin.php',
+    'ATables\\Features\\Display\\DisplayController' => $baseDir . '/src/Features/Display/DisplayController.php',
     'ATables\\Features\\Display\\ShortcodeHandler' => $baseDir . '/src/Features/Display/ShortcodeHandler.php',
     'ATables\\Features\\Tables\\TableController' => $baseDir . '/src/Features/Tables/TableController.php',
     'ATables\\Features\\Tables\\TableRepository' => $baseDir . '/src/Features/Tables/TableRepository.php',
